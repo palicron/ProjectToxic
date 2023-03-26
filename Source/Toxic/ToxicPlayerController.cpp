@@ -54,7 +54,7 @@ void AToxicPlayerController::SetupInputComponent()
 
 void AToxicPlayerController::OnInputStarted()
 {
-	StopMovement();
+//	StopMovement();
 }
 
 // Triggered every frame when the input is held down
@@ -65,17 +65,9 @@ void AToxicPlayerController::OnSetDestinationTriggered()
 	
 	// We look for the location in the world where the player has pressed the input
 	FHitResult Hit;
-	bool bHitSuccessful = false;
-	if (bIsTouch)
-	{
-		bHitSuccessful = GetHitResultUnderFinger(ETouchIndex::Touch1, ECollisionChannel::ECC_Visibility, true, Hit);
-	}
-	else
-	{
-		bHitSuccessful = GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, true, Hit);
-	}
-
-	// If we hit a surface, cache the location
+	
+	const bool bHitSuccessful  = GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, true, Hit);
+	
 	if (bHitSuccessful)
 	{
 		CachedDestination = Hit.Location;
