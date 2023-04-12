@@ -6,6 +6,8 @@
 #include "GameFramework/Pawn.h"
 #include "Tx_PlayerCamera.generated.h"
 
+class UTx_GameInstace;
+class ATx_PlayerCtr;
 UCLASS()
 class TOXIC_API ATx_PlayerCamera : public APawn
 {
@@ -24,15 +26,24 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 	class USpringArmComponent* CameraBoom;
+	
+	UPROPERTY(BlueprintReadOnly)
+	UTx_GameInstace* GameInstanceRef;
+	
+	UPROPERTY(BlueprintReadOnly)
+	ATx_PlayerCtr* PlayerCtr;
 
-public:	
-	// Called every frame
+	UFUNCTION(BlueprintCallable)
+	void InitSetUp();
+
+
+public:
+	
+	
 	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
+	
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-
+	
 	FORCEINLINE class UCameraComponent* GetTopDownCameraComponent() const { return TopDownCameraComponent; }
 	
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }

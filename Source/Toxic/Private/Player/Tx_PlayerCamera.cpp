@@ -2,14 +2,19 @@
 #include "Player/Tx_PlayerCamera.h"
 
 #include "Camera/CameraComponent.h"
+#include "Core/Tx_GameInstace.h"
+#include "GameFramework/HUD.h"
 #include "GameFramework/SpringArmComponent.h"
-
+#include "GameFramework/PlayerController.h"
+#include "Player/Tx_PlayerCtr.h"
 
 
 ATx_PlayerCamera::ATx_PlayerCamera()
 {
  	
 	PrimaryActorTick.bCanEverTick = true;
+
+
 
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
@@ -35,13 +40,31 @@ void ATx_PlayerCamera::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	InitSetUp();
 }
 
+
+void ATx_PlayerCamera::InitSetUp()
+{
+	GameInstanceRef = Cast<UTx_GameInstace>(GetGameInstance());
+	if(IsValid(GameInstanceRef))
+	{
+		//Using This Funtion For consitency in multiplayer 
+		PlayerCtr = Cast<ATx_PlayerCtr>(GameInstanceRef->GetFirstLocalPlayerController());
+	}
+	//Set Mouse
+	if(IsValid(PlayerCtr))
+	{
+	
+	}
+	
+	
+}
 
 void ATx_PlayerCamera::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	
 }
 
 // Called to bind functionality to input
@@ -50,4 +73,6 @@ void ATx_PlayerCamera::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 }
+
+
 
