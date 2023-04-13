@@ -28,7 +28,10 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	void UpdateMousePosition();
-	
+
+	///Inputs
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	class UInputAction* SetDestinationClickAction;
 protected:
 	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Player Controller")
@@ -72,6 +75,13 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void MoveCameraToTargetLocation();
+
+	virtual void SetupInputComponent() override;
+
+	UFUNCTION()
+	void OnClickEnd();
+
+
 	
 	
 };

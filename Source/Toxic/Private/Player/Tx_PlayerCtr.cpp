@@ -1,6 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Player/Tx_PlayerCtr.h"
+
+#include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputMappingContext.h"
 #include "Player/Tx_PlayerCamera.h"
@@ -40,6 +42,32 @@ void ATx_PlayerCtr::BeginPlay()
 	
 }
 
+
+void ATx_PlayerCtr::SetupInputComponent()
+{
+	Super::SetupInputComponent();
+	
+	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent))
+	{
+		EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Completed, this, &ATx_PlayerCtr::OnClickEnd);
+	}
+}
+
+void ATx_PlayerCtr::OnClickEnd()
+{
+
+	FHitResult Hit;
+	
+	const bool bHitSuccessful  = GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, true, Hit);
+
+	if (bHitSuccessful && IsValid(ControllerPlayer))
+	{
+		ControllerPlayer->MoveOwnedCharacterToLocation(Hit.Location);
+	}
+
+}
+
+
 void ATx_PlayerCtr::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
@@ -70,8 +98,6 @@ FVector2D ATx_PlayerCtr::GetScreenCurrentSize() const
 	return FVector2D(XPos,YPos);
 }
 
-
-
 void ATx_PlayerCtr::UpdateMousePosition()
 {
 	GetMousePosition(CurrentMousePosition.X,CurrentMousePosition.Y);
@@ -91,13 +117,13 @@ bool ATx_PlayerCtr::CheckMouseOnTheEdge()
 	if((FMath::Abs(CurrentMousePosition.X-MiddlePointX)>MoveZoneX)
 		|| (FMath::Abs(CurrentMousePosition.Y-MiddlePointY)>MoveZoneY))
 	{
-
 		return true;
 	}
 
 	SpeedScaleFactor = 1.f;
 	return false;
 }
+
 void ATx_PlayerCtr::MoveCameraToTargetLocation()
 {
 	FHitResult Hit;
@@ -117,3 +143,5 @@ void ATx_PlayerCtr::MoveCameraToTargetLocation()
 	
 	}
 }
+
+

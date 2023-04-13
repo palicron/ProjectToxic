@@ -2,6 +2,8 @@
 #include "Player/Tx_PlayerCamera.h"
 
 #include "Camera/CameraComponent.h"
+#include "Character/Tx_Base_AICharacterCtr.h"
+#include "Character/Base/Tx_Base_Character.h"
 #include "Core/Tx_GameInstace.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/FloatingPawnMovement.h"
@@ -48,7 +50,7 @@ void ATx_PlayerCamera::BeginPlay()
 	Super::BeginPlay();
 	
 	InitSetUp();
-	
+	SpawnOwningCharacter();
 }
 
 
@@ -60,8 +62,11 @@ void ATx_PlayerCamera::InitSetUp()
 		//Using This Funtion For consitency in multiplayer 
 		PlayerCtr = Cast<ATx_PlayerCtr>(GameInstanceRef->GetFirstLocalPlayerController());
 	}
-	
+
+
 }
+
+
 
 void ATx_PlayerCamera::Tick(float DeltaTime)
 {
@@ -74,6 +79,26 @@ void ATx_PlayerCamera::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+}
+
+void ATx_PlayerCamera::MoveOwnedCharacterToLocation(const FVector NewLocation)
+{
+	if(IsValid(OwningCharacterRef) && IsValid(OwningCharacterRef->GetAiController()))
+	{
+		OwningCharacterRef->GetAiController()->MoveActorToLocation(NewLocation);
+	}
+}
+
+void ATx_PlayerCamera::SpawnOwningCharacter()
+{
+	if(HasAuthority() && IsValid(OwningCharacterToSpawn))
+	{
+		const FActorSpawnParameters SpawnParams;
+		
+		OwningCharacterRef = GetWorld()->SpawnActor<ATx_Base_Character>(OwningCharacterToSpawn,GetActorLocation(),FRotator::ZeroRotator,SpawnParams);
+
+		
+	}
 }
 
 

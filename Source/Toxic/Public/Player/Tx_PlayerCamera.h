@@ -7,6 +7,7 @@
 #include "GameFramework/Pawn.h"
 #include "Tx_PlayerCamera.generated.h"
 
+class ATx_Base_Character;
 class UTx_GameInstace;
 class ATx_PlayerCtr;
 UCLASS()
@@ -28,6 +29,15 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 	class USpringArmComponent* CameraBoom;
 	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
+	class UFloatingPawnMovement* MovementComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Controll")
+	TSubclassOf<ATx_Base_Character> OwningCharacterToSpawn;
+
+	UPROPERTY()
+	ATx_Base_Character* OwningCharacterRef;
+	
 	UPROPERTY(BlueprintReadOnly)
 	UTx_GameInstace* GameInstanceRef;
 	
@@ -37,16 +47,19 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void InitSetUp();
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
-	class UFloatingPawnMovement* MovementComponent;
+	UFUNCTION()
+	void SpawnOwningCharacter();
+
 
 
 public:
 	
-	
 	virtual void Tick(float DeltaTime) override;
 	
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	UFUNCTION(BlueprintCallable)
+	void MoveOwnedCharacterToLocation(const FVector NewLocation);
 	
 	FORCEINLINE class UCameraComponent* GetTopDownCameraComponent() const { return TopDownCameraComponent; }
 	
