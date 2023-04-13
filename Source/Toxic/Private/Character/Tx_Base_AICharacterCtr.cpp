@@ -34,7 +34,5 @@ void ATx_Base_AICharacterCtr::OnMoveCompleted(FAIRequestID RequestID, const FPat
 
 void ATx_Base_AICharacterCtr::MoveActorToLocation(const FVector Location)
 {
-	
 	MoveToLocation(Location,25.f);
-	
 }

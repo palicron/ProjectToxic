@@ -96,7 +96,6 @@ void ATx_PlayerCamera::SpawnOwningCharacter()
 		const FActorSpawnParameters SpawnParams;
 		
 		OwningCharacterRef = GetWorld()->SpawnActor<ATx_Base_Character>(OwningCharacterToSpawn,GetActorLocation(),FRotator::ZeroRotator,SpawnParams);
-
 		
 	}
 }
