@@ -3,7 +3,10 @@
 
 #include "Camera/CameraComponent.h"
 #include "Core/Tx_GameInstace.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/FloatingPawnMovement.h"
 #include "GameFramework/HUD.h"
+#include "GameFramework/PawnMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "Player/Tx_PlayerCtr.h"
@@ -33,6 +36,10 @@ ATx_PlayerCamera::ATx_PlayerCamera()
 	TopDownCameraComponent->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	TopDownCameraComponent->bUsePawnControlRotation = false;
 
+	MovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("Movement Component"));
+
+
+
 }
 
 
@@ -41,6 +48,7 @@ void ATx_PlayerCamera::BeginPlay()
 	Super::BeginPlay();
 	
 	InitSetUp();
+	
 }
 
 
@@ -52,12 +60,6 @@ void ATx_PlayerCamera::InitSetUp()
 		//Using This Funtion For consitency in multiplayer 
 		PlayerCtr = Cast<ATx_PlayerCtr>(GameInstanceRef->GetFirstLocalPlayerController());
 	}
-	//Set Mouse
-	if(IsValid(PlayerCtr))
-	{
-	
-	}
-	
 	
 }
 

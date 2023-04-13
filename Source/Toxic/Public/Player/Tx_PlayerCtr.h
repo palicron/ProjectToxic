@@ -35,6 +35,12 @@ protected:
 	float ScreenSafeZoneValue;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Player Controller")
+	float CameraMaxSpeed = 65.f;
+	
+	UPROPERTY()
+	float SpeedScaleFactor = 1.f;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Player Controller")
 	bool bCanPlayerMoveCamera = true;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Player Controller")

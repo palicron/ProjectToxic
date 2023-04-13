@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameFramework/Character.h"
 #include "GameFramework/Pawn.h"
 #include "Tx_PlayerCamera.generated.h"
 
@@ -35,6 +36,9 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void InitSetUp();
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
+	class UFloatingPawnMovement* MovementComponent;
 
 
 public:

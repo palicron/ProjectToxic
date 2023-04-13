@@ -4,7 +4,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputMappingContext.h"
 #include "Player/Tx_PlayerCamera.h"
-
+#include "GameFramework/Character.h"
 
 ATx_PlayerCtr::ATx_PlayerCtr()
 {
@@ -18,41 +18,45 @@ void ATx_PlayerCtr::BeginPlay()
 {
 	Super::BeginPlay();
 
-	
-		InputSubsystemRef = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
+		ControllerPlayer = Cast<ATx_PlayerCamera>(GetPawn());
 
-		if(IsValid(InputSubsystemRef) && IsValid(DefaultMappingContext))
+		if(IsValid(ControllerPlayer) && ControllerPlayer->IsLocallyControlled())
 		{
-			InputSubsystemRef->AddMappingContext(DefaultMappingContext,0);
+			InputSubsystemRef = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
+
+			if(IsValid(InputSubsystemRef) && IsValid(DefaultMappingContext))
+			{
+				InputSubsystemRef->AddMappingContext(DefaultMappingContext,0);
+			}
+	
+			CurrentScreenSize = GetScreenCurrentSize();
+	
+			SetShowMouseCursor(true);
+		
+			const FInputModeGameAndUI InputType ;
+		
+			SetInputMode(InputType);
 		}
-	
-		CurrentScreenSize = GetScreenCurrentSize();
-	
-		SetShowMouseCursor(true);
-		
-		const FInputModeGameAndUI InputType ;
-		
-		SetInputMode(InputType);
-	
 	
 }
 
 void ATx_PlayerCtr::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-	
-	CurrentScreenSize = GetScreenCurrentSize();
-	
-	UpdateMousePosition();
-	
-	
-	if(CheckMouseOnTheEdge())
+
+	if(IsValid(ControllerPlayer) && ControllerPlayer->IsLocallyControlled())
 	{
-		MoveCameraToTargetLocation();
+		CurrentScreenSize = GetScreenCurrentSize();
+	
+		UpdateMousePosition();
+	
+		if(CheckMouseOnTheEdge())
+		{
+			MoveCameraToTargetLocation();
+		}
 	}
 	
 }
-
 
 
 FVector2D ATx_PlayerCtr::GetScreenCurrentSize() const
@@ -87,9 +91,11 @@ bool ATx_PlayerCtr::CheckMouseOnTheEdge()
 	if((FMath::Abs(CurrentMousePosition.X-MiddlePointX)>MoveZoneX)
 		|| (FMath::Abs(CurrentMousePosition.Y-MiddlePointY)>MoveZoneY))
 	{
+
 		return true;
 	}
 
+	SpeedScaleFactor = 1.f;
 	return false;
 }
 void ATx_PlayerCtr::MoveCameraToTargetLocation()
@@ -103,9 +109,11 @@ void ATx_PlayerCtr::MoveCameraToTargetLocation()
 		if (ControllerPlayer != nullptr)
 		{
 			FVector WorldDirection = (Hit.Location - ControllerPlayer->GetActorLocation()).GetSafeNormal();
-			ControllerPlayer->AddMovementInput(WorldDirection, 50.0, false);
+			
+			ControllerPlayer->AddMovementInput(WorldDirection, CameraMaxSpeed * SpeedScaleFactor, true);
+
+			
 		}
-		if(GEngine)
-			GEngine->AddOnScreenDebugMessage(-1, .1f, FColor::Yellow, TEXT("Some debug message!"));
+	
 	}
 }
