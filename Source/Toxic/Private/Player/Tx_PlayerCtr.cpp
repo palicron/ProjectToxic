@@ -14,9 +14,6 @@ ATx_PlayerCtr::ATx_PlayerCtr()
 	ScreenSafeZoneValue = 50.f;
 }
 
-
-
-
 void ATx_PlayerCtr::BeginPlay()
 {
 	Super::BeginPlay();

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Toxic/PlayerDefinitions.h"
 #include "Tx_Base_Character.generated.h"
 
 class ATx_Base_AICharacterCtr;
@@ -23,6 +24,12 @@ public:
 
 
 protected:
+
+	UPROPERTY( ReplicatedUsing = OnRep_CharacterState, EditAnywhere,BlueprintReadWrite,Category="Player State")
+	CharacterState CurrentCharacterState;
+
+	UFUNCTION()
+	void OnRep_CharacterState(CharacterState LastState);
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -33,6 +40,8 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 	ATx_Base_AICharacterCtr* AIControllerReference;
 
+
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 
 public:	
@@ -49,5 +58,11 @@ public:
 	FORCEINLINE void SetAiController( ATx_Base_AICharacterCtr* NewCtr) {AIControllerReference = NewCtr; }
 
 	UFUNCTION(BlueprintCallable)
-	FORCEINLINE ATx_Base_AICharacterCtr* GetAiController( ) { return AIControllerReference ; } 
+	FORCEINLINE ATx_Base_AICharacterCtr* GetAiController( ) { return AIControllerReference ; }
+
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE void SetCurrentCharacterState(CharacterState NewState){ CurrentCharacterState = NewState; }
+
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE CharacterState GetCurrentCharacterState() const{ return CurrentCharacterState; }
 };

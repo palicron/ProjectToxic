@@ -27,10 +27,21 @@ void ATx_Base_AICharacterCtr::OnPossess(APawn* InPawn)
 void ATx_Base_AICharacterCtr::OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result)
 {
 	Super::OnMoveCompleted(RequestID, Result);
+
+	if(IsValid(ControlledCharacterRef) && HasAuthority())
+	{
+		ControlledCharacterRef->SetCurrentCharacterState(CharacterState::Cs_Idle);
+	}
 	
 }
 
 void ATx_Base_AICharacterCtr::MoveActorToLocation(const FVector Location)
 {
-	MoveToLocation(Location,25.f);
+	if(IsValid(ControlledCharacterRef) && HasAuthority())
+	{
+		ControlledCharacterRef->SetCurrentCharacterState(CharacterState::Cs_Moving);
+		
+		MoveToLocation(Location,25.f);
+	}
+	
 }
