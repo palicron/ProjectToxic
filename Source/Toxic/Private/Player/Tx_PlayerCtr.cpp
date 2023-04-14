@@ -5,13 +5,18 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputMappingContext.h"
+#include "Character/Base/Tx_Base_Character.h"
 #include "Player/Tx_PlayerCamera.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/PawnMovementComponent.h"
 
 ATx_PlayerCtr::ATx_PlayerCtr()
 {
 	CurrentScreenSize = FVector2D::ZeroVector;
 	ScreenSafeZoneValue = 50.f;
+	bCanPlayerMoveCamera = true;
+	bCanFocusOwnedCharacter = true;
+	bOngoingFocusDistance = false;
 }
 
 void ATx_PlayerCtr::BeginPlay()
@@ -33,12 +38,16 @@ void ATx_PlayerCtr::SetupInputComponent()
 	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent))
 	{
 		EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Completed, this, &ATx_PlayerCtr::OnClickEnd);
+		EnhancedInputComponent->BindAction(SetFocusActionInput, ETriggerEvent::Triggered, this, &ATx_PlayerCtr::OnFocusTrigger);
+		EnhancedInputComponent->BindAction(SetFocusActionInput, ETriggerEvent::Completed, this, &ATx_PlayerCtr::ResetOnFocusFlag);
 	}
 }
 
 void ATx_PlayerCtr::OnClickEnd()
 {
 
+	if(!bCanPlayerMoveCamera) return;
+	
 	FHitResult Hit;
 	
 	const bool bHitSuccessful  = GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, true, Hit);
@@ -49,6 +58,22 @@ void ATx_PlayerCtr::OnClickEnd()
 	}
 
 }
+
+void ATx_PlayerCtr::OnFocusTrigger()
+{
+	if(bCanFocusOwnedCharacter)
+	{
+		bCanFocusOwnedCharacter = false;
+		bCanPlayerMoveCamera = false;
+		bOngoingFocusDistance = true;
+		GetWorld()->GetTimerManager().ClearTimer(FocusCameraTimerHandle);
+		
+		GetWorld()->GetTimerManager().SetTimer(FocusCameraTimerHandle,
+			this,&ThisClass::MoveCameraToOwnCharacter,0.0001f,true); 
+	
+	}
+}
+
 
 void ATx_PlayerCtr::OnPossess(APawn* InPawn)
 {
@@ -71,7 +96,7 @@ void ATx_PlayerCtr::Tick(float DeltaSeconds)
 	
 		UpdateMousePosition();
 	
-		if(CheckMouseOnTheEdge())
+		if(CheckMouseOnTheEdge() && bCanPlayerMoveCamera)
 		{
 			MoveCameraToTargetLocation();
 		}
@@ -136,6 +161,7 @@ void ATx_PlayerCtr::MoveCameraToTargetLocation()
 	}
 }
 
+
 void ATx_PlayerCtr::ServerMoveOwningCharacter_Implementation(const FVector TargetLocation)
 {
 	if( IsValid(ControllerPlayer))
@@ -144,6 +170,40 @@ void ATx_PlayerCtr::ServerMoveOwningCharacter_Implementation(const FVector Targe
 	}
 	
 }
+
+void ATx_PlayerCtr::MoveCameraToOwnCharacter()
+{
+	if(IsValid(ControllerPlayer) && IsValid(ControllerPlayer->GetOwningCharacter()))
+	{
+	
+		FVector CameraPosition = ControllerPlayer->GetActorLocation();
+		CameraPosition.Z = 0;
+		FVector PlayerPosition = ControllerPlayer->GetOwningCharacter()->GetActorLocation();
+		PlayerPosition.Z = 0;
+		
+		if( FVector::Distance(CameraPosition,PlayerPosition)>CameraFocusAcceptanceRadius)
+		{
+	
+			ControllerPlayer->AddMovementInput((ControllerPlayer->GetOwningCharacter()->GetActorLocation()
+				- ControllerPlayer->GetActorLocation()).GetSafeNormal()
+				, CameraFocusMaxSpeed, true);
+			return;
+		}
+		else
+		{
+			ControllerPlayer->GetMovementComponent()->StopMovementImmediately();
+			ControllerPlayer->SetActorLocation(ControllerPlayer->GetOwningCharacter()->GetActorLocation());
+		}
+	 
+	}
+
+		bCanFocusOwnedCharacter = true;
+		bCanPlayerMoveCamera = true;
+		bOngoingFocusDistance = false;
+	
+		GetWorld()->GetTimerManager().ClearTimer(FocusCameraTimerHandle);
+}
+
 
 void ATx_PlayerCtr::SetUpInitValues()
 {

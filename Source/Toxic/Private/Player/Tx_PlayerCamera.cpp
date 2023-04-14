@@ -11,6 +11,7 @@
 #include "GameFramework/PawnMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/PlayerController.h"
+#include "Net/UnrealNetwork.h"
 #include "Player/Tx_PlayerCtr.h"
 
 
@@ -44,6 +45,13 @@ ATx_PlayerCamera::ATx_PlayerCamera()
 
 }
 
+void ATx_PlayerCamera::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	
+	DOREPLIFETIME_CONDITION(ATx_PlayerCamera,OwningCharacterRef,COND_OwnerOnly);
+}
+
 
 void ATx_PlayerCamera::BeginPlay()
 {
@@ -52,6 +60,8 @@ void ATx_PlayerCamera::BeginPlay()
 	InitSetUp();
 	SpawnOwningCharacter();
 }
+
+
 
 
 void ATx_PlayerCamera::InitSetUp()
@@ -66,6 +76,18 @@ void ATx_PlayerCamera::InitSetUp()
 
 }
 
+void ATx_PlayerCamera::OnRep_OwningCharacterRef()
+{
+
+	if(!HasAuthority())
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red,
+	FString::Printf(TEXT("Change state asdasd : x: %s"),*this->GetName() ));
+		
+		CurrentSelectedCharacter = OwningCharacterRef;
+	}
+	
+}
 
 
 void ATx_PlayerCamera::Tick(float DeltaTime)
@@ -96,9 +118,13 @@ void ATx_PlayerCamera::SpawnOwningCharacter()
 		const FActorSpawnParameters SpawnParams;
 		
 		OwningCharacterRef = GetWorld()->SpawnActor<ATx_Base_Character>(OwningCharacterToSpawn,GetActorLocation(),FRotator::ZeroRotator,SpawnParams);
-		
+
+		CurrentSelectedCharacter = OwningCharacterRef;
 	}
 }
+
+
+
 
 
 

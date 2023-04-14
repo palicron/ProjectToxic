@@ -33,11 +33,7 @@ void ATx_Base_Character::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	
 }
-
-
-
 
 // Called every frame
 void ATx_Base_Character::Tick(float DeltaTime)

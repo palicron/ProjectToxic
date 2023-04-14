@@ -31,12 +31,18 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 	class UFloatingPawnMovement* MovementComponent;
-
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Controll")
 	TSubclassOf<ATx_Base_Character> OwningCharacterToSpawn;
 
-	UPROPERTY()
+	UPROPERTY(ReplicatedUsing=OnRep_OwningCharacterRef,VisibleAnywhere,BlueprintReadWrite)
 	ATx_Base_Character* OwningCharacterRef;
+
+	UFUNCTION()
+	void OnRep_OwningCharacterRef();
+
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
+	ATx_Base_Character* CurrentSelectedCharacter;
 	
 	UPROPERTY(BlueprintReadOnly)
 	UTx_GameInstace* GameInstanceRef;
@@ -49,20 +55,23 @@ protected:
 
 	UFUNCTION()
 	void SpawnOwningCharacter();
+	
 
-
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 public:
 	
 	virtual void Tick(float DeltaTime) override;
 	
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
+	
+	
 	UFUNCTION(BlueprintCallable)
 	void MoveOwnedCharacterToLocation(const FVector NewLocation);
 	
-	FORCEINLINE class UCameraComponent* GetTopDownCameraComponent() const { return TopDownCameraComponent; }
+	FORCEINLINE UCameraComponent* GetTopDownCameraComponent() const { return TopDownCameraComponent; }
 	
-	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
+	FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 
+	FORCEINLINE ATx_Base_Character* GetOwningCharacter() const { return OwningCharacterRef; }
 };

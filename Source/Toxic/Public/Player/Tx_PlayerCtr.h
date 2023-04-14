@@ -33,6 +33,9 @@ public:
 	///Inputs
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	class UInputAction* SetDestinationClickAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	class UInputAction* SetFocusActionInput;
 	
 protected:
 	
@@ -40,16 +43,28 @@ protected:
 	float ScreenSafeZoneValue;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Player Controller")
+	float CameraFocusAcceptanceRadius = 100.f;
+	
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Player Controller")
 	float CameraMaxSpeed = 65.f;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Player Controller")
+	float CameraFocusMaxSpeed = 500000.f;
 	
 	UPROPERTY()
 	float SpeedScaleFactor = 1.f;
+
+	bool bCanFocusOwnedCharacter;
+
+	bool bOngoingFocusDistance;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Player Controller")
 	bool bCanPlayerMoveCamera = true;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Player Controller")
 	ATx_PlayerCamera* ControllerPlayer;
+
+	FTimerHandle FocusCameraTimerHandle;
 	
 	virtual void BeginPlay() override;
 
@@ -78,15 +93,27 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void MoveCameraToTargetLocation();
 
+	UFUNCTION(BlueprintCallable)
+	void MoveCameraToOwnCharacter();
+
 	virtual void SetupInputComponent() override;
 
 	UFUNCTION()
 	void OnClickEnd();
 
-	virtual void OnPossess(APawn* InPawn) override;
-	///RPC
-	///
+	UFUNCTION()
+	void OnFocusTrigger();
 
+	UFUNCTION()
+	FORCEINLINE void ResetOnFocusFlag() {bCanFocusOwnedCharacter = true;};
+
+	virtual void OnPossess(APawn* InPawn) override;
+
+	
+
+	
+	///RPC//////
+	
 	UFUNCTION(Server,Reliable)
 	void ServerMoveOwningCharacter(const FVector TargetLocation);
 
