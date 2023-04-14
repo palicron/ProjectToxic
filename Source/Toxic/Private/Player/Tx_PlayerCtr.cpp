@@ -9,6 +9,7 @@
 #include "Player/Tx_PlayerCamera.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/PawnMovementComponent.h"
+#include "Net/UnrealNetwork.h"
 
 ATx_PlayerCtr::ATx_PlayerCtr()
 {
@@ -19,6 +20,8 @@ ATx_PlayerCtr::ATx_PlayerCtr()
 	bOngoingFocusDistance = false;
 }
 
+
+
 void ATx_PlayerCtr::BeginPlay()
 {
 	Super::BeginPlay();
@@ -28,6 +31,13 @@ void ATx_PlayerCtr::BeginPlay()
 		SetUpInitValues();
 	}
 	
+}
+
+void ATx_PlayerCtr::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME_CONDITION(ATx_PlayerCtr,TargetCharacter,COND_OwnerOnly);
 }
 
 
@@ -45,16 +55,23 @@ void ATx_PlayerCtr::SetupInputComponent()
 
 void ATx_PlayerCtr::OnClickEnd()
 {
-
-	if(!bCanPlayerMoveCamera) return;
 	
 	FHitResult Hit;
 	
-	const bool bHitSuccessful  = GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, true, Hit);
-
-	if (bHitSuccessful && IsValid(ControllerPlayer))
+	if (GetHitResultUnderCursor(ECollisionChannel::ECC_GameTraceChannel1, true, Hit)
+		&& IsValid(ControllerPlayer) && bCanPlayerMoveCamera)
 	{
-		ServerMoveOwningCharacter(Hit.Location);
+		ATx_Base_Character* RayHitCharacter = Cast<ATx_Base_Character>(Hit.GetActor());
+		
+		if(IsValid(RayHitCharacter))
+		{
+			ServerMoveCharacterToTargetActor(RayHitCharacter);
+		}
+		else
+		{
+			ServerMoveOwningCharacter(Hit.Location);
+		}
+		
 	}
 
 }
@@ -84,6 +101,7 @@ void ATx_PlayerCtr::OnPossess(APawn* InPawn)
 		ControllerPlayer = Cast<ATx_PlayerCamera>(InPawn);
 	}
 }
+
 
 
 void ATx_PlayerCtr::Tick(float DeltaSeconds)
@@ -162,14 +180,6 @@ void ATx_PlayerCtr::MoveCameraToTargetLocation()
 }
 
 
-void ATx_PlayerCtr::ServerMoveOwningCharacter_Implementation(const FVector TargetLocation)
-{
-	if( IsValid(ControllerPlayer))
-	{
-		ControllerPlayer->MoveOwnedCharacterToLocation(TargetLocation);
-	}
-	
-}
 
 void ATx_PlayerCtr::MoveCameraToOwnCharacter()
 {
@@ -227,3 +237,30 @@ void ATx_PlayerCtr::SetUpInitValues()
 		SetInputMode(InputType);
 	}
 }
+
+void ATx_PlayerCtr::OnRep_TargetCharacter(const ATx_Base_Character* LastTarget)
+{
+	
+}
+
+
+void ATx_PlayerCtr::ServerMoveOwningCharacter_Implementation(const FVector TargetLocation)
+{
+	if( IsValid(ControllerPlayer))
+	{
+		ControllerPlayer->MoveOwnedCharacterToLocation(TargetLocation);
+	}
+	
+}
+void ATx_PlayerCtr::ServerMoveCharacterToTargetActor_Implementation(ATx_Base_Character* NewTargetCharacter) 
+{
+	if( IsValid(ControllerPlayer))
+	{
+		TargetCharacter = NewTargetCharacter;
+		ControllerPlayer->MoveOwnedCharacterToLocation(NewTargetCharacter);
+	}
+}
+
+
+
+

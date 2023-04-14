@@ -68,6 +68,9 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	void MoveOwnedCharacterToLocation(const FVector NewLocation);
+
+
+	void MoveOwnedCharacterToLocation(ATx_Base_Character* NewTarget);
 	
 	FORCEINLINE UCameraComponent* GetTopDownCameraComponent() const { return TopDownCameraComponent; }
 	

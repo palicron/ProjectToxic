@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "Tx_PlayerCtr.generated.h"
 
+class ATx_Base_Character;
 class ATx_PlayerCamera;
 class UInputMappingContext;
 class UNiagaraSystem;
@@ -65,6 +66,12 @@ protected:
 	ATx_PlayerCamera* ControllerPlayer;
 
 	FTimerHandle FocusCameraTimerHandle;
+
+	UPROPERTY(ReplicatedUsing=OnRep_TargetCharacter,BlueprintReadWrite)
+	ATx_Base_Character* TargetCharacter= nullptr;
+
+	UFUNCTION()
+	void OnRep_TargetCharacter(const ATx_Base_Character* LastTarget);
 	
 	virtual void BeginPlay() override;
 
@@ -109,13 +116,20 @@ protected:
 
 	virtual void OnPossess(APawn* InPawn) override;
 
-	
 
 	
 	///RPC//////
+
+
+	UFUNCTION(Server,Reliable)
+	void ServerMoveCharacterToTargetActor( ATx_Base_Character* NewTargetCharacter) ;
 	
 	UFUNCTION(Server,Reliable)
 	void ServerMoveOwningCharacter(const FVector TargetLocation);
+
+
+
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	
 	

@@ -32,5 +32,8 @@ public:
 	void MoveActorToLocation(const FVector Location);
 
 	
+	void MoveActorToTarget(const FVector Location);
+
+	
 	
 };

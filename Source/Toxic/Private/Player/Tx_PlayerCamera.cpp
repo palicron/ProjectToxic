@@ -111,6 +111,15 @@ void ATx_PlayerCamera::MoveOwnedCharacterToLocation(const FVector NewLocation)
 	}
 }
 
+void ATx_PlayerCamera::MoveOwnedCharacterToLocation(ATx_Base_Character* NewTarget)
+{
+
+	if(IsValid(OwningCharacterRef) && IsValid(OwningCharacterRef->GetAiController()) && IsValid(NewTarget))
+	{
+		OwningCharacterRef->GetAiController()->MoveToActor(NewTarget);
+	}
+}
+
 void ATx_PlayerCamera::SpawnOwningCharacter()
 {
 	if(HasAuthority() && IsValid(OwningCharacterToSpawn))
