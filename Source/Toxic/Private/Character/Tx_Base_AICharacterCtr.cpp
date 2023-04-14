@@ -27,9 +27,7 @@ void ATx_Base_AICharacterCtr::OnPossess(APawn* InPawn)
 void ATx_Base_AICharacterCtr::OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result)
 {
 	Super::OnMoveCompleted(RequestID, Result);
-
-	if(GEngine)
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Some debug message!"));	
+	
 }
 
 void ATx_Base_AICharacterCtr::MoveActorToLocation(const FVector Location)

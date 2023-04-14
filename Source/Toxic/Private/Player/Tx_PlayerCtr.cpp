@@ -16,29 +16,15 @@ ATx_PlayerCtr::ATx_PlayerCtr()
 
 
 
+
 void ATx_PlayerCtr::BeginPlay()
 {
 	Super::BeginPlay();
 
-		ControllerPlayer = Cast<ATx_PlayerCamera>(GetPawn());
-
-		if(IsValid(ControllerPlayer) && ControllerPlayer->IsLocallyControlled())
-		{
-			InputSubsystemRef = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
-
-			if(IsValid(InputSubsystemRef) && IsValid(DefaultMappingContext))
-			{
-				InputSubsystemRef->AddMappingContext(DefaultMappingContext,0);
-			}
-	
-			CurrentScreenSize = GetScreenCurrentSize();
-	
-			SetShowMouseCursor(true);
-		
-			const FInputModeGameAndUI InputType ;
-		
-			SetInputMode(InputType);
-		}
+	if(IsLocalController())
+	{
+		SetUpInitValues();
+	}
 	
 }
 
@@ -62,9 +48,19 @@ void ATx_PlayerCtr::OnClickEnd()
 
 	if (bHitSuccessful && IsValid(ControllerPlayer))
 	{
-		ControllerPlayer->MoveOwnedCharacterToLocation(Hit.Location);
+		ServerMoveOwningCharacter(Hit.Location);
 	}
 
+}
+
+void ATx_PlayerCtr::OnPossess(APawn* InPawn)
+{
+	Super::OnPossess(InPawn);
+
+	if(IsValid(InPawn) && HasAuthority())
+	{
+		ControllerPlayer = Cast<ATx_PlayerCamera>(InPawn);
+	}
 }
 
 
@@ -137,11 +133,40 @@ void ATx_PlayerCtr::MoveCameraToTargetLocation()
 			FVector WorldDirection = (Hit.Location - ControllerPlayer->GetActorLocation()).GetSafeNormal();
 			
 			ControllerPlayer->AddMovementInput(WorldDirection, CameraMaxSpeed * SpeedScaleFactor, true);
-
 			
 		}
 	
 	}
 }
 
+void ATx_PlayerCtr::ServerMoveOwningCharacter_Implementation(const FVector TargetLocation)
+{
+	if( IsValid(ControllerPlayer))
+	{
+		ControllerPlayer->MoveOwnedCharacterToLocation(TargetLocation);
+	}
+	
+}
 
+void ATx_PlayerCtr::SetUpInitValues()
+{
+	ControllerPlayer = Cast<ATx_PlayerCamera>(GetPawn());
+		
+	if(IsValid(ControllerPlayer) && ControllerPlayer->IsLocallyControlled())
+	{
+		InputSubsystemRef = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
+
+		if(IsValid(InputSubsystemRef) && IsValid(DefaultMappingContext))
+		{
+			InputSubsystemRef->AddMappingContext(DefaultMappingContext,0);
+		}
+	
+		CurrentScreenSize = GetScreenCurrentSize();
+	
+		SetShowMouseCursor(true);
+		
+		const FInputModeGameAndUI InputType ;
+		
+		SetInputMode(InputType);
+	}
+}

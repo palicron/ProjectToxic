@@ -21,6 +21,7 @@ class TOXIC_API ATx_PlayerCtr : public APlayerController
 public:
 	
 	ATx_PlayerCtr();
+	void SetUpInitValues();
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	FVector2D CurrentScreenSize;
@@ -32,6 +33,7 @@ public:
 	///Inputs
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	class UInputAction* SetDestinationClickAction;
+	
 protected:
 	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Player Controller")
@@ -81,6 +83,12 @@ protected:
 	UFUNCTION()
 	void OnClickEnd();
 
+	virtual void OnPossess(APawn* InPawn) override;
+	///RPC
+	///
+
+	UFUNCTION(Server,Reliable)
+	void ServerMoveOwningCharacter(const FVector TargetLocation);
 
 	
 	
