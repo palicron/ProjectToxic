@@ -16,6 +16,10 @@ class TOXIC_API ATx_Base_AICharacterCtr : public AAIController
 	GENERATED_BODY()
 
 protected:
+
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Team Data")
+	uint8 TeamId = 255;
 	
 	virtual void BeginPlay() override;
 
@@ -27,13 +31,13 @@ protected:
 	virtual void OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result) override;
 
 public:
-
+	/**
+	 * @brief 
+	 * @param Location CHANGE THIS VFECTOR TO NET VECTORS  @TODO
+	 */
 	UFUNCTION()
 	void MoveActorToLocation(const FVector Location);
-
 	
-	void MoveActorToTarget(const FVector Location);
-
-	
+	void MoveActorToTarget(ATx_Base_Character* Target);
 	
 };

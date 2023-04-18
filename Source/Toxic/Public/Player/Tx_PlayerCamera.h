@@ -37,7 +37,9 @@ protected:
 
 	UPROPERTY(ReplicatedUsing=OnRep_OwningCharacterRef,VisibleAnywhere,BlueprintReadWrite)
 	ATx_Base_Character* OwningCharacterRef;
-
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	TSubclassOf<AActor> SpawnEffect;
 	UFUNCTION()
 	void OnRep_OwningCharacterRef();
 

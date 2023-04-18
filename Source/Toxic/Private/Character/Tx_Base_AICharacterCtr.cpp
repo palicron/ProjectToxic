@@ -39,9 +39,19 @@ void ATx_Base_AICharacterCtr::MoveActorToLocation(const FVector Location)
 {
 	if(IsValid(ControlledCharacterRef) && HasAuthority())
 	{
-		ControlledCharacterRef->SetCurrentCharacterState(CharacterState::Cs_Moving);
+		ControlledCharacterRef->SetCurrentCharacterState(CharacterState::Cs_MovingToLocation);
 		
 		MoveToLocation(Location,25.f);
 	}
 	
+}
+
+void ATx_Base_AICharacterCtr::MoveActorToTarget(ATx_Base_Character* Target)
+{
+	if(IsValid(ControlledCharacterRef) && HasAuthority())
+	{
+		ControlledCharacterRef->SetCurrentCharacterState(CharacterState::Cs_MovingToTarget);
+		
+		MoveToActor(Target);
+	}
 }

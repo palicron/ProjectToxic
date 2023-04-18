@@ -1,6 +1,7 @@
 
 #include "Player/Tx_PlayerCamera.h"
 
+#include "NiagaraFunctionLibrary.h"
 #include "Camera/CameraComponent.h"
 #include "Character/Tx_Base_AICharacterCtr.h"
 #include "Character/Base/Tx_Base_Character.h"
@@ -11,6 +12,7 @@
 #include "GameFramework/PawnMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/PlayerController.h"
+#include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
 #include "Player/Tx_PlayerCtr.h"
 
@@ -116,7 +118,8 @@ void ATx_PlayerCamera::MoveOwnedCharacterToLocation(ATx_Base_Character* NewTarge
 
 	if(IsValid(OwningCharacterRef) && IsValid(OwningCharacterRef->GetAiController()) && IsValid(NewTarget))
 	{
-		OwningCharacterRef->GetAiController()->MoveToActor(NewTarget);
+
+		OwningCharacterRef->GetAiController()->MoveActorToTarget(NewTarget);
 	}
 }
 

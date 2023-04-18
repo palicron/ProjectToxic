@@ -5,6 +5,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputMappingContext.h"
+#include "NiagaraFunctionLibrary.h"
 #include "Character/Base/Tx_Base_Character.h"
 #include "Player/Tx_PlayerCamera.h"
 #include "GameFramework/Character.h"
@@ -62,6 +63,12 @@ void ATx_PlayerCtr::OnClickEnd()
 		&& IsValid(ControllerPlayer) && bCanPlayerMoveCamera)
 	{
 		ATx_Base_Character* RayHitCharacter = Cast<ATx_Base_Character>(Hit.GetActor());
+
+		if(IsValid(FXCursor) && !HasAuthority())
+		{
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, FXCursor, Hit.Location,
+		FRotator::ZeroRotator, FVector(1.f, 1.f, 1.f), true, true, ENCPoolMethod::None, true);
+		}
 		
 		if(IsValid(RayHitCharacter))
 		{
