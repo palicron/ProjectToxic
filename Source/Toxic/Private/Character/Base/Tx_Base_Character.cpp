@@ -2,10 +2,10 @@
 
 
 #include "Character/Base/Tx_Base_Character.h"
-
-
-#include "Character/Tx_Base_AICharacterCtr.h"
+#include "AbilitySystemComponent.h"
+#include "Abilitys/Stats/BaseAttributeSetBase.h"
 #include "Net/UnrealNetwork.h"
+#include "Player/Tx_PlayerCamera.h"
 
 // Sets default values
 ATx_Base_Character::ATx_Base_Character()
@@ -18,6 +18,15 @@ ATx_Base_Character::ATx_Base_Character()
 
 	CurrentCharacterState = CharacterState::Cs_Idle;
 
+	AbilitySystemComp = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystem Comp"));
+
+	AttributeSerBaseComp = CreateDefaultSubobject<UBaseAttributeSetBase>(TEXT("Attribute Base"));
+
+}
+
+UAbilitySystemComponent* ATx_Base_Character::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComp;
 }
 
 void ATx_Base_Character::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -28,17 +37,32 @@ void ATx_Base_Character::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& O
 }
 
 
+
+
 // Called when the game starts or when spawned
 void ATx_Base_Character::BeginPlay()
 {
 	Super::BeginPlay();
+
+	AcquireAbility(AbilityAttackRef);
 	
 }
+
+
 
 // Called every frame
 void ATx_Base_Character::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if(bCheckForEnemyOnRange && IsValid(CurrentTargetCharacter))
+	{
+		const float DistanceToTarget = FVector::Dist(GetActorLocation(),CurrentTargetCharacter->GetActorLocation());
+		if(DistanceToTarget<=100.f && CurrentCharacterState != CharacterState::Cs_Attacking )
+		{
+			
+		}
+	}
 
 }
 
@@ -51,9 +75,38 @@ void ATx_Base_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 
 void ATx_Base_Character::OnRep_CharacterState(CharacterState LastState)
 {
+	///Change late
+	if(CurrentCharacterState==CharacterState::Cs_MovingToTarget)
+	{
+		if(IsValid(CurrentTargetCharacter))
+		{
+			bCheckForEnemyOnRange = true;
+		}
+	}
 	
-/**	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red,
-		FString::Printf(TEXT("Change state Character : x: %s"),*this->GetName() ));*/
+
+}
+
+void ATx_Base_Character::AcquireAbility(TSubclassOf<UGameplayAbility> AbilityToAcquire)
+{
+	if(IsValid(AbilitySystemComp))
+	{
+		if(HasAuthority() && AbilityToAcquire)
+		{
+			FGameplayAbilitySpecDef SpecDef = FGameplayAbilitySpecDef();
+			SpecDef.Ability = AbilityToAcquire;
+			FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(SpecDef,1);
+			AbilitySystemComp->GiveAbility(AbilitySpec);
+		}
+		AbilitySystemComp->InitAbilityActorInfo(this,this);
+	}
+}
+
+void ATx_Base_Character::AttackAction()
+{
 	
-	
+}
+
+void ATx_Base_Character::OnRep_CurrentTargetCharacter(ATx_Base_Character* LastTarget)
+{
 }

@@ -4,13 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "AbilitySystemInterface.h"
 #include "Toxic/PlayerDefinitions.h"
 #include "Tx_Base_Character.generated.h"
 
 class ATx_Base_AICharacterCtr;
 class ATx_PlayerCamera;
 UCLASS()
-class TOXIC_API ATx_Base_Character : public ACharacter
+class TOXIC_API ATx_Base_Character : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
@@ -21,13 +22,14 @@ public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Team ID")
 	uint8 TeamId = 255;
 
-
-
 protected:
 
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	bool bCheckForEnemyOnRange = false;
+	
 	UPROPERTY( ReplicatedUsing = OnRep_CharacterState, EditAnywhere,BlueprintReadWrite,Category="Player State")
 	CharacterState CurrentCharacterState;
-
+	
 	UFUNCTION()
 	void OnRep_CharacterState(CharacterState LastState);
 	
@@ -37,14 +39,39 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	ATx_PlayerCamera* OwningPlayerRef;
 
+	UPROPERTY( ReplicatedUsing= OnRep_CurrentTargetCharacter,VisibleAnywhere,BlueprintReadWrite)
+	ATx_Base_Character* CurrentTargetCharacter = nullptr;
+
+	UFUNCTION()
+	void OnRep_CurrentTargetCharacter(ATx_Base_Character* LastTarget);
+
 	UPROPERTY(BlueprintReadOnly)
 	ATx_Base_AICharacterCtr* AIControllerReference;
 
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Game Ability")
+	TSubclassOf<UGameplayAbility> AbilityAttackRef;
 
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category="Character Abilitys")
+	UAbilitySystemComponent* AbilitySystemComp;
+
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category="Character Abilitys")
+	UBaseAttributeSetBase* AttributeSerBaseComp;
+
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 
-public:	
+public:
+
+
+	UFUNCTION(BlueprintCallable,Category="Character Base")
+	void AcquireAbility(TSubclassOf<UGameplayAbility> AbilityToAcquire);
+
+	
+	UFUNCTION(BlueprintCallable,Category="Character Base")
+	void AttackAction();
+	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 

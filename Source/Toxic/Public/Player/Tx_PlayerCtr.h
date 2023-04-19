@@ -126,11 +126,11 @@ protected:
 	
 	UFUNCTION(Server,Reliable)
 	void ServerMoveOwningCharacter(const FVector TargetLocation);
-
-
-
+	
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	
-	
+public :
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE ATx_Base_Character* GetTargetCharacter() {return TargetCharacter;}; 
 };

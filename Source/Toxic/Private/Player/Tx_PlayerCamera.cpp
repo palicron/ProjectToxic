@@ -118,7 +118,7 @@ void ATx_PlayerCamera::MoveOwnedCharacterToLocation(ATx_Base_Character* NewTarge
 
 	if(IsValid(OwningCharacterRef) && IsValid(OwningCharacterRef->GetAiController()) && IsValid(NewTarget))
 	{
-
+		OwningCharacterRef
 		OwningCharacterRef->GetAiController()->MoveActorToTarget(NewTarget);
 	}
 }

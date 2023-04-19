@@ -255,6 +255,7 @@ void ATx_PlayerCtr::ServerMoveOwningCharacter_Implementation(const FVector Targe
 {
 	if( IsValid(ControllerPlayer))
 	{
+		
 		ControllerPlayer->MoveOwnedCharacterToLocation(TargetLocation);
 	}
 	
