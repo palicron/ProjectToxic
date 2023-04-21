@@ -63,6 +63,11 @@ void ATx_Base_Character::CheckDistanceToAttack()
 	
 }
 
+void ATx_Base_Character::StopAllActionByPlayer() const
+{
+	AbilitySystemComp->CancelAllAbilities();
+}
+
 
 void ATx_Base_Character::TryToAttackTarget() 
 {

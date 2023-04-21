@@ -26,9 +26,11 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void CheckDistanceToAttack();
+
+	UFUNCTION(BlueprintCallable)
+	void StopAllActionByPlayer() const;
 	
 protected:
-
 	
 	UPROPERTY( ReplicatedUsing = OnRep_CharacterState, EditAnywhere,BlueprintReadWrite,Category="Player State")
 	CharacterState CurrentCharacterState;

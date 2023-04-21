@@ -36,7 +36,10 @@ public:
 	class UInputAction* SetDestinationClickAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
-	class UInputAction* SetFocusActionInput;
+	 UInputAction* SetFocusActionInput;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	 UInputAction* SetCancelAbilityInput;
 	
 protected:
 	
