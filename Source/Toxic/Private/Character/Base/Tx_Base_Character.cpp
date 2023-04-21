@@ -3,7 +3,10 @@
 
 #include "Character/Base/Tx_Base_Character.h"
 #include "AbilitySystemComponent.h"
+#include "Abilitys/GameplayAbility_Base.h"
 #include "Abilitys/Stats/BaseAttributeSetBase.h"
+#include "Kismet/KismetMaterialLibrary.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Net/UnrealNetwork.h"
 #include "Player/Tx_PlayerCamera.h"
 
@@ -12,7 +15,7 @@ ATx_Base_Character::ATx_Base_Character()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
+	
 	NetUpdateFrequency = 66.f;
 	MinNetUpdateFrequency = 33.f;
 
@@ -33,10 +36,9 @@ void ATx_Base_Character::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& O
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
+	DOREPLIFETIME(ATx_Base_Character,CurrentTargetCharacter);
 	DOREPLIFETIME(ATx_Base_Character,CurrentCharacterState);
 }
-
-
 
 
 // Called when the game starts or when spawned
@@ -48,22 +50,60 @@ void ATx_Base_Character::BeginPlay()
 	
 }
 
+void ATx_Base_Character::CheckDistanceToAttack() 
+{
+	const UWorld* WorldRef =  GetWorld();
+	if(WorldRef && HasAuthority())
+	{
+		if(GEngine)
+			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Set timer de ataque"));	
+		WorldRef->GetTimerManager().SetTimer(MeleeAttackHandle,this ,
+				&ATx_Base_Character::TryToAttackTarget,.01f,true);	
+	}
+	
+}
 
+
+void ATx_Base_Character::TryToAttackTarget() 
+{
+	if( HasAuthority() && IsValid(CurrentTargetCharacter) )
+	{
+		
+		const float DistanceToTarget = FVector::Dist(GetActorLocation(),CurrentTargetCharacter->GetActorLocation());
+		
+		if( DistanceToTarget <= 200.f )
+		{
+			
+			if(AbilitySystemComp->TryActivateAbilityByClass(AbilityAttackRef))
+			{
+				
+				CurrentCharacterState = CharacterState::Cs_Attacking;
+				const FRotator PlayerRot = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(),CurrentTargetCharacter->GetActorLocation());
+
+				SetActorRotation(PlayerRot);
+				if(GEngine)
+					GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Green, TEXT("ON rasdasdsaep Stats"));
+				GetWorld()->GetTimerManager().ClearTimer(MeleeAttackHandle);
+			}
+			else
+			{
+				GetWorld()->GetTimerManager().ClearTimer(MeleeAttackHandle);
+			}
+			
+		}
+	}
+	else
+	{
+		GetWorld()->GetTimerManager().ClearTimer(MeleeAttackHandle);
+	}
+	
+}
 
 // Called every frame
 void ATx_Base_Character::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	if(bCheckForEnemyOnRange && IsValid(CurrentTargetCharacter))
-	{
-		const float DistanceToTarget = FVector::Dist(GetActorLocation(),CurrentTargetCharacter->GetActorLocation());
-		if(DistanceToTarget<=100.f && CurrentCharacterState != CharacterState::Cs_Attacking )
-		{
-			
-		}
-	}
-
+	
 }
 
 // Called to bind functionality to input
@@ -73,18 +113,39 @@ void ATx_Base_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 
 }
 
+float ATx_Base_Character::GetDistanceToTargetCharacter() const
+{
+	if(IsValid(CurrentTargetCharacter))
+	{
+		return FVector::Dist2D(GetActorLocation(),CurrentTargetCharacter->GetActorLocation());
+	}
+
+	return -1.0f;
+	
+}
+
 void ATx_Base_Character::OnRep_CharacterState(CharacterState LastState)
 {
+
 	///Change late
 	if(CurrentCharacterState==CharacterState::Cs_MovingToTarget)
 	{
 		if(IsValid(CurrentTargetCharacter))
 		{
-			bCheckForEnemyOnRange = true;
+			if(GEngine)
+				GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Green, TEXT("ON rep Stats"));
+	
 		}
 	}
 	
 
+}
+
+void ATx_Base_Character::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+	AcquireAbility(AbilityAttackRef);
+	AbilitySystemComp->InitAbilityActorInfo(this, this); 
 }
 
 void ATx_Base_Character::AcquireAbility(TSubclassOf<UGameplayAbility> AbilityToAcquire)
@@ -97,16 +158,20 @@ void ATx_Base_Character::AcquireAbility(TSubclassOf<UGameplayAbility> AbilityToA
 			SpecDef.Ability = AbilityToAcquire;
 			FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(SpecDef,1);
 			AbilitySystemComp->GiveAbility(AbilitySpec);
+			
 		}
 		AbilitySystemComp->InitAbilityActorInfo(this,this);
 	}
 }
 
-void ATx_Base_Character::AttackAction()
-{
-	
-}
 
 void ATx_Base_Character::OnRep_CurrentTargetCharacter(ATx_Base_Character* LastTarget)
 {
+
+	if(IsValid(CurrentTargetCharacter))
+	{
+		if(GEngine)
+			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Set asdasdasdsad de asdsadsadsadsa"));	
+		CheckDistanceToAttack();
+	}
 }

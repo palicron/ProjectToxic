@@ -66,12 +66,6 @@ protected:
 	ATx_PlayerCamera* ControllerPlayer;
 
 	FTimerHandle FocusCameraTimerHandle;
-
-	UPROPERTY(ReplicatedUsing=OnRep_TargetCharacter,BlueprintReadWrite)
-	ATx_Base_Character* TargetCharacter= nullptr;
-
-	UFUNCTION()
-	void OnRep_TargetCharacter(const ATx_Base_Character* LastTarget);
 	
 	virtual void BeginPlay() override;
 
@@ -130,7 +124,5 @@ protected:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	
-public :
-	UFUNCTION(BlueprintCallable)
-	FORCEINLINE ATx_Base_Character* GetTargetCharacter() {return TargetCharacter;}; 
+ 
 };

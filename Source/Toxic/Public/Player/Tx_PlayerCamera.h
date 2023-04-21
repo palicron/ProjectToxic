@@ -67,11 +67,9 @@ public:
 	
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
-	
 	UFUNCTION(BlueprintCallable)
 	void MoveOwnedCharacterToLocation(const FVector NewLocation);
-
-
+	
 	void MoveOwnedCharacterToLocation(ATx_Base_Character* NewTarget);
 	
 	FORCEINLINE UCameraComponent* GetTopDownCameraComponent() const { return TopDownCameraComponent; }
@@ -79,4 +77,6 @@ public:
 	FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 
 	FORCEINLINE ATx_Base_Character* GetOwningCharacter() const { return OwningCharacterRef; }
+
+	
 };

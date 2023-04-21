@@ -37,8 +37,7 @@ void ATx_PlayerCtr::BeginPlay()
 void ATx_PlayerCtr::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-
-	DOREPLIFETIME_CONDITION(ATx_PlayerCtr,TargetCharacter,COND_OwnerOnly);
+	
 }
 
 
@@ -245,26 +244,22 @@ void ATx_PlayerCtr::SetUpInitValues()
 	}
 }
 
-void ATx_PlayerCtr::OnRep_TargetCharacter(const ATx_Base_Character* LastTarget)
-{
-	
-}
-
 
 void ATx_PlayerCtr::ServerMoveOwningCharacter_Implementation(const FVector TargetLocation)
 {
 	if( IsValid(ControllerPlayer))
 	{
-		
 		ControllerPlayer->MoveOwnedCharacterToLocation(TargetLocation);
 	}
 	
 }
 void ATx_PlayerCtr::ServerMoveCharacterToTargetActor_Implementation(ATx_Base_Character* NewTargetCharacter) 
 {
-	if( IsValid(ControllerPlayer))
+	if( IsValid(ControllerPlayer) && NewTargetCharacter != ControllerPlayer->GetOwningCharacter())
 	{
-		TargetCharacter = NewTargetCharacter;
+		if(GEngine)
+			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Green, TEXT("Click On Enemy"));
+		
 		ControllerPlayer->MoveOwnedCharacterToLocation(NewTargetCharacter);
 	}
 }

@@ -109,17 +109,21 @@ void ATx_PlayerCamera::MoveOwnedCharacterToLocation(const FVector NewLocation)
 {
 	if(IsValid(OwningCharacterRef) && IsValid(OwningCharacterRef->GetAiController()))
 	{
+		OwningCharacterRef->SetCurrentActorTarget(nullptr);
 		OwningCharacterRef->GetAiController()->MoveActorToLocation(NewLocation);
 	}
 }
 
 void ATx_PlayerCamera::MoveOwnedCharacterToLocation(ATx_Base_Character* NewTarget)
 {
-
 	if(IsValid(OwningCharacterRef) && IsValid(OwningCharacterRef->GetAiController()) && IsValid(NewTarget))
 	{
-		OwningCharacterRef
+		OwningCharacterRef->SetCurrentActorTarget(NewTarget);
+
+		OwningCharacterRef->CheckDistanceToAttack();
+		
 		OwningCharacterRef->GetAiController()->MoveActorToTarget(NewTarget);
+		
 	}
 }
 

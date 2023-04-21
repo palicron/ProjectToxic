@@ -30,7 +30,7 @@ void ATx_Base_AICharacterCtr::OnMoveCompleted(FAIRequestID RequestID, const FPat
 
 	if(IsValid(ControlledCharacterRef) && HasAuthority())
 	{
-		ControlledCharacterRef->SetCurrentCharacterState(CharacterState::Cs_Idle);
+		//ControlledCharacterRef->SetCurrentCharacterState(CharacterState::Cs_Idle);
 	}
 	
 }
@@ -41,7 +41,7 @@ void ATx_Base_AICharacterCtr::MoveActorToLocation(const FVector Location)
 	{
 		ControlledCharacterRef->SetCurrentCharacterState(CharacterState::Cs_MovingToLocation);
 		
-		MoveToLocation(Location,25.f);
+		MoveToLocation(Location,100.f);
 	}
 	
 }
@@ -52,6 +52,6 @@ void ATx_Base_AICharacterCtr::MoveActorToTarget(ATx_Base_Character* Target)
 	{
 		ControlledCharacterRef->SetCurrentCharacterState(CharacterState::Cs_MovingToTarget);
 		
-		MoveToActor(Target);
+		MoveToActor(Target,100.f);
 	}
 }
