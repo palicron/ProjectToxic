@@ -5,6 +5,7 @@
 #include "AbilitySystemComponent.h"
 #include "Abilitys/GameplayAbility_Base.h"
 #include "Abilitys/Stats/BaseAttributeSetBase.h"
+#include "Character/Tx_Base_AICharacterCtr.h"
 #include "Kismet/KismetMaterialLibrary.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Net/UnrealNetwork.h"
@@ -63,9 +64,23 @@ void ATx_Base_Character::CheckDistanceToAttack()
 	
 }
 
-void ATx_Base_Character::StopAllActionByPlayer() const
+void ATx_Base_Character::StopAllActionByPlayer()
 {
 	AbilitySystemComp->CancelAllAbilities();
+
+	GetWorld()->GetTimerManager().ClearAllTimersForObject(this);
+
+	SetCurrentCharacterState(CharacterState::Cs_Idle);
+
+	SetCurrentActorTarget(nullptr);
+
+	if(AIControllerReference)
+	{
+		AIControllerReference->StopMovement();
+	}
+
+	
+	
 }
 
 
@@ -175,8 +190,6 @@ void ATx_Base_Character::OnRep_CurrentTargetCharacter(ATx_Base_Character* LastTa
 
 	if(IsValid(CurrentTargetCharacter))
 	{
-		if(GEngine)
-			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Set asdasdasdsad de asdsadsadsadsa"));	
 		CheckDistanceToAttack();
 	}
 }

@@ -28,7 +28,7 @@ public:
 	void CheckDistanceToAttack();
 
 	UFUNCTION(BlueprintCallable)
-	void StopAllActionByPlayer() const;
+	void StopAllActionByPlayer();
 	
 protected:
 	
@@ -44,8 +44,6 @@ protected:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	FTimerHandle MeleeAttackHandle;
 	
-
-
 	UFUNCTION(BlueprintCallable)
 	void TryToAttackTarget();
 

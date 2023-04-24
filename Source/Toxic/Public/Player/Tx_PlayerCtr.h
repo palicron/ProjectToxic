@@ -105,6 +105,9 @@ protected:
 	UFUNCTION()
 	void OnClickEnd();
 
+	UFUNCTION(Server,Unreliable)
+	void StopAction();
+
 	UFUNCTION()
 	void OnFocusTrigger();
 

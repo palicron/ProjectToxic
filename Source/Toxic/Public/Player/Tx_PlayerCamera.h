@@ -71,6 +71,9 @@ public:
 	void MoveOwnedCharacterToLocation(const FVector NewLocation);
 	
 	void MoveOwnedCharacterToLocation(ATx_Base_Character* NewTarget);
+
+	UFUNCTION()
+	void StopMovementAllActions() const;
 	
 	FORCEINLINE UCameraComponent* GetTopDownCameraComponent() const { return TopDownCameraComponent; }
 	

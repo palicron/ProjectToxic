@@ -127,6 +127,14 @@ void ATx_PlayerCamera::MoveOwnedCharacterToLocation(ATx_Base_Character* NewTarge
 	}
 }
 
+void ATx_PlayerCamera::StopMovementAllActions() const
+{
+	if(HasAuthority() && OwningCharacterRef)
+	{
+		OwningCharacterRef->StopAllActionByPlayer();
+	}
+}
+
 void ATx_PlayerCamera::SpawnOwningCharacter()
 {
 	if(HasAuthority() && IsValid(OwningCharacterToSpawn))

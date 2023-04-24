@@ -50,6 +50,7 @@ void ATx_PlayerCtr::SetupInputComponent()
 		EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Completed, this, &ATx_PlayerCtr::OnClickEnd);
 		EnhancedInputComponent->BindAction(SetFocusActionInput, ETriggerEvent::Triggered, this, &ATx_PlayerCtr::OnFocusTrigger);
 		EnhancedInputComponent->BindAction(SetFocusActionInput, ETriggerEvent::Completed, this, &ATx_PlayerCtr::ResetOnFocusFlag);
+		EnhancedInputComponent->BindAction(SetCancelAbilityInput, ETriggerEvent::Completed, this, &ATx_PlayerCtr::StopAction);
 	}
 }
 
@@ -81,6 +82,12 @@ void ATx_PlayerCtr::OnClickEnd()
 	}
 
 }
+
+void ATx_PlayerCtr::StopAction_Implementation()
+{
+	ControllerPlayer->StopMovementAllActions();
+}
+
 
 void ATx_PlayerCtr::OnFocusTrigger()
 {
@@ -257,9 +264,6 @@ void ATx_PlayerCtr::ServerMoveCharacterToTargetActor_Implementation(ATx_Base_Cha
 {
 	if( IsValid(ControllerPlayer) && NewTargetCharacter != ControllerPlayer->GetOwningCharacter())
 	{
-		if(GEngine)
-			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Green, TEXT("Click On Enemy"));
-		
 		ControllerPlayer->MoveOwnedCharacterToLocation(NewTargetCharacter);
 	}
 }
