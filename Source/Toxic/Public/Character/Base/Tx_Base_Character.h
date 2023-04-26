@@ -47,6 +47,8 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void TryToAttackTarget();
 
+
+	
 	UPROPERTY(VisibleAnywhere)
 	ATx_PlayerCamera* OwningPlayerRef;
 
@@ -62,6 +64,9 @@ protected:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Game Ability")
 	TSubclassOf<UGameplayAbility> AbilityAttackRef;
 
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Game Ability")
+	TSubclassOf<UGameplayAbility> AbilityHookRef;
+	
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category="Character Abilitys")
 	UAbilitySystemComponent* AbilitySystemComp;
 
@@ -80,6 +85,9 @@ protected:
 public:
 
 
+	UFUNCTION(BlueprintCallable)
+	void TryHookAbility();
+	
 	UFUNCTION(BlueprintCallable,Category="Character Base")
 	void AcquireAbility(TSubclassOf<UGameplayAbility> AbilityToAcquire);
 	

@@ -40,6 +40,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	 UInputAction* SetCancelAbilityInput;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	UInputAction* SetAbilitySlot1;
 	
 protected:
 	
@@ -110,6 +113,9 @@ protected:
 
 	UFUNCTION()
 	void OnFocusTrigger();
+
+	UFUNCTION()
+	void ActiveAbilitySlot1();
 
 	UFUNCTION()
 	FORCEINLINE void ResetOnFocusFlag() {bCanFocusOwnedCharacter = true;};

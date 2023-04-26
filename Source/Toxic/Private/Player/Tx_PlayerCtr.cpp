@@ -51,6 +51,7 @@ void ATx_PlayerCtr::SetupInputComponent()
 		EnhancedInputComponent->BindAction(SetFocusActionInput, ETriggerEvent::Triggered, this, &ATx_PlayerCtr::OnFocusTrigger);
 		EnhancedInputComponent->BindAction(SetFocusActionInput, ETriggerEvent::Completed, this, &ATx_PlayerCtr::ResetOnFocusFlag);
 		EnhancedInputComponent->BindAction(SetCancelAbilityInput, ETriggerEvent::Completed, this, &ATx_PlayerCtr::StopAction);
+		EnhancedInputComponent->BindAction(SetAbilitySlot1, ETriggerEvent::Completed, this, &ATx_PlayerCtr::ActiveAbilitySlot1);
 	}
 }
 
@@ -101,6 +102,16 @@ void ATx_PlayerCtr::OnFocusTrigger()
 		GetWorld()->GetTimerManager().SetTimer(FocusCameraTimerHandle,
 			this,&ThisClass::MoveCameraToOwnCharacter,0.0001f,true); 
 	
+	}
+}
+
+void ATx_PlayerCtr::ActiveAbilitySlot1()
+{
+
+	if(ControllerPlayer && ControllerPlayer->GetOwningCharacter())
+	{
+		
+		ControllerPlayer->GetOwningCharacter()->TryHookAbility();
 	}
 }
 

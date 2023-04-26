@@ -12,3 +12,10 @@ enum class  CharacterState: uint8
 	Cs_Dead UMETA(DisplayName = "Dead"),
 	Cs_Channeling UMETA(DisplayName = "Channeling")
 };
+
+UENUM(BlueprintType)
+enum class  HookStates: uint8
+{
+	Hook_Traveling UMETA(DisplayName = "Traveling"),
+	Hook_Retriving UMETA(DisplayName = "Retriving")
+};

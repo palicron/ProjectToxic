@@ -48,6 +48,7 @@ void ATx_Base_Character::BeginPlay()
 	Super::BeginPlay();
 
 	AcquireAbility(AbilityAttackRef);
+	AcquireAbility(AbilityHookRef);
 	
 }
 
@@ -98,11 +99,11 @@ void ATx_Base_Character::TryToAttackTarget()
 			{
 				
 				CurrentCharacterState = CharacterState::Cs_Attacking;
+				
 				const FRotator PlayerRot = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(),CurrentTargetCharacter->GetActorLocation());
 
 				SetActorRotation(PlayerRot);
-				if(GEngine)
-					GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Green, TEXT("ON rasdasdsaep Stats"));
+
 				GetWorld()->GetTimerManager().ClearTimer(MeleeAttackHandle);
 			}
 			else
@@ -117,6 +118,11 @@ void ATx_Base_Character::TryToAttackTarget()
 		GetWorld()->GetTimerManager().ClearTimer(MeleeAttackHandle);
 	}
 	
+}
+
+void ATx_Base_Character::TryHookAbility()
+{
+	AbilitySystemComp->TryActivateAbilityByClass(AbilityHookRef);
 }
 
 // Called every frame
