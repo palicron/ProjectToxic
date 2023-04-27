@@ -35,3 +35,15 @@ ATx_Base_AICharacterCtr* UGameplayAbility_Base::GetOwningBaseCharacterCtr()
 	
 	return OwningCharacterCtrRef;
 }
+
+void UGameplayAbility_Base::ChangeOwningCharacterState(CharacterState NewState)
+{
+	if(IsValid(OwningCharacterRef))
+	{
+		OwningCharacterRef->SetCurrentCharacterState(NewState);
+		return;
+	}
+
+	GetOwningBaseCharacter()->SetCurrentCharacterState(NewState);
+	
+}

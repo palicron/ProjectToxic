@@ -34,6 +34,7 @@ void ATx_PlayerCtr::BeginPlay()
 	
 }
 
+
 void ATx_PlayerCtr::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
@@ -57,7 +58,9 @@ void ATx_PlayerCtr::SetupInputComponent()
 
 void ATx_PlayerCtr::OnClickEnd()
 {
-	
+	if(CurrentCtrType == ControllerType::Ct_Normal)
+	{
+
 	FHitResult Hit;
 	
 	if (GetHitResultUnderCursor(ECollisionChannel::ECC_GameTraceChannel1, true, Hit)
@@ -81,7 +84,12 @@ void ATx_PlayerCtr::OnClickEnd()
 		}
 		
 	}
-
+		
+	}
+	else if(CurrentCtrType == ControllerType::Ct_Targeting)
+	{
+		ServerConfirmTargetAbility();
+	}
 }
 
 void ATx_PlayerCtr::StopAction_Implementation()
@@ -162,6 +170,7 @@ void ATx_PlayerCtr::UpdateMousePosition()
 {
 	GetMousePosition(CurrentMousePosition.X,CurrentMousePosition.Y);
 }
+
 
 bool ATx_PlayerCtr::CheckMouseOnTheEdge()
 {
@@ -279,6 +288,13 @@ void ATx_PlayerCtr::ServerMoveCharacterToTargetActor_Implementation(ATx_Base_Cha
 	}
 }
 
+void ATx_PlayerCtr::ServerConfirmTargetAbility_Implementation()
+{
+	if( IsValid(ControllerPlayer) &&  ControllerPlayer->GetOwningCharacter())
+	{
+		ControllerPlayer->GetOwningCharacter()->ConfirmTargetAbility();
+	}
+}
 
 
 

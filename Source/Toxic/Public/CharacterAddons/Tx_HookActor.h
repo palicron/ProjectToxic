@@ -59,6 +59,12 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void BP_MaxRangeHook();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void BP_EndLine() ;
+
 	UFUNCTION(BlueprintCallable)
 	void StartHookingMove(FVector TargetLocation);
 

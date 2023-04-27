@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Toxic/PlayerDefinitions.h"
 #include "Abilities/GameplayAbility.h"
 #include "GameplayAbility_Base.generated.h"
 
@@ -31,4 +32,8 @@ public:
 
 	UFUNCTION(BlueprintCallable,Category="Getter and Setters")
 	ATx_Base_AICharacterCtr* GetOwningBaseCharacterCtr();
+
+
+	UFUNCTION(BlueprintCallable)
+	void ChangeOwningCharacterState(CharacterState NewState);
 };

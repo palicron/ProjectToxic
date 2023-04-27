@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "Toxic/PlayerDefinitions.h"
 #include "Tx_PlayerCtr.generated.h"
 
 class ATx_Base_Character;
@@ -43,8 +44,15 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	UInputAction* SetAbilitySlot1;
+
+
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE void SetCtrControllerMode(ControllerType NewType){CurrentCtrType = NewType;}
 	
 protected:
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	ControllerType CurrentCtrType = ControllerType::Ct_Normal;
 	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Player Controller")
 	float ScreenSafeZoneValue;
@@ -132,6 +140,9 @@ protected:
 	
 	UFUNCTION(Server,Reliable)
 	void ServerMoveOwningCharacter(const FVector TargetLocation);
+
+	UFUNCTION(Server,Reliable)
+	void ServerConfirmTargetAbility();
 	
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 

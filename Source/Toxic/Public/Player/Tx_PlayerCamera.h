@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Toxic/PlayerDefinitions.h"
 #include "GameFramework/Pawn.h"
 #include "Tx_PlayerCamera.generated.h"
 
@@ -18,6 +19,9 @@ class TOXIC_API ATx_PlayerCamera : public APawn
 public:
 	// Sets default values for this pawn's properties
 	ATx_PlayerCamera();
+
+	UPROPERTY(BlueprintReadOnly)
+	ATx_PlayerCtr* PlayerCtr;
 
 protected:
 	// Called when the game starts or when spawned
@@ -49,8 +53,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 	UTx_GameInstace* GameInstanceRef;
 	
-	UPROPERTY(BlueprintReadOnly)
-	ATx_PlayerCtr* PlayerCtr;
+
 
 	UFUNCTION(BlueprintCallable)
 	void InitSetUp();
@@ -74,6 +77,13 @@ public:
 
 	UFUNCTION()
 	void StopMovementAllActions() const;
+
+	UFUNCTION(BlueprintCallable)
+	void SetOwningCharacterAbilityConfirm() const ;
+
+	UFUNCTION(BlueprintCallable)
+	void SetPlayerCtrNewMode(ControllerType NewType) const;
+
 	
 	FORCEINLINE UCameraComponent* GetTopDownCameraComponent() const { return TopDownCameraComponent; }
 	

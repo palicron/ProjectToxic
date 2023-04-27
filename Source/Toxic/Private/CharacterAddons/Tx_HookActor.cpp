@@ -35,13 +35,13 @@ void ATx_HookActor::BeginPlay()
 
 	HookSpawnLocation = GetActorLocation();
 
-	HookSpeed =MovementComponent->InitialSpeed;
+	HookSpeed = MovementComponent->InitialSpeed;
 
 	MovementComponent->Velocity = GetActorForwardVector() * HookSpeed;
 
-	FVector HookPosition = ( GetActorLocation()	+ (GetActorForwardVector()* HookRange));
+	//FVector HookPosition = ( GetActorLocation()	+ (GetActorForwardVector()* HookRange));
 
-	StartHookingMove(HookPosition);
+	
 	
 }
 
@@ -51,29 +51,21 @@ void ATx_HookActor::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	if(!bCheck) return;
-	
-	float CurrentDistanceToTarget = 0.f;
-	
-	if(CurrentState == HookStates::Hook_Traveling)
-	{
-		CurrentDistanceToTarget = FVector::Dist(GetActorLocation(),HookTargetLocation);
-	
-		
-		if(CurrentDistanceToTarget<10.f)
-		{
-			ChangeHookState(HookStates::Hook_Retriving);
-		}
-	}
-	else if(CurrentState == HookStates::Hook_Retriving)
-	{
-		
-		CurrentDistanceToTarget = FVector::Dist(GetActorLocation(),HookSpawnLocation);
 
-		if(CurrentDistanceToTarget<10.f)
-		{
+	const float CurrentHookLenght = FVector::Dist(GetActorLocation(), HookSpawnLocation);
+
+	/// TODO Check if need to move to location
+	
+	if(CurrentState == HookStates::Hook_Traveling && CurrentHookLenght >= HookRange)
+	{
+		BP_MaxRangeHook();
+		ChangeHookState(HookStates::Hook_Retriving);
+	}
+	else if(CurrentState == HookStates::Hook_Retriving &&  CurrentHookLenght < 20.f)
+	{
+		BP_EndLine();
 		
-			Destroy();
-		}
+		Destroy();
 	}
 }
 
@@ -82,6 +74,7 @@ void ATx_HookActor::StartHookingMove(FVector TargetLocation)
 	bCheck = true;
 	CurrentState = HookStates::Hook_Traveling;
 	HookTargetLocation = TargetLocation;
+	
 }
 
 void ATx_HookActor::ChangeHookState(HookStates newState)

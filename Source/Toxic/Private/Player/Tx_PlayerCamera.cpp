@@ -135,6 +135,22 @@ void ATx_PlayerCamera::StopMovementAllActions() const
 	}
 }
 
+void ATx_PlayerCamera::SetOwningCharacterAbilityConfirm() const
+{
+	if(HasAuthority() && OwningCharacterRef)
+	{
+		OwningCharacterRef->StopAllActionByPlayer();
+	}
+}
+
+void ATx_PlayerCamera::SetPlayerCtrNewMode(ControllerType NewType) const
+{
+	if(IsValid(PlayerCtr))
+	{
+		PlayerCtr->SetCtrControllerMode(NewType);
+	}
+}
+
 void ATx_PlayerCamera::SpawnOwningCharacter()
 {
 	if(HasAuthority() && IsValid(OwningCharacterToSpawn))
@@ -144,6 +160,8 @@ void ATx_PlayerCamera::SpawnOwningCharacter()
 		OwningCharacterRef = GetWorld()->SpawnActor<ATx_Base_Character>(OwningCharacterToSpawn,GetActorLocation(),FRotator::ZeroRotator,SpawnParams);
 
 		CurrentSelectedCharacter = OwningCharacterRef;
+		
+		OwningCharacterRef->SetOwningPlayerBaseRef(this);
 	}
 }
 

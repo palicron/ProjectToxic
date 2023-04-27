@@ -71,7 +71,7 @@ void ATx_Base_Character::StopAllActionByPlayer()
 
 	GetWorld()->GetTimerManager().ClearAllTimersForObject(this);
 
-	SetCurrentCharacterState(CharacterState::Cs_Idle);
+	//SetCurrentCharacterState(CharacterState::Cs_Idle);
 
 	SetCurrentActorTarget(nullptr);
 
@@ -82,6 +82,14 @@ void ATx_Base_Character::StopAllActionByPlayer()
 
 	
 	
+}
+
+void ATx_Base_Character::ConfirmTargetAbility()
+{
+	if(HasAuthority() && IsValid(AbilitySystemComp))
+	{
+		AbilitySystemComp->TargetConfirm();
+	}
 }
 
 
@@ -147,6 +155,37 @@ float ATx_Base_Character::GetDistanceToTargetCharacter() const
 	}
 
 	return -1.0f;
+	
+}
+
+void ATx_Base_Character::SetCurrentCharacterState(CharacterState NewState)
+{
+	 CurrentCharacterState = NewState;
+	
+	 switch (NewState)
+	 {
+	 case CharacterState::Cs_Idle: 
+	 case CharacterState::Cs_MovingToLocation: 
+	 case CharacterState::Cs_MovingToTarget: 
+	 case CharacterState::Cs_Attacking: 
+	 case CharacterState::Cs_Stunned:
+	 	if(OwningPlayerRef)
+	 	{
+	 		OwningPlayerRef->SetPlayerCtrNewMode(ControllerType::Ct_Normal);
+	 	}
+	 case CharacterState::Cs_Dead: break;
+	 case CharacterState::Cs_Channeling: break;
+	 case CharacterState::Cs_Targeting:
+	 	if(OwningPlayerRef)
+	 	{
+	 		OwningPlayerRef->SetPlayerCtrNewMode(ControllerType::Ct_Targeting);
+	 	}
+		
+	 	break;
+	 default: ;
+	 }
+
+	
 	
 }
 

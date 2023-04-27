@@ -10,7 +10,15 @@ enum class  CharacterState: uint8
 	Cs_Attacking UMETA(DisplayName = "Attacking"),
 	Cs_Stunned UMETA(DisplayName = "Stunned"),
 	Cs_Dead UMETA(DisplayName = "Dead"),
-	Cs_Channeling UMETA(DisplayName = "Channeling")
+	Cs_Channeling UMETA(DisplayName = "Channeling"),
+	Cs_Targeting UMETA(DisplayName = "Targeting")
+};
+
+UENUM(BlueprintType)
+enum class  ControllerType: uint8
+{
+	Ct_Normal UMETA(DisplayName = "normal"),
+	Ct_Targeting UMETA(DisplayName = "Targeting")
 };
 
 UENUM(BlueprintType)

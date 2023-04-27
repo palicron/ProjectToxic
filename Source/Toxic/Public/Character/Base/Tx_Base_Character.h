@@ -12,6 +12,8 @@ class UGameplayAbility_Base;
 class UBaseAttributeSetBase;
 class ATx_Base_AICharacterCtr;
 class ATx_PlayerCamera;
+
+
 UCLASS()
 class TOXIC_API ATx_Base_Character : public ACharacter, public IAbilitySystemInterface
 {
@@ -29,6 +31,12 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void StopAllActionByPlayer();
+
+	UFUNCTION(BlueprintCallable)
+	void ConfirmTargetAbility();
+	UPROPERTY(VisibleAnywhere)
+	ATx_PlayerCamera* OwningPlayerRef;
+
 	
 protected:
 	
@@ -46,11 +54,8 @@ protected:
 	
 	UFUNCTION(BlueprintCallable)
 	void TryToAttackTarget();
-
-
 	
-	UPROPERTY(VisibleAnywhere)
-	ATx_PlayerCamera* OwningPlayerRef;
+
 
 	UPROPERTY( ReplicatedUsing= OnRep_CurrentTargetCharacter,VisibleAnywhere,BlueprintReadWrite)
 	ATx_Base_Character* CurrentTargetCharacter = nullptr;
@@ -86,6 +91,9 @@ public:
 
 
 	UFUNCTION(BlueprintCallable)
+	FORCEINLINE void SetOwningPlayerBaseRef(ATx_PlayerCamera* BaseCharacterOwner) { OwningPlayerRef = BaseCharacterOwner;};
+	
+	UFUNCTION(BlueprintCallable)
 	void TryHookAbility();
 	
 	UFUNCTION(BlueprintCallable,Category="Character Base")
@@ -110,7 +118,7 @@ public:
 	FORCEINLINE ATx_Base_AICharacterCtr* GetAiController( ) { return AIControllerReference ; }
 
 	UFUNCTION(BlueprintCallable)
-	FORCEINLINE void SetCurrentCharacterState(CharacterState NewState){ CurrentCharacterState = NewState; }
+	void SetCurrentCharacterState(CharacterState NewState);
 
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE ATx_Base_Character* GetCurrentActorTarget() const {return CurrentTargetCharacter;}
