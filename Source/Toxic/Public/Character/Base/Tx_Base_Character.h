@@ -107,7 +107,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	float GetDistanceToTargetCharacter() const ;
-	
+
+
+
 	
 	/////// Setter And Getters///////////
 	

@@ -22,6 +22,9 @@ public:
 
 	UPROPERTY(BlueprintReadOnly)
 	ATx_PlayerCtr* PlayerCtr;
+	
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	ControllerType CurrentCtrType = ControllerType::Ct_Normal;
 
 protected:
 	// Called when the game starts or when spawned
@@ -54,7 +57,7 @@ protected:
 	UTx_GameInstace* GameInstanceRef;
 	
 
-
+	
 	UFUNCTION(BlueprintCallable)
 	void InitSetUp();
 
@@ -81,9 +84,14 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetOwningCharacterAbilityConfirm() const ;
 
-	UFUNCTION(BlueprintCallable)
-	void SetPlayerCtrNewMode(ControllerType NewType) const;
 
+
+
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE void SetCtrControllerMode(ControllerType NewType){CurrentCtrType = NewType;}
+
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE ControllerType GetCtrControllerMode() const { return CurrentCtrType;}
 	
 	FORCEINLINE UCameraComponent* GetTopDownCameraComponent() const { return TopDownCameraComponent; }
 	

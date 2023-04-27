@@ -46,13 +46,11 @@ public:
 	UInputAction* SetAbilitySlot1;
 
 
-	UFUNCTION(BlueprintCallable)
-	FORCEINLINE void SetCtrControllerMode(ControllerType NewType){CurrentCtrType = NewType;}
+
 	
 protected:
 
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	ControllerType CurrentCtrType = ControllerType::Ct_Normal;
+
 	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Player Controller")
 	float ScreenSafeZoneValue;
@@ -130,16 +128,17 @@ protected:
 
 	virtual void OnPossess(APawn* InPawn) override;
 
-
 	
 	///RPC//////
-
-
+	
 	UFUNCTION(Server,Reliable)
 	void ServerMoveCharacterToTargetActor( ATx_Base_Character* NewTargetCharacter) ;
 	
 	UFUNCTION(Server,Reliable)
 	void ServerMoveOwningCharacter(const FVector TargetLocation);
+
+	UFUNCTION(Server,Reliable)
+	void ServerActivateAbilitySlot(int32 Slot = 0) const;
 
 	UFUNCTION(Server,Reliable)
 	void ServerConfirmTargetAbility();

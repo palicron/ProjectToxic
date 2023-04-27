@@ -160,6 +160,8 @@ float ATx_Base_Character::GetDistanceToTargetCharacter() const
 
 void ATx_Base_Character::SetCurrentCharacterState(CharacterState NewState)
 {
+	if(CurrentCharacterState==NewState) return;
+	
 	 CurrentCharacterState = NewState;
 	
 	 switch (NewState)
@@ -171,14 +173,14 @@ void ATx_Base_Character::SetCurrentCharacterState(CharacterState NewState)
 	 case CharacterState::Cs_Stunned:
 	 	if(OwningPlayerRef)
 	 	{
-	 		OwningPlayerRef->SetPlayerCtrNewMode(ControllerType::Ct_Normal);
+	 		OwningPlayerRef->SetCtrControllerMode(ControllerType::Ct_Normal);
 	 	}
 	 case CharacterState::Cs_Dead: break;
 	 case CharacterState::Cs_Channeling: break;
 	 case CharacterState::Cs_Targeting:
 	 	if(OwningPlayerRef)
 	 	{
-	 		OwningPlayerRef->SetPlayerCtrNewMode(ControllerType::Ct_Targeting);
+	 		OwningPlayerRef->SetCtrControllerMode(ControllerType::Ct_Targeting);
 	 	}
 		
 	 	break;

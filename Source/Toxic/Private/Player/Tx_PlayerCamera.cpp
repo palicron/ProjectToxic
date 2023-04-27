@@ -143,13 +143,6 @@ void ATx_PlayerCamera::SetOwningCharacterAbilityConfirm() const
 	}
 }
 
-void ATx_PlayerCamera::SetPlayerCtrNewMode(ControllerType NewType) const
-{
-	if(IsValid(PlayerCtr))
-	{
-		PlayerCtr->SetCtrControllerMode(NewType);
-	}
-}
 
 void ATx_PlayerCamera::SpawnOwningCharacter()
 {

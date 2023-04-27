@@ -34,10 +34,10 @@ void ATx_PlayerCtr::BeginPlay()
 	
 }
 
-
 void ATx_PlayerCtr::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	
 	
 }
 
@@ -58,7 +58,7 @@ void ATx_PlayerCtr::SetupInputComponent()
 
 void ATx_PlayerCtr::OnClickEnd()
 {
-	if(CurrentCtrType == ControllerType::Ct_Normal)
+	if(ControllerPlayer->GetCtrControllerMode() == ControllerType::Ct_Normal)
 	{
 
 	FHitResult Hit;
@@ -86,7 +86,7 @@ void ATx_PlayerCtr::OnClickEnd()
 	}
 		
 	}
-	else if(CurrentCtrType == ControllerType::Ct_Targeting)
+	else if(ControllerPlayer->GetCtrControllerMode() == ControllerType::Ct_Targeting)
 	{
 		ServerConfirmTargetAbility();
 	}
@@ -115,12 +115,7 @@ void ATx_PlayerCtr::OnFocusTrigger()
 
 void ATx_PlayerCtr::ActiveAbilitySlot1()
 {
-
-	if(ControllerPlayer && ControllerPlayer->GetOwningCharacter())
-	{
-		
-		ControllerPlayer->GetOwningCharacter()->TryHookAbility();
-	}
+	ServerActivateAbilitySlot();
 }
 
 
@@ -170,6 +165,7 @@ void ATx_PlayerCtr::UpdateMousePosition()
 {
 	GetMousePosition(CurrentMousePosition.X,CurrentMousePosition.Y);
 }
+
 
 
 bool ATx_PlayerCtr::CheckMouseOnTheEdge()
@@ -237,9 +233,7 @@ void ATx_PlayerCtr::MoveCameraToOwnCharacter()
 			ControllerPlayer->GetMovementComponent()->StopMovementImmediately();
 			ControllerPlayer->SetActorLocation(ControllerPlayer->GetOwningCharacter()->GetActorLocation());
 		}
-	 
 	}
-
 		bCanFocusOwnedCharacter = true;
 		bCanPlayerMoveCamera = true;
 		bOngoingFocusDistance = false;
@@ -293,6 +287,14 @@ void ATx_PlayerCtr::ServerConfirmTargetAbility_Implementation()
 	if( IsValid(ControllerPlayer) &&  ControllerPlayer->GetOwningCharacter())
 	{
 		ControllerPlayer->GetOwningCharacter()->ConfirmTargetAbility();
+	}
+}
+
+void ATx_PlayerCtr::ServerActivateAbilitySlot_Implementation(int32 Slot) const
+{
+	if(ControllerPlayer && ControllerPlayer->GetOwningCharacter())
+	{
+		ControllerPlayer->GetOwningCharacter()->TryHookAbility();
 	}
 }
 
