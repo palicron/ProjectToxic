@@ -27,7 +27,6 @@ public:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	FVector2D CurrentScreenSize;
-
 	
 	UFUNCTION(BlueprintCallable)
 	void UpdateMousePosition();
@@ -37,20 +36,20 @@ public:
 	class UInputAction* SetDestinationClickAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
-	 UInputAction* SetFocusActionInput;
+	UInputAction* SetFocusActionInput;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
-	 UInputAction* SetCancelAbilityInput;
+	UInputAction* SetCancelAbilityInput;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	UInputAction* SetAbilitySlot1;
-
+	
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE ATx_PlayerCamera* GetControllerPLayer() {return ControllerPlayer;}
 
 
 	
 protected:
-
-
 	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Player Controller")
 	float ScreenSafeZoneValue;
@@ -131,17 +130,19 @@ protected:
 	
 	///RPC//////
 	
+
+	
 	UFUNCTION(Server,Reliable)
 	void ServerMoveCharacterToTargetActor( ATx_Base_Character* NewTargetCharacter) ;
 	
 	UFUNCTION(Server,Reliable)
 	void ServerMoveOwningCharacter(const FVector TargetLocation);
-
+	
 	UFUNCTION(Server,Reliable)
 	void ServerActivateAbilitySlot(int32 Slot = 0) const;
 
 	UFUNCTION(Server,Reliable)
-	void ServerConfirmTargetAbility();
+	void ServerConfirmTargetAbility(FVector Target);
 	
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 

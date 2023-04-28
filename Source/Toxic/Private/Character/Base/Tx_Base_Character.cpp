@@ -39,6 +39,7 @@ void ATx_Base_Character::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& O
 
 	DOREPLIFETIME(ATx_Base_Character,CurrentTargetCharacter);
 	DOREPLIFETIME(ATx_Base_Character,CurrentCharacterState);
+	DOREPLIFETIME_CONDITION(ATx_Base_Character,LastClickTarget,COND_OwnerOnly);
 }
 
 
@@ -57,8 +58,7 @@ void ATx_Base_Character::CheckDistanceToAttack()
 	const UWorld* WorldRef =  GetWorld();
 	if(WorldRef && HasAuthority())
 	{
-		if(GEngine)
-			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Set timer de ataque"));	
+		
 		WorldRef->GetTimerManager().SetTimer(MeleeAttackHandle,this ,
 				&ATx_Base_Character::TryToAttackTarget,.01f,true);	
 	}
@@ -81,11 +81,11 @@ void ATx_Base_Character::StopAllActionByPlayer()
 	}
 
 	
-	
 }
 
 void ATx_Base_Character::ConfirmTargetAbility()
 {
+
 	if(HasAuthority() && IsValid(AbilitySystemComp))
 	{
 		AbilitySystemComp->TargetConfirm();
@@ -188,7 +188,13 @@ void ATx_Base_Character::SetCurrentCharacterState(CharacterState NewState)
 	 }
 
 	
+}
+
+void ATx_Base_Character::ServerTraceToObjective(FVector ClickPOsition)
+{
+	DrawDebugSphere(GetWorld(),ClickPOsition,50.f,16,FColor::Red,true,10.f);
 	
+	BP_SendEvent(ClickPOsition);
 }
 
 void ATx_Base_Character::OnRep_CharacterState(CharacterState LastState)
@@ -199,8 +205,6 @@ void ATx_Base_Character::OnRep_CharacterState(CharacterState LastState)
 	{
 		if(IsValid(CurrentTargetCharacter))
 		{
-			if(GEngine)
-				GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Green, TEXT("ON rep Stats"));
 	
 		}
 	}
@@ -217,6 +221,7 @@ void ATx_Base_Character::PossessedBy(AController* NewController)
 
 void ATx_Base_Character::AcquireAbility(TSubclassOf<UGameplayAbility> AbilityToAcquire)
 {
+
 	if(IsValid(AbilitySystemComp))
 	{
 		if(HasAuthority() && AbilityToAcquire)

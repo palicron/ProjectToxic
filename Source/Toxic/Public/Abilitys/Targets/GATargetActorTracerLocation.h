@@ -12,10 +12,19 @@
 UCLASS()
 class TOXIC_API AGATargetActorTracerLocation : public AGameplayAbilityTargetActor
 {
+	
 	GENERATED_BODY()
 
 
 protected:
+
+	AGATargetActorTracerLocation();
+
+	UPROPERTY(ReplicatedUsing=OnRep_CurrenTargetData)
+	FGameplayAbilityTargetDataHandle CurrentTargetData;
+
+	UFUNCTION()
+	void OnRep_CurrenTargetData();
 	
 	virtual void StartTargeting(UGameplayAbility* Ability) override;
 
@@ -25,5 +34,8 @@ protected:
 
 	UPROPERTY()
 	TWeakObjectPtr<UGameplayAbility> CurrentAbility;
+
+
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	
 };

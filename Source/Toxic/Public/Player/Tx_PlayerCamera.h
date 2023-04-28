@@ -23,10 +23,19 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 	ATx_PlayerCtr* PlayerCtr;
 	
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	UPROPERTY(ReplicatedUsing=OnRep_ControllerType, EditAnywhere,BlueprintReadWrite)
 	ControllerType CurrentCtrType = ControllerType::Ct_Normal;
 
+    FVector LAsCLickTest;
+	UFUNCTION(Server,Reliable)
+	void setTestdEtes(FVector coso);
+
 protected:
+
+	
+	UFUNCTION()
+	void OnRep_LastCLickTarget();
+	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
@@ -49,6 +58,9 @@ protected:
 	TSubclassOf<AActor> SpawnEffect;
 	UFUNCTION()
 	void OnRep_OwningCharacterRef();
+
+	UFUNCTION()
+	void OnRep_ControllerType();
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
 	ATx_Base_Character* CurrentSelectedCharacter;
@@ -84,9 +96,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetOwningCharacterAbilityConfirm() const ;
 
-
-
-
+	
+	UFUNCTION(Server,Reliable)
+	void ServerLastClickTarget(FVector_NetQuantize newLocation);
+	
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void SetCtrControllerMode(ControllerType NewType){CurrentCtrType = NewType;}
 

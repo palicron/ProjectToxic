@@ -37,7 +37,15 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	ATx_PlayerCamera* OwningPlayerRef;
 
+	UPROPERTY(Replicated, EditAnywhere,BlueprintReadWrite)
+	FVector_NetQuantize LastClickTarget;
 	
+	
+	void ServerTraceToObjective(FVector ClickPOsition);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void BP_SendEvent(FVector vector);
+
 protected:
 	
 	UPROPERTY( ReplicatedUsing = OnRep_CharacterState, EditAnywhere,BlueprintReadWrite,Category="Player State")

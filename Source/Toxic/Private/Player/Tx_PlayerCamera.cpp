@@ -52,8 +52,32 @@ void ATx_PlayerCamera::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	
 	DOREPLIFETIME_CONDITION(ATx_PlayerCamera,OwningCharacterRef,COND_OwnerOnly);
+	DOREPLIFETIME_CONDITION(ATx_PlayerCamera,CurrentCtrType,COND_OwnerOnly);
+	
+	
 }
 
+
+
+void ATx_PlayerCamera::ServerLastClickTarget_Implementation(FVector_NetQuantize newLocation)
+{
+}
+
+void ATx_PlayerCamera::setTestdEtes_Implementation(FVector coso)
+{
+
+	LAsCLickTest = coso;
+	/*if(OwningCharacterRef)
+	{
+		OwningCharacterRef->ServerTraceToObjective(coso);
+	}*/
+}
+
+void ATx_PlayerCamera::OnRep_LastCLickTarget()
+{
+	if(GEngine)
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("adasdasds asdasdsad asdasdsa"));
+}
 
 void ATx_PlayerCamera::BeginPlay()
 {
@@ -62,8 +86,6 @@ void ATx_PlayerCamera::BeginPlay()
 	InitSetUp();
 	SpawnOwningCharacter();
 }
-
-
 
 
 void ATx_PlayerCamera::InitSetUp()
@@ -87,6 +109,17 @@ void ATx_PlayerCamera::OnRep_OwningCharacterRef()
 	FString::Printf(TEXT("Change state asdasd : x: %s"),*this->GetName() ));
 		
 		CurrentSelectedCharacter = OwningCharacterRef;
+	}
+	
+}
+
+void ATx_PlayerCamera::OnRep_ControllerType()
+{
+
+	if(!HasAuthority())
+	{
+		if(GEngine)
+			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Some debug message!"));	
 	}
 	
 }

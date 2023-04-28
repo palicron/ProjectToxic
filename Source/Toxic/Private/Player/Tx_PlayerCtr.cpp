@@ -7,6 +7,7 @@
 #include "InputMappingContext.h"
 #include "NiagaraFunctionLibrary.h"
 #include "Character/Base/Tx_Base_Character.h"
+#include "Core/Tx_PlayerStateBase.h"
 #include "Player/Tx_PlayerCamera.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/PawnMovementComponent.h"
@@ -76,6 +77,7 @@ void ATx_PlayerCtr::OnClickEnd()
 		
 		if(IsValid(RayHitCharacter))
 		{
+			
 			ServerMoveCharacterToTargetActor(RayHitCharacter);
 		}
 		else
@@ -88,7 +90,12 @@ void ATx_PlayerCtr::OnClickEnd()
 	}
 	else if(ControllerPlayer->GetCtrControllerMode() == ControllerType::Ct_Targeting)
 	{
-		ServerConfirmTargetAbility();
+		FHitResult Hit;
+		GetHitResultUnderCursor(ECollisionChannel::ECC_GameTraceChannel1, true, Hit);
+		
+		ControllerPlayer->setTestdEtes(Hit.Location);
+		
+		ServerConfirmTargetAbility(Hit.Location);
 	}
 }
 
@@ -115,6 +122,7 @@ void ATx_PlayerCtr::OnFocusTrigger()
 
 void ATx_PlayerCtr::ActiveAbilitySlot1()
 {
+
 	ServerActivateAbilitySlot();
 }
 
@@ -129,6 +137,10 @@ void ATx_PlayerCtr::OnPossess(APawn* InPawn)
 	}
 }
 
+void ATx_PlayerCtr::ActivateAbilitySlot(int32 Slot) const
+{
+	
+}
 
 
 void ATx_PlayerCtr::Tick(float DeltaSeconds)
@@ -282,7 +294,7 @@ void ATx_PlayerCtr::ServerMoveCharacterToTargetActor_Implementation(ATx_Base_Cha
 	}
 }
 
-void ATx_PlayerCtr::ServerConfirmTargetAbility_Implementation()
+void ATx_PlayerCtr::ServerConfirmTargetAbility_Implementation(FVector Target)
 {
 	if( IsValid(ControllerPlayer) &&  ControllerPlayer->GetOwningCharacter())
 	{
