@@ -245,3 +245,9 @@ void ATx_Base_Character::OnRep_CurrentTargetCharacter(ATx_Base_Character* LastTa
 		CheckDistanceToAttack();
 	}
 }
+
+
+void ATx_Base_Character::OnTargetLocationConfirm(FVector& TargetLocation)
+{
+	OnTargetConfirmLocationDelegate.Broadcast(TargetLocation);
+}

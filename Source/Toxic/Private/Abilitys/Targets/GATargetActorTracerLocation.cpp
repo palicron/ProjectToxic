@@ -23,59 +23,55 @@ void AGATargetActorTracerLocation::StartTargeting(UGameplayAbility* Ability)
 
 	CurrentAbility  = Ability;
 
-	ATx_Base_Character* CurrentActor =  Cast<ATx_Base_Character>(Ability->GetOwningActorFromActorInfo());
+	CurrentActor =  Cast<ATx_Base_Character>(Ability->GetOwningActorFromActorInfo());
 
 	if(IsValid(CurrentActor))
 	{
+		CurrentActor->OnTargetConfirmLocationDelegate.AddDynamic(this,&AGATargetActorTracerLocation::AGATargetActorTracerLocation::ConfirmTargetLocation);
+		
 		PrimaryPC = Cast<APlayerController>(CurrentActor->OwningPlayerRef->PlayerCtr);
-	}
-	
-}
 
-void AGATargetActorTracerLocation::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	
-	DOREPLIFETIME_CONDITION(AGATargetActorTracerLocation,CurrentTargetData,COND_OwnerOnly);
+	}
 	
 }
 
 void AGATargetActorTracerLocation::ConfirmTargetingAndContinue()
 {
-	if(IsValid(PrimaryPC))
-	{
+
 		FHitResult Hit;
 
-		FVector LocationToUse = Cast<ATx_PlayerCtr>(PrimaryPC)->GetControllerPLayer()->LAsCLickTest;
+		Hit.bBlockingHit = true;
 
-		if(GEngine)
-			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red,
-				FString::Printf(TEXT("(World delta for current frame equals %ls)"),
-					*LocationToUse.ToString()));
+		Hit.Location = TargetLocation;
 		
-		PrimaryPC->GetHitResultUnderCursor(ECollisionChannel::ECC_GameTraceChannel1,true, Hit);
-
-		Hit.Location = LocationToUse;
 		CurrentTargetData = StartLocation.MakeTargetDataHandleFromHitResult(CurrentAbility,Hit);
 		
-		
 		TargetDataReadyDelegate.Broadcast(CurrentTargetData);	
-		
-	}
-	
+
 }
 
 
-void AGATargetActorTracerLocation::OnRep_CurrenTargetData()
-{
-	if(GEngine)
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Green, TEXT("ON sssssssssssssssss Stats"));
-	TargetDataReadyDelegate.Broadcast(CurrentTargetData);	
-}
 
 void AGATargetActorTracerLocation::CancelTargeting()
 {
 	Super::CancelTargeting();
+}
+
+void AGATargetActorTracerLocation::ConfirmTargetLocation(FVector& NewTargetLocation)
+{
+	TargetLocation = NewTargetLocation;
+
+	if(GEngine)
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Cyan,
+			FString::Printf(TEXT("Target DAta %s"), *TargetLocation.ToString()));
+	
+	if(IsValid(CurrentActor))
+	{
+		CurrentActor->OnTargetConfirmLocationDelegate.RemoveDynamic(this,&AGATargetActorTracerLocation::AGATargetActorTracerLocation::ConfirmTargetLocation);
+	}
+	
+	ConfirmTargetingAndContinue();
+	
 }
 
 

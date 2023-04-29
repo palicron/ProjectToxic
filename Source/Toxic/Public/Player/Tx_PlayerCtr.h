@@ -128,9 +128,12 @@ protected:
 	virtual void OnPossess(APawn* InPawn) override;
 
 	
-	///RPC//////
-	
+	/// CAll to RPC/////
 
+	UFUNCTION(BlueprintCallable)
+	void ConfirmTargetLocation(FVector& SelectedLocation);
+	
+	///RPC//////
 	
 	UFUNCTION(Server,Reliable)
 	void ServerMoveCharacterToTargetActor( ATx_Base_Character* NewTargetCharacter) ;
@@ -140,9 +143,6 @@ protected:
 	
 	UFUNCTION(Server,Reliable)
 	void ServerActivateAbilitySlot(int32 Slot = 0) const;
-
-	UFUNCTION(Server,Reliable)
-	void ServerConfirmTargetAbility(FVector Target);
 	
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 

@@ -27,8 +27,7 @@ public:
 	ControllerType CurrentCtrType = ControllerType::Ct_Normal;
 
     FVector LAsCLickTest;
-	UFUNCTION(Server,Reliable)
-	void setTestdEtes(FVector coso);
+
 
 protected:
 
@@ -68,8 +67,6 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 	UTx_GameInstace* GameInstanceRef;
 	
-
-	
 	UFUNCTION(BlueprintCallable)
 	void InitSetUp();
 
@@ -95,6 +92,12 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetOwningCharacterAbilityConfirm() const ;
+
+
+	//RPCS//
+	
+	UFUNCTION(Server,Reliable)
+	void ServerSetTargetConfirmLocation(FVector NewTarget);
 
 	
 	UFUNCTION(Server,Reliable)

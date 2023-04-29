@@ -14,6 +14,7 @@ class ATx_Base_AICharacterCtr;
 class ATx_PlayerCamera;
 
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnTargetConfirLocation,FVector&, NewLocation);
 UCLASS()
 class TOXIC_API ATx_Base_Character : public ACharacter, public IAbilitySystemInterface
 {
@@ -39,13 +40,16 @@ public:
 
 	UPROPERTY(Replicated, EditAnywhere,BlueprintReadWrite)
 	FVector_NetQuantize LastClickTarget;
-	
+
+	UPROPERTY(BlueprintAssignable)
+	FOnTargetConfirLocation OnTargetConfirmLocationDelegate;
 	
 	void ServerTraceToObjective(FVector ClickPOsition);
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_SendEvent(FVector vector);
 
+	
 protected:
 	
 	UPROPERTY( ReplicatedUsing = OnRep_CharacterState, EditAnywhere,BlueprintReadWrite,Category="Player State")
@@ -117,6 +121,10 @@ public:
 	float GetDistanceToTargetCharacter() const ;
 
 
+	////Targeting funtions////
+
+	UFUNCTION(BlueprintCallable)
+	void OnTargetLocationConfirm(FVector& TargetLocation);
 
 	
 	/////// Setter And Getters///////////

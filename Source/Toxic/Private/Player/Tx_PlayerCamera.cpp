@@ -63,16 +63,6 @@ void ATx_PlayerCamera::ServerLastClickTarget_Implementation(FVector_NetQuantize 
 {
 }
 
-void ATx_PlayerCamera::setTestdEtes_Implementation(FVector coso)
-{
-
-	LAsCLickTest = coso;
-	/*if(OwningCharacterRef)
-	{
-		OwningCharacterRef->ServerTraceToObjective(coso);
-	}*/
-}
-
 void ATx_PlayerCamera::OnRep_LastCLickTarget()
 {
 	if(GEngine)
@@ -176,7 +166,6 @@ void ATx_PlayerCamera::SetOwningCharacterAbilityConfirm() const
 	}
 }
 
-
 void ATx_PlayerCamera::SpawnOwningCharacter()
 {
 	if(HasAuthority() && IsValid(OwningCharacterToSpawn))
@@ -188,6 +177,14 @@ void ATx_PlayerCamera::SpawnOwningCharacter()
 		CurrentSelectedCharacter = OwningCharacterRef;
 		
 		OwningCharacterRef->SetOwningPlayerBaseRef(this);
+	}
+}
+
+void ATx_PlayerCamera::ServerSetTargetConfirmLocation_Implementation(FVector NewTarget)
+{
+	if(HasAuthority() && IsValid(OwningCharacterRef))
+	{
+		OwningCharacterRef->OnTargetLocationConfirm(NewTarget);
 	}
 }
 

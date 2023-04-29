@@ -6,6 +6,8 @@
 #include "Abilities/GameplayAbilityTargetActor.h"
 #include "GATargetActorTracerLocation.generated.h"
 
+
+class ATx_Base_Character;
 /**
  * 
  */
@@ -20,22 +22,25 @@ protected:
 
 	AGATargetActorTracerLocation();
 
-	UPROPERTY(ReplicatedUsing=OnRep_CurrenTargetData)
+	UPROPERTY()
 	FGameplayAbilityTargetDataHandle CurrentTargetData;
-
-	UFUNCTION()
-	void OnRep_CurrenTargetData();
 	
 	virtual void StartTargeting(UGameplayAbility* Ability) override;
 
 	virtual void ConfirmTargetingAndContinue() override;
 
 	virtual void CancelTargeting() override;
-
+	
+	UPROPERTY()
+	ATx_Base_Character* CurrentActor;
+	
 	UPROPERTY()
 	TWeakObjectPtr<UGameplayAbility> CurrentAbility;
 
-
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	UPROPERTY()
+	FVector TargetLocation;
+	
+	UFUNCTION()
+	void ConfirmTargetLocation(FVector& NewTargetLocation);
 	
 };

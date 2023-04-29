@@ -61,41 +61,38 @@ void ATx_PlayerCtr::OnClickEnd()
 {
 	if(ControllerPlayer->GetCtrControllerMode() == ControllerType::Ct_Normal)
 	{
-
 	FHitResult Hit;
 	
-	if (GetHitResultUnderCursor(ECollisionChannel::ECC_GameTraceChannel1, true, Hit)
-		&& IsValid(ControllerPlayer) && bCanPlayerMoveCamera)
-	{
-		ATx_Base_Character* RayHitCharacter = Cast<ATx_Base_Character>(Hit.GetActor());
+		if (GetHitResultUnderCursor(ECollisionChannel::ECC_GameTraceChannel1, true, Hit)
+			&& IsValid(ControllerPlayer) && bCanPlayerMoveCamera)
+		{
+			ATx_Base_Character* RayHitCharacter = Cast<ATx_Base_Character>(Hit.GetActor());
 
-		if(IsValid(FXCursor) && !HasAuthority())
-		{
-			UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, FXCursor, Hit.Location,
-		FRotator::ZeroRotator, FVector(1.f, 1.f, 1.f), true, true, ENCPoolMethod::None, true);
-		}
+			if(IsValid(FXCursor) && !HasAuthority())
+			{
+				UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, FXCursor, Hit.Location,
+			FRotator::ZeroRotator, FVector(1.f, 1.f, 1.f), true, true, ENCPoolMethod::None, true);
+			}
 		
-		if(IsValid(RayHitCharacter))
-		{
-			
-			ServerMoveCharacterToTargetActor(RayHitCharacter);
-		}
-		else
-		{
-			ServerMoveOwningCharacter(Hit.Location);
-		}
+			if(IsValid(RayHitCharacter))
+			{
+				ServerMoveCharacterToTargetActor(RayHitCharacter);
+			}
+			else
+			{
+				ServerMoveOwningCharacter(Hit.Location);
+			}
 		
-	}
-		
+		}
 	}
 	else if(ControllerPlayer->GetCtrControllerMode() == ControllerType::Ct_Targeting)
 	{
 		FHitResult Hit;
+		
 		GetHitResultUnderCursor(ECollisionChannel::ECC_GameTraceChannel1, true, Hit);
 		
-		ControllerPlayer->setTestdEtes(Hit.Location);
+		ConfirmTargetLocation(Hit.Location);
 		
-		ServerConfirmTargetAbility(Hit.Location);
 	}
 }
 
@@ -137,10 +134,6 @@ void ATx_PlayerCtr::OnPossess(APawn* InPawn)
 	}
 }
 
-void ATx_PlayerCtr::ActivateAbilitySlot(int32 Slot) const
-{
-	
-}
 
 
 void ATx_PlayerCtr::Tick(float DeltaSeconds)
@@ -294,19 +287,20 @@ void ATx_PlayerCtr::ServerMoveCharacterToTargetActor_Implementation(ATx_Base_Cha
 	}
 }
 
-void ATx_PlayerCtr::ServerConfirmTargetAbility_Implementation(FVector Target)
-{
-	if( IsValid(ControllerPlayer) &&  ControllerPlayer->GetOwningCharacter())
-	{
-		ControllerPlayer->GetOwningCharacter()->ConfirmTargetAbility();
-	}
-}
+
 
 void ATx_PlayerCtr::ServerActivateAbilitySlot_Implementation(int32 Slot) const
 {
 	if(ControllerPlayer && ControllerPlayer->GetOwningCharacter())
 	{
 		ControllerPlayer->GetOwningCharacter()->TryHookAbility();
+	}
+}
+void ATx_PlayerCtr::ConfirmTargetLocation(FVector& SelectedLocation)
+{
+	if(IsValid(ControllerPlayer))
+	{
+		ControllerPlayer->ServerSetTargetConfirmLocation(SelectedLocation);
 	}
 }
 
