@@ -30,7 +30,7 @@ void ATx_Base_AICharacterCtr::OnMoveCompleted(FAIRequestID RequestID, const FPat
 
 	if(IsValid(ControlledCharacterRef) && HasAuthority())
 	{
-		//ControlledCharacterRef->SetCurrentCharacterState(CharacterState::Cs_Idle);
+		ControlledCharacterRef->SetCurrentCharacterState(CharacterState::Cs_Idle);
 	}
 	
 }

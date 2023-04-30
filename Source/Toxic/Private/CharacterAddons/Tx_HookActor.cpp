@@ -33,16 +33,22 @@ void ATx_HookActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	HookSpawnLocation = GetActorLocation();
+
+	//HookSpawnLocation = GetActorLocation();
+
+	if(HasAuthority())
+	{
+		FVector Forward = GetActorForwardVector();
+		Forward.Z = 0;
+		if(GetInstigator())
+		{
+		HookSpawnLocation = GetActorLocation() + (GetInstigator()->GetActorForwardVector() * 20.f);
+		}
 
 	HookSpeed = MovementComponent->InitialSpeed;
-
 	MovementComponent->Velocity = GetActorForwardVector() * HookSpeed;
 
-	//FVector HookPosition = ( GetActorLocation()	+ (GetActorForwardVector()* HookRange));
-
-	
-	
+	}
 }
 
 // Called every frame

@@ -163,30 +163,37 @@ void ATx_Base_Character::SetCurrentCharacterState(CharacterState NewState)
 	if(CurrentCharacterState==NewState) return;
 	
 	 CurrentCharacterState = NewState;
-	
+	if(OwningPlayerRef)
+	{
+		
+
 	 switch (NewState)
 	 {
-	 case CharacterState::Cs_Idle: 
-	 case CharacterState::Cs_MovingToLocation: 
-	 case CharacterState::Cs_MovingToTarget: 
-	 case CharacterState::Cs_Attacking: 
+	 case CharacterState::Cs_Idle:
+	 	OwningPlayerRef->SetCtrControllerMode(ControllerType::Ct_Normal);
+	 	break;
+	 case CharacterState::Cs_MovingToLocation:
+	 	OwningPlayerRef->SetCtrControllerMode(ControllerType::Ct_Normal);
+	 	break;
+	 case CharacterState::Cs_MovingToTarget:
+	 	OwningPlayerRef->SetCtrControllerMode(ControllerType::Ct_Normal);
+	 	break;
+	 case CharacterState::Cs_Attacking:
+	 	OwningPlayerRef->SetCtrControllerMode(ControllerType::Ct_Normal);
+	 	break;
 	 case CharacterState::Cs_Stunned:
-	 	if(OwningPlayerRef)
-	 	{
-	 		OwningPlayerRef->SetCtrControllerMode(ControllerType::Ct_Normal);
-	 	}
+	 	OwningPlayerRef->SetCtrControllerMode(ControllerType::Ct_DisableMovement);
+	 	break;
 	 case CharacterState::Cs_Dead: break;
-	 case CharacterState::Cs_Channeling: break;
+	 case CharacterState::Cs_Channeling:
+	 	OwningPlayerRef->SetCtrControllerMode(ControllerType::Ct_DisableMovement);
+	 	break;
 	 case CharacterState::Cs_Targeting:
-	 	if(OwningPlayerRef)
-	 	{
-	 		OwningPlayerRef->SetCtrControllerMode(ControllerType::Ct_Targeting);
-	 	}
-		
+	 	OwningPlayerRef->SetCtrControllerMode(ControllerType::Ct_Targeting);
 	 	break;
 	 default: ;
 	 }
-
+	}
 	
 }
 

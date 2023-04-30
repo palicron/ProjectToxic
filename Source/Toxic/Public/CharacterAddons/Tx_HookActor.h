@@ -62,7 +62,7 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_MaxRangeHook();
 
-	UFUNCTION(BlueprintImplementableEvent)
+	UFUNCTION(BlueprintImplementableEvent,BlueprintCallable)
 	void BP_EndLine() ;
 
 	UFUNCTION(BlueprintCallable)

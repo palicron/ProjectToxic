@@ -38,8 +38,6 @@ void ATx_PlayerCtr::BeginPlay()
 void ATx_PlayerCtr::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	
-	
 }
 
 
@@ -59,7 +57,8 @@ void ATx_PlayerCtr::SetupInputComponent()
 
 void ATx_PlayerCtr::OnClickEnd()
 {
-	if(ControllerPlayer->GetCtrControllerMode() == ControllerType::Ct_Normal)
+	if(ControllerPlayer->GetCtrControllerMode() == ControllerType::Ct_Normal &&
+		ControllerPlayer->GetCtrControllerMode() != ControllerType::Ct_DisableMovement)
 	{
 	FHitResult Hit;
 	
@@ -73,7 +72,7 @@ void ATx_PlayerCtr::OnClickEnd()
 				UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, FXCursor, Hit.Location,
 			FRotator::ZeroRotator, FVector(1.f, 1.f, 1.f), true, true, ENCPoolMethod::None, true);
 			}
-		
+			
 			if(IsValid(RayHitCharacter))
 			{
 				ServerMoveCharacterToTargetActor(RayHitCharacter);
@@ -286,8 +285,6 @@ void ATx_PlayerCtr::ServerMoveCharacterToTargetActor_Implementation(ATx_Base_Cha
 		ControllerPlayer->MoveOwnedCharacterToLocation(NewTargetCharacter);
 	}
 }
-
-
 
 void ATx_PlayerCtr::ServerActivateAbilitySlot_Implementation(int32 Slot) const
 {

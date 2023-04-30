@@ -18,7 +18,8 @@ UENUM(BlueprintType)
 enum class  ControllerType: uint8
 {
 	Ct_Normal UMETA(DisplayName = "normal"),
-	Ct_Targeting UMETA(DisplayName = "Targeting")
+	Ct_Targeting UMETA(DisplayName = "Targeting"),
+	Ct_DisableMovement UMETA(DisplayName = "Disalbe Movement")
 };
 
 UENUM(BlueprintType)
