@@ -263,9 +263,11 @@ void ATx_PlayerCtr::SetUpInitValues()
 	
 		SetShowMouseCursor(true);
 		
-		const FInputModeGameAndUI InputType ;
+		FInputModeGameAndUI InputMode;
+		InputMode.SetHideCursorDuringCapture(false);
+		SetInputMode(InputMode);
 		
-		SetInputMode(InputType);
+		
 	}
 }
 

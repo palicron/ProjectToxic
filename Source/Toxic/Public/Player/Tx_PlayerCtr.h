@@ -126,7 +126,6 @@ protected:
 	FORCEINLINE void ResetOnFocusFlag() {bCanFocusOwnedCharacter = true;};
 
 	virtual void OnPossess(APawn* InPawn) override;
-
 	
 	/// CAll to RPC/////
 
