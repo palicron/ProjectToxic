@@ -3,10 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
 #include "GameFramework/Character.h"
 #include "AbilitySystemInterface.h"
 #include "Toxic/PlayerDefinitions.h"
+#include "GameplayEffectTypes.h"
+#include "AttributeSet.h"
 #include "Tx_Base_Character.generated.h"
+
 
 class UGameplayAbility_Base;
 class UBaseAttributeSetBase;
@@ -99,9 +103,14 @@ protected:
 	
 	virtual void PossessedBy(AController* NewController) override;
 
+	virtual void OnHealthChange(const FOnAttributeChangeData &  Data);
+	
+	UFUNCTION(BlueprintImplementableEvent)
+	void BP_OnHealthChange(float NewValue);
+
+
 public:
-
-
+	
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void SetOwningPlayerBaseRef(ATx_PlayerCamera* BaseCharacterOwner) { OwningPlayerRef = BaseCharacterOwner;};
 	
@@ -126,7 +135,16 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void OnTargetLocationConfirm(FVector& TargetLocation);
 
+
+	/////UI Changes////
 	
+	
+
+
+	
+
+	
+
 	/////// Setter And Getters///////////
 	
 	UFUNCTION(BlueprintCallable)

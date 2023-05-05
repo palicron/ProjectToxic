@@ -4,10 +4,15 @@
 #include "Abilitys/Stats/BaseAttributeSetBase.h"
 #include "GameplayEffectExtension.h"
 #include "GameplayEffectTypes.h"
+#include "Net/UnrealNetwork.h"
+
 UBaseAttributeSetBase::UBaseAttributeSetBase():Health(100.f)
 {
 	MaxHealth = Health;
 }
+
+
+
 
 void UBaseAttributeSetBase::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
 {
@@ -21,6 +26,18 @@ void UBaseAttributeSetBase::PostGameplayEffectExecute(const FGameplayEffectModCa
 		Health.SetBaseValue(FMath::Clamp(Health.GetBaseValue(),0.f,MaxHealth.GetCurrentValue()));
 		UE_LOG(LogTemp,Warning,TEXT("DAmage take healt %f"),Health.GetCurrentValue());
 		
-		OnHealthChange.Broadcast(Health.GetCurrentValue(),MaxHealth.GetCurrentValue());
+		//OnHealthChange.Broadcast(Health.GetCurrentValue(),MaxHealth.GetCurrentValue());
 	}
+}
+
+void UBaseAttributeSetBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	
+	DOREPLIFETIME_CONDITION_NOTIFY(UBaseAttributeSetBase, Health, COND_None, REPNOTIFY_Always);
+}
+
+void UBaseAttributeSetBase::OnRep_Health(const FGameplayAttributeData& OldHealth)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSetBase, Health, OldHealth);
 }

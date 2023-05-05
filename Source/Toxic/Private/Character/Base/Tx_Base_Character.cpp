@@ -50,6 +50,12 @@ void ATx_Base_Character::BeginPlay()
 
 	AcquireAbility(AbilityAttackRef);
 	AcquireAbility(AbilityHookRef);
+
+	if(AbilitySystemComp)
+	{
+	
+		AbilitySystemComp->GetGameplayAttributeValueChangeDelegate(AttributeSerBaseComp->GetHealthAttribute()).AddUObject(this,&ATx_Base_Character::OnHealthChange);
+	}
 	
 }
 
@@ -226,6 +232,8 @@ void ATx_Base_Character::PossessedBy(AController* NewController)
 	AbilitySystemComp->InitAbilityActorInfo(this, this); 
 }
 
+
+
 void ATx_Base_Character::AcquireAbility(TSubclassOf<UGameplayAbility> AbilityToAcquire)
 {
 
@@ -253,8 +261,16 @@ void ATx_Base_Character::OnRep_CurrentTargetCharacter(ATx_Base_Character* LastTa
 	}
 }
 
-
+void ATx_Base_Character::OnHealthChange(const FOnAttributeChangeData& Data)
+{
+	
+	BP_OnHealthChange(Data.NewValue/100);
+}
 void ATx_Base_Character::OnTargetLocationConfirm(FVector& TargetLocation)
 {
 	OnTargetConfirmLocationDelegate.Broadcast(TargetLocation);
 }
+
+
+
+
