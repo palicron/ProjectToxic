@@ -52,6 +52,9 @@ void ATx_PlayerCtr::SetupInputComponent()
 		EnhancedInputComponent->BindAction(SetFocusActionInput, ETriggerEvent::Completed, this, &ATx_PlayerCtr::ResetOnFocusFlag);
 		EnhancedInputComponent->BindAction(SetCancelAbilityInput, ETriggerEvent::Completed, this, &ATx_PlayerCtr::StopAction);
 		EnhancedInputComponent->BindAction(SetAbilitySlot1, ETriggerEvent::Completed, this, &ATx_PlayerCtr::ActiveAbilitySlot1);
+		EnhancedInputComponent->BindAction(SetAbilitySlot2, ETriggerEvent::Completed, this, &ATx_PlayerCtr::ActiveAbilitySlot2);
+		EnhancedInputComponent->BindAction(SetAbilitySlot3, ETriggerEvent::Completed, this, &ATx_PlayerCtr::ActiveAbilitySlot3);
+		EnhancedInputComponent->BindAction(SetAbilitySlot4, ETriggerEvent::Completed, this, &ATx_PlayerCtr::ActiveAbilitySlot4);
 	}
 }
 
@@ -119,6 +122,21 @@ void ATx_PlayerCtr::OnFocusTrigger()
 void ATx_PlayerCtr::ActiveAbilitySlot1()
 {
 	ServerActivateAbilitySlot(1);
+}
+
+void ATx_PlayerCtr::ActiveAbilitySlot2()
+{
+	ServerActivateAbilitySlot(2);
+}
+
+void ATx_PlayerCtr::ActiveAbilitySlot3()
+{
+	ServerActivateAbilitySlot(3);
+}
+
+void ATx_PlayerCtr::ActiveAbilitySlot4()
+{
+	ServerActivateAbilitySlot(4);
 }
 
 

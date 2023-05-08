@@ -46,6 +46,12 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	UInputAction* SetAbilitySlot2;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	UInputAction* SetAbilitySlot3;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	UInputAction* SetAbilitySlot4;
 	
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE ATx_PlayerCamera* GetControllerPLayer() {return ControllerPlayer;}
@@ -122,8 +128,17 @@ protected:
 	UFUNCTION()
 	void OnFocusTrigger();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void ActiveAbilitySlot1();
+	
+	UFUNCTION(BlueprintCallable)
+	void ActiveAbilitySlot2();
+
+	UFUNCTION(BlueprintCallable)
+	void ActiveAbilitySlot3();
+
+	UFUNCTION(BlueprintCallable)
+	void ActiveAbilitySlot4();
 
 	UFUNCTION()
 	FORCEINLINE void ResetOnFocusFlag() {bCanFocusOwnedCharacter = true;};
