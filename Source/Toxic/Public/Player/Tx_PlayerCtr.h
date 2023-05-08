@@ -43,6 +43,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	UInputAction* SetAbilitySlot1;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	UInputAction* SetAbilitySlot2;
 	
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE ATx_PlayerCamera* GetControllerPLayer() {return ControllerPlayer;}

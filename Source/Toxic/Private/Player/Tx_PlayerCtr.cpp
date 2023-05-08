@@ -118,8 +118,7 @@ void ATx_PlayerCtr::OnFocusTrigger()
 
 void ATx_PlayerCtr::ActiveAbilitySlot1()
 {
-
-	ServerActivateAbilitySlot();
+	ServerActivateAbilitySlot(1);
 }
 
 
@@ -290,9 +289,9 @@ void ATx_PlayerCtr::ServerMoveCharacterToTargetActor_Implementation(ATx_Base_Cha
 
 void ATx_PlayerCtr::ServerActivateAbilitySlot_Implementation(int32 Slot) const
 {
-	if(ControllerPlayer && ControllerPlayer->GetOwningCharacter())
+	if(ControllerPlayer)
 	{
-		ControllerPlayer->GetOwningCharacter()->TryHookAbility();
+		ControllerPlayer->ActiveSlotAbility(Slot);
 	}
 }
 void ATx_PlayerCtr::ConfirmTargetLocation(FVector& SelectedLocation)

@@ -16,13 +16,17 @@ class TOXIC_API UGameplayAbility_ClickTarget : public UGameplayAbility_Base
 
 public:
 
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Target COnfig")
+
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Target Config")
 	float AbilityRange = 500.f;
+	
 
 	UFUNCTION(BlueprintCallable)
 	bool IsTargetInRage(const FVector& TargetLocation);
 	
 	UFUNCTION(BlueprintCallable)
 	bool IsTargetInRangeOfActor(const AActor* ActorLocation);
-	
+
+
 };

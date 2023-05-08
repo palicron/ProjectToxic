@@ -81,6 +81,8 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	virtual void ActiveSlotAbility(const int32 SlotIndex) const;
 	
 	UFUNCTION(BlueprintCallable)
 	void MoveOwnedCharacterToLocation(const FVector NewLocation);

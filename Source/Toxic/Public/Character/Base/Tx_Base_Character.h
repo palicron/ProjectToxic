@@ -83,10 +83,16 @@ protected:
 	ATx_Base_AICharacterCtr* AIControllerReference;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Game Ability")
+	TMap<int32,TSubclassOf<UGameplayAbility>> AbilitySlots;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Game Ability")
 	TSubclassOf<UGameplayAbility> AbilityAttackRef;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Game Ability")
 	TSubclassOf<UGameplayAbility> AbilityHookRef;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Game Ability")
+	TSubclassOf<UGameplayAbility> AbilitySlot2Ref;
 	
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category="Character Abilitys")
 	UAbilitySystemComponent* AbilitySystemComp;
@@ -115,7 +121,7 @@ public:
 	FORCEINLINE void SetOwningPlayerBaseRef(ATx_PlayerCamera* BaseCharacterOwner) { OwningPlayerRef = BaseCharacterOwner;};
 	
 	UFUNCTION(BlueprintCallable)
-	void TryHookAbility();
+	void TryUsingAbility(int32 SlotIndex);
 	
 	UFUNCTION(BlueprintCallable,Category="Character Base")
 	void AcquireAbility(TSubclassOf<UGameplayAbility> AbilityToAcquire);
@@ -129,6 +135,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	float GetDistanceToTargetCharacter() const ;
 
+	
+
 
 	////Targeting funtions////
 
@@ -140,8 +148,8 @@ public:
 	
 	
 
-
-	
+	UFUNCTION(BlueprintCallable)
+	TSubclassOf<UGameplayAbility> GetAbilitiyInSlot(int32 SlotIndex) const;
 
 	
 

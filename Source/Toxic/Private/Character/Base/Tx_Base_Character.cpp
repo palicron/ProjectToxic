@@ -48,12 +48,20 @@ void ATx_Base_Character::BeginPlay()
 {
 	Super::BeginPlay();
 
+	
 	AcquireAbility(AbilityAttackRef);
-	AcquireAbility(AbilityHookRef);
 
+	for (const auto& AbilityRef : AbilitySlots)
+	{
+		if(IsValid(AbilityRef.Value))
+		{
+			AcquireAbility(AbilityRef.Value);
+		}
+		
+	}
+	
 	if(AbilitySystemComp)
 	{
-	
 		AbilitySystemComp->GetGameplayAttributeValueChangeDelegate(AttributeSerBaseComp->GetHealthAttribute()).AddUObject(this,&ATx_Base_Character::OnHealthChange);
 	}
 	
@@ -134,10 +142,6 @@ void ATx_Base_Character::TryToAttackTarget()
 	
 }
 
-void ATx_Base_Character::TryHookAbility()
-{
-	AbilitySystemComp->TryActivateAbilityByClass(AbilityHookRef);
-}
 
 // Called every frame
 void ATx_Base_Character::Tick(float DeltaTime)
@@ -269,6 +273,24 @@ void ATx_Base_Character::OnHealthChange(const FOnAttributeChangeData& Data)
 void ATx_Base_Character::OnTargetLocationConfirm(FVector& TargetLocation)
 {
 	OnTargetConfirmLocationDelegate.Broadcast(TargetLocation);
+}
+
+
+void ATx_Base_Character::TryUsingAbility(int32 SlotIndex)
+{
+	if(AbilitySlots.Contains(SlotIndex))
+	{
+		AbilitySystemComp->TryActivateAbilityByClass(AbilitySlots[SlotIndex]);
+	}
+}
+
+TSubclassOf<UGameplayAbility> ATx_Base_Character::GetAbilitiyInSlot(int32 SlotIndex) const
+{
+	if(AbilitySlots.Contains(SlotIndex))
+	{
+		return AbilitySlots[SlotIndex];
+	}
+	return nullptr;
 }
 
 

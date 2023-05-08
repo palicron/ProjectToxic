@@ -28,3 +28,14 @@ enum class  HookStates: uint8
 	Hook_Traveling UMETA(DisplayName = "Traveling"),
 	Hook_Retriving UMETA(DisplayName = "Retriving")
 };
+
+UENUM(BlueprintType)
+enum class  AbilityType: uint8
+{
+	AT_MeleeAttack UMETA(DisplayName = "Melee Attack"),
+	AT_RangeAttack UMETA(DisplayName = "Range Attack"),
+	AT_TargetAbility UMETA(DisplayName = "Target Ability"),
+	AT_ToggleAbility UMETA(DisplayName = "Toggle Ability"),
+	AT_ChannelAbility UMETA(DisplayName = "Channel Ability"),
+	
+};

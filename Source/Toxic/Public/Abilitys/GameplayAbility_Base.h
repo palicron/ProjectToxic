@@ -24,6 +24,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
 	ATx_Base_AICharacterCtr* OwningCharacterCtrRef;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Target Config")
+	AbilityType AbilityCurrentType;
 	
 public:
 	
@@ -36,4 +39,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void ChangeOwningCharacterState(CharacterState NewState);
+
+	FORCEINLINE bool IsAbilityOfType(const AbilityType NewType) const {return AbilityCurrentType == NewType; }
+
+	FORCEINLINE AbilityType GetCurrentType() const { return AbilityCurrentType;}
+
+	FORCEINLINE void SetCurrentType(const AbilityType NewType) {  AbilityCurrentType = NewType;}
 };
