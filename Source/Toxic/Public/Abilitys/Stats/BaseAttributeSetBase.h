@@ -11,7 +11,6 @@
  * 
  */
 
-//DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FHealthPercetageChangeDelegate,float,CurrentHealth,float , MaxHealth);
 
 #define ATTRIBUTE_ACCESSORS(ClassName, PropertyName) \
 GAMEPLAYATTRIBUTE_PROPERTY_GETTER(ClassName, PropertyName) \
@@ -32,23 +31,62 @@ private:
 
 
 public:
-
-	UPROPERTY(ReplicatedUsing = OnRep_Health, EditAnywhere,BlueprintReadWrite,Category="Attribute base")
+	
+	UPROPERTY(ReplicatedUsing = OnRep_Health, EditAnywhere,BlueprintReadWrite,Category="Attribute Health")
 	FGameplayAttributeData Health;
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSetBase,Health)
-	
 	UFUNCTION()
 	virtual void OnRep_Health(const FGameplayAttributeData& OldHealth);
 
+	UPROPERTY(ReplicatedUsing = OnRep_CurrentLevel, EditAnywhere,BlueprintReadWrite,Category="Attribute Level")
+	FGameplayAttributeData CurrentLevel;
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSetBase,CurrentLevel)
+	UFUNCTION()
+	virtual void OnRep_CurrentLevel(const FGameplayAttributeData& OldCurrentLevel);
 
+	UPROPERTY(ReplicatedUsing = OnRep_BaseHealth, EditAnywhere,BlueprintReadWrite,Category="Attribute Health")
+	FGameplayAttributeData BaseHealth;
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSetBase,BaseHealth)
+	UFUNCTION()
+	virtual void OnRep_BaseHealth(const FGameplayAttributeData& OldBaseHealth);
 	
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Attribute base")
+	UPROPERTY(ReplicatedUsing = OnRep_MaxHealth,EditAnywhere,BlueprintReadWrite,Category="Attribute Health")
 	FGameplayAttributeData MaxHealth;
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSetBase,MaxHealth)
+	UFUNCTION()
+	virtual void OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth);
 
-//	UPROPERTY(BlueprintAssignable)
-//	FHealthPercetageChangeDelegate OnHealthChange;
+	/**Strength Relatet Attributes */
 
+	UPROPERTY(ReplicatedUsing = OnRep_BaseStrength,EditAnywhere,BlueprintReadWrite,Category="Attribute Strength ")
+	FGameplayAttributeData BaseStrength;
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSetBase,BaseStrength)
+	UFUNCTION()
+	virtual void OnRep_BaseStrength(const FGameplayAttributeData& OldBaseStrength);
+
+	UPROPERTY(ReplicatedUsing = OnRep_BonusStrength,EditAnywhere,BlueprintReadWrite,Category="Attribute Strength ")
+	FGameplayAttributeData BonusStrength;
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSetBase,BonusStrength)
+	UFUNCTION()
+	virtual void OnRep_BonusStrength(const FGameplayAttributeData& OldBonusStrength);
+	
+	UPROPERTY(ReplicatedUsing = OnRep_StrengthGain,EditAnywhere,BlueprintReadWrite,Category="Attribute Strength ")
+	FGameplayAttributeData StrengthGain;
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSetBase,StrengthGain)
+	UFUNCTION()
+	virtual void OnRep_StrengthGain(const FGameplayAttributeData& OldStrengthGain);
+	
+	UPROPERTY(ReplicatedUsing = OnRep_StrengthMultiplier,EditAnywhere,BlueprintReadWrite,Category="Attribute Strength")
+	FGameplayAttributeData StrengthMultiplier;
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSetBase,StrengthMultiplier)
+	UFUNCTION()
+	virtual void OnRep_StrengthMultiplier(const FGameplayAttributeData& OldStrengthMultiplier);
+	
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+	
+	
+	
 };

@@ -63,6 +63,7 @@ void ATx_Base_Character::BeginPlay()
 	if(AbilitySystemComp)
 	{
 		AbilitySystemComp->GetGameplayAttributeValueChangeDelegate(AttributeSerBaseComp->GetHealthAttribute()).AddUObject(this,&ATx_Base_Character::OnHealthChange);
+		
 	}
 	
 }
