@@ -10,6 +10,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "Net/UnrealNetwork.h"
 #include "Player/Tx_PlayerCamera.h"
+#include "Player/Tx_PlayerCtr.h"
 
 // Sets default values
 ATx_Base_Character::ATx_Base_Character()
@@ -40,6 +41,7 @@ void ATx_Base_Character::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& O
 	DOREPLIFETIME(ATx_Base_Character,CurrentTargetCharacter);
 	DOREPLIFETIME(ATx_Base_Character,CurrentCharacterState);
 	DOREPLIFETIME_CONDITION(ATx_Base_Character,LastClickTarget,COND_OwnerOnly);
+	DOREPLIFETIME_CONDITION(ATx_Base_Character,OwningPlayerRef,COND_OwnerOnly);
 }
 
 
@@ -63,8 +65,12 @@ void ATx_Base_Character::BeginPlay()
 	if(AbilitySystemComp)
 	{
 		AbilitySystemComp->GetGameplayAttributeValueChangeDelegate(AttributeSerBaseComp->GetHealthAttribute()).AddUObject(this,&ATx_Base_Character::OnHealthChange);
-		
+		AbilitySystemComp->GetGameplayAttributeValueChangeDelegate(AttributeSerBaseComp->GetMaxHealthAttribute()).AddUObject(this,&ATx_Base_Character::OnMaxHealthChange);
+	
 	}
+
+	BP_OnHealthChange(1.0f);
+
 	
 }
 
@@ -104,6 +110,15 @@ void ATx_Base_Character::ConfirmTargetAbility()
 	if(HasAuthority() && IsValid(AbilitySystemComp))
 	{
 		AbilitySystemComp->TargetConfirm();
+	}
+}
+
+void ATx_Base_Character::OnRep_OwningPlayerRef()
+{
+	if(IsValid(OwningPlayerRef) && !HasAuthority())
+	{
+		OwningPlayerRef->UpdateLifeUI(AbilitySystemComp->GetNumericAttribute(AttributeSerBaseComp->GetHealthAttribute()),
+		AbilitySystemComp->GetNumericAttribute(AttributeSerBaseComp->GetMaxHealthAttribute()));
 	}
 }
 
@@ -148,7 +163,8 @@ void ATx_Base_Character::TryToAttackTarget()
 void ATx_Base_Character::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	
+
+
 }
 
 // Called to bind functionality to input
@@ -268,14 +284,31 @@ void ATx_Base_Character::OnRep_CurrentTargetCharacter(ATx_Base_Character* LastTa
 
 void ATx_Base_Character::OnHealthChange(const FOnAttributeChangeData& Data)
 {
+	const float CurrentMaxHealth = AbilitySystemComp->GetNumericAttribute(UBaseAttributeSetBase::GetMaxHealthAttribute());
+	if(IsValid(OwningPlayerRef) && HasAuthority())
+	{
+		OwningPlayerRef->UpdateLifeUI(Data.NewValue,CurrentMaxHealth);
+	}
 	
-	BP_OnHealthChange(Data.NewValue/100);
+	BP_OnHealthChange(Data.NewValue/CurrentMaxHealth);
+	
 }
+
+void ATx_Base_Character::OnMaxHealthChange(const FOnAttributeChangeData& Data)
+{
+	BP_OnMaxHealthChange(Data.NewValue,Data.OldValue);
+}
+
 void ATx_Base_Character::OnTargetLocationConfirm(FVector& TargetLocation)
 {
 	OnTargetConfirmLocationDelegate.Broadcast(TargetLocation);
 }
 
+
+void ATx_Base_Character::SetOwningPlayerBaseRef(ATx_PlayerCamera* BaseCharacterOwner)
+{
+	 OwningPlayerRef = BaseCharacterOwner;
+}
 
 void ATx_Base_Character::TryUsingAbility(int32 SlotIndex)
 {

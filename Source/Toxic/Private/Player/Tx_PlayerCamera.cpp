@@ -4,6 +4,7 @@
 #include "NiagaraFunctionLibrary.h"
 #include "Camera/CameraComponent.h"
 #include "Character/Tx_Base_AICharacterCtr.h"
+#include "Character/Tx_PlayerMainUI.h"
 #include "Character/Base/Tx_Base_Character.h"
 #include "Core/Tx_GameInstace.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -81,12 +82,16 @@ void ATx_PlayerCamera::BeginPlay()
 void ATx_PlayerCamera::InitSetUp()
 {
 	GameInstanceRef = Cast<UTx_GameInstace>(GetGameInstance());
+
+	BP_SpawnUI();
+
+	
 	if(IsValid(GameInstanceRef))
 	{
 		//Using This Funtion For consitency in multiplayer 
 		PlayerCtr = Cast<ATx_PlayerCtr>(GameInstanceRef->GetFirstLocalPlayerController());
 	}
-
+	
 
 }
 
@@ -137,6 +142,16 @@ void ATx_PlayerCamera::ActiveSlotAbility(const int32 SlotIndex) const
 	}
 }
 
+void ATx_PlayerCamera::UpdateLifeUI_Implementation(float NewLife, float MaxLife)
+{
+	
+	if(IsValid(PlayerUIRef) && IsLocallyControlled())
+	{
+		PlayerUIRef->SetNewHealth(NewLife,MaxLife);
+		PlayerUIRef->SetMaxNewHealth(MaxLife);
+	}
+}
+
 void ATx_PlayerCamera::MoveOwnedCharacterToLocation(const FVector NewLocation)
 {
 	if(IsValid(OwningCharacterRef) && IsValid(OwningCharacterRef->GetAiController()))
@@ -175,6 +190,12 @@ void ATx_PlayerCamera::SetOwningCharacterAbilityConfirm() const
 	}
 }
 
+void ATx_PlayerCamera::SetPlayerUI(UTx_PlayerMainUI* NewPlayerUI)
+{
+	PlayerUIRef = NewPlayerUI;
+		
+}
+
 void ATx_PlayerCamera::SpawnOwningCharacter()
 {
 	if(HasAuthority() && IsValid(OwningCharacterToSpawn))
@@ -186,6 +207,7 @@ void ATx_PlayerCamera::SpawnOwningCharacter()
 		CurrentSelectedCharacter = OwningCharacterRef;
 		
 		OwningCharacterRef->SetOwningPlayerBaseRef(this);
+		
 	}
 }
 
@@ -195,6 +217,8 @@ void ATx_PlayerCamera::ServerSetTargetConfirmLocation_Implementation(FVector New
 	{
 		OwningCharacterRef->OnTargetLocationConfirm(NewTarget);
 	}
+
+	
 }
 
 

@@ -76,7 +76,5 @@ float UTx_HpCalculation::CalculateBaseMagnitude_Implementation(const FGameplayEf
 	
 	const float FinalHealth = FMath::Floor(StrgGainTemp*(LevelTemp + 1)) + (BaseStrgTemp +
 																	(BonusStrgTemp * MultiTemp)) + BaseHealthTemp;
-
-	
 	return FinalHealth;
 }

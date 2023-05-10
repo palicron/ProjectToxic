@@ -39,9 +39,13 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void ConfirmTargetAbility();
-	UPROPERTY(VisibleAnywhere)
+	
+	UPROPERTY(ReplicatedUsing = OnRep_OwningPlayerRef  , VisibleAnywhere)
 	ATx_PlayerCamera* OwningPlayerRef;
 
+	UFUNCTION()
+	void OnRep_OwningPlayerRef();
+	
 	UPROPERTY(Replicated, EditAnywhere,BlueprintReadWrite)
 	FVector_NetQuantize LastClickTarget;
 
@@ -103,22 +107,30 @@ protected:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_ActiveBasicAttack();
 	
 	virtual void PossessedBy(AController* NewController) override;
 
+
 	virtual void OnHealthChange(const FOnAttributeChangeData &  Data);
+
+	
+	virtual void OnMaxHealthChange(const FOnAttributeChangeData & Data);
 	
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_OnHealthChange(float NewValue);
 
+	
+	UFUNCTION(BlueprintImplementableEvent)
+	void BP_OnMaxHealthChange(float NewValue,float OldValue);
 
 public:
 	
 	UFUNCTION(BlueprintCallable)
-	FORCEINLINE void SetOwningPlayerBaseRef(ATx_PlayerCamera* BaseCharacterOwner) { OwningPlayerRef = BaseCharacterOwner;};
+	void SetOwningPlayerBaseRef(ATx_PlayerCamera* BaseCharacterOwner);
 	
 	UFUNCTION(BlueprintCallable)
 	void TryUsingAbility(int32 SlotIndex);
@@ -172,4 +184,8 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE CharacterState GetCurrentCharacterState() const{ return CurrentCharacterState; }
+
+
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE UAbilitySystemComponent*  GetAbilitySystemComp() const {return AbilitySystemComp;} ;
 };

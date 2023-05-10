@@ -40,6 +40,9 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 	class UCameraComponent* TopDownCameraComponent;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Player UI")
+	class UTx_PlayerMainUI* PlayerUIRef;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 	class USpringArmComponent* CameraBoom;
@@ -83,6 +86,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	virtual void ActiveSlotAbility(const int32 SlotIndex) const;
+
 	
 	UFUNCTION(BlueprintCallable)
 	void MoveOwnedCharacterToLocation(const FVector NewLocation);
@@ -101,9 +105,24 @@ public:
 	UFUNCTION(Server,Reliable)
 	void ServerSetTargetConfirmLocation(FVector NewTarget);
 
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void BP_SpawnUI();
 	
+	UFUNCTION(Client,BlueprintCallable,Reliable)
+	void UpdateLifeUI(float NewLife,float MaxLife);
+
+
+	//UFUNCTION()
+	//void ClientUpdateLifeUI(float NewLife,float MaxLife);
 	UFUNCTION(Server,Reliable)
 	void ServerLastClickTarget(FVector_NetQuantize newLocation);
+	
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE UTx_PlayerMainUI* GetPlayerUI() const {return PlayerUIRef;}
+
+	UFUNCTION(BlueprintCallable)
+	void SetPlayerUI(UTx_PlayerMainUI* NewPlayerUI);
 	
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void SetCtrControllerMode(ControllerType NewType){CurrentCtrType = NewType;}
