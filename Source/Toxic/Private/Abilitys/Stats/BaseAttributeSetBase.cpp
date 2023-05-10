@@ -41,6 +41,21 @@ void UBaseAttributeSetBase::OnRep_MaxHealth(const FGameplayAttributeData& OldMax
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSetBase, MaxHealth, OldMaxHealth);
 }
 
+void UBaseAttributeSetBase::OnRep_Mana(const FGameplayAttributeData& OldMana)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSetBase, Mana, OldMana);
+}
+
+void UBaseAttributeSetBase::OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSetBase, MaxMana, OldMaxMana);
+}
+
+void UBaseAttributeSetBase::OnRep_BaseMana(const FGameplayAttributeData& OldBaseMana)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSetBase, BaseMana, OldBaseMana);
+}
+
 void UBaseAttributeSetBase::OnRep_BaseStrength(const FGameplayAttributeData& OldBaseStrength)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSetBase, BaseStrength, OldBaseStrength);

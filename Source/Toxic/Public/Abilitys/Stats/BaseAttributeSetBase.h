@@ -56,6 +56,26 @@ public:
 	UFUNCTION()
 	virtual void OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth);
 
+	UPROPERTY(ReplicatedUsing = OnRep_Mana,EditAnywhere,BlueprintReadWrite,Category="Attribute Mana")
+	FGameplayAttributeData Mana;
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSetBase,Mana)
+	UFUNCTION()
+	virtual void OnRep_Mana(const FGameplayAttributeData& OldMana);
+
+	
+	UPROPERTY(ReplicatedUsing = OnRep_MaxMana,EditAnywhere,BlueprintReadWrite,Category="Attribute Mana")
+	FGameplayAttributeData MaxMana;
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSetBase,MaxMana)
+	UFUNCTION()
+	virtual void OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana);
+	
+	UPROPERTY(ReplicatedUsing = OnRep_BaseMana,EditAnywhere,BlueprintReadWrite,Category="Attribute Mana")
+	FGameplayAttributeData BaseMana;
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSetBase,BaseMana)
+	UFUNCTION()
+	virtual void OnRep_BaseMana(const FGameplayAttributeData& OldBaseMana);
+
+
 	/**Strength Relatet Attributes */
 
 	UPROPERTY(ReplicatedUsing = OnRep_BaseStrength,EditAnywhere,BlueprintReadWrite,Category="Attribute Strength ")
@@ -79,6 +99,11 @@ public:
 	UPROPERTY(ReplicatedUsing = OnRep_StrengthMultiplier,EditAnywhere,BlueprintReadWrite,Category="Attribute Strength")
 	FGameplayAttributeData StrengthMultiplier;
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSetBase,StrengthMultiplier)
+
+
+	/**Intillegence Relatet Attributes */
+
+	
 	UFUNCTION()
 	virtual void OnRep_StrengthMultiplier(const FGameplayAttributeData& OldStrengthMultiplier);
 	

@@ -144,7 +144,6 @@ void ATx_PlayerCamera::ActiveSlotAbility(const int32 SlotIndex) const
 
 void ATx_PlayerCamera::UpdateLifeUI_Implementation(float NewLife, float MaxLife)
 {
-	
 	if(IsValid(PlayerUIRef) && IsLocallyControlled())
 	{
 		PlayerUIRef->SetNewHealth(NewLife,MaxLife);
