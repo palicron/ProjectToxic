@@ -6,6 +6,8 @@
 #include "Abilitys/GameplayAbility_Base.h"
 #include "Abilitys/Stats/BaseAttributeSetBase.h"
 #include "Character/Tx_Base_AICharacterCtr.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/PawnMovementComponent.h"
 #include "Kismet/KismetMaterialLibrary.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Net/UnrealNetwork.h"
@@ -66,11 +68,12 @@ void ATx_Base_Character::BeginPlay()
 	{
 		AbilitySystemComp->GetGameplayAttributeValueChangeDelegate(AttributeSerBaseComp->GetHealthAttribute()).AddUObject(this,&ATx_Base_Character::OnHealthChange);
 		AbilitySystemComp->GetGameplayAttributeValueChangeDelegate(AttributeSerBaseComp->GetMaxHealthAttribute()).AddUObject(this,&ATx_Base_Character::OnMaxHealthChange);
-	
+		AbilitySystemComp->GetGameplayAttributeValueChangeDelegate(AttributeSerBaseComp->GetMovementSpeedAttribute()).AddUObject(this,&ATx_Base_Character::OnMovementSpeedChange);
+		
 	}
 
+	BP_SpeedChange();
 	BP_OnHealthChange(1.0f);
-
 	
 }
 
@@ -298,6 +301,20 @@ void ATx_Base_Character::OnMaxHealthChange(const FOnAttributeChangeData& Data)
 {
 	BP_OnMaxHealthChange(Data.NewValue,Data.OldValue);
 }
+
+void ATx_Base_Character::OnMovementSpeedChange(const FOnAttributeChangeData& Data)
+{
+	const float CurrentMaxHealth = AbilitySystemComp->GetNumericAttribute(UBaseAttributeSetBase::GetMovementSpeedAttribute());
+	if(GEngine)
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow,
+			FString::Printf(TEXT("World delta for current frame equals %f"), CurrentMaxHealth));
+    if(IsValid(GetCharacterMovement()))
+	{
+    	GetCharacterMovement()->MaxWalkSpeed = Data.NewValue;
+	}
+}
+
+
 
 void ATx_Base_Character::OnTargetLocationConfirm(FVector& TargetLocation)
 {

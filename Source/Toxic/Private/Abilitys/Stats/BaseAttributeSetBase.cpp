@@ -56,6 +56,12 @@ void UBaseAttributeSetBase::OnRep_BaseMana(const FGameplayAttributeData& OldBase
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSetBase, BaseMana, OldBaseMana);
 }
 
+void UBaseAttributeSetBase::OnRep_MovementSpeed(const FGameplayAttributeData& OldMovementSpeed)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSetBase, MovementSpeed, OldMovementSpeed);
+}
+
+
 void UBaseAttributeSetBase::OnRep_BaseStrength(const FGameplayAttributeData& OldBaseStrength)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSetBase, BaseStrength, OldBaseStrength);

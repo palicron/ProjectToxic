@@ -119,10 +119,16 @@ protected:
 
 	
 	virtual void OnMaxHealthChange(const FOnAttributeChangeData & Data);
-	
+
+
+	virtual void OnMovementSpeedChange(const FOnAttributeChangeData & Data);
+
+
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_OnHealthChange(float NewValue);
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void BP_SpeedChange();
 	
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_OnMaxHealthChange(float NewValue,float OldValue);

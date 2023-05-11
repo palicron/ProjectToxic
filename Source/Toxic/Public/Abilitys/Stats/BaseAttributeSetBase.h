@@ -19,6 +19,8 @@ GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
 
+
+
 UCLASS()
 class TOXIC_API UBaseAttributeSetBase : public UAttributeSet
 {
@@ -61,7 +63,7 @@ public:
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSetBase,Mana)
 	UFUNCTION()
 	virtual void OnRep_Mana(const FGameplayAttributeData& OldMana);
-
+	
 	
 	UPROPERTY(ReplicatedUsing = OnRep_MaxMana,EditAnywhere,BlueprintReadWrite,Category="Attribute Mana")
 	FGameplayAttributeData MaxMana;
@@ -75,7 +77,13 @@ public:
 	UFUNCTION()
 	virtual void OnRep_BaseMana(const FGameplayAttributeData& OldBaseMana);
 
-
+	UPROPERTY(ReplicatedUsing = OnRep_MovementSpeed,EditAnywhere,BlueprintReadWrite,Category="Attribute Movement")
+	FGameplayAttributeData MovementSpeed;
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSetBase,MovementSpeed)
+	UFUNCTION()
+	virtual void OnRep_MovementSpeed(const FGameplayAttributeData& OldMovementSpeed);
+	
+	
 	/**Strength Relatet Attributes */
 
 	UPROPERTY(ReplicatedUsing = OnRep_BaseStrength,EditAnywhere,BlueprintReadWrite,Category="Attribute Strength ")
