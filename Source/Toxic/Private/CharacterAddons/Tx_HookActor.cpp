@@ -67,7 +67,7 @@ void ATx_HookActor::Tick(float DeltaTime)
 		BP_MaxRangeHook();
 		ChangeHookState(HookStates::Hook_Retriving);
 	}
-	else if(CurrentState == HookStates::Hook_Retriving &&  CurrentHookLenght < 20.f)
+	else if(CurrentState == HookStates::Hook_Retriving &&  CurrentHookLenght < 55.f)
 	{
 		BP_EndLine();
 		

@@ -1,5 +1,5 @@
 #pragma once
-
+#include "PlayerDefinitions.generated.h"
 
 UENUM(BlueprintType)
 enum class  CharacterState: uint8
@@ -39,3 +39,41 @@ enum class  AbilityType: uint8
 	AT_ChannelAbility UMETA(DisplayName = "Channel Ability"),
 	
 };
+
+UENUM(BlueprintType)
+enum class EAbilityCostType : uint8
+{
+	Health UMETA(DisplayName = "Health"),
+	Mana UMETA(DisplayName = "Mana")
+	
+};
+
+USTRUCT(BlueprintType)
+struct FGamePlayAbilityInfo
+{
+
+	GENERATED_BODY()
+	
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Ability Info")
+	float CoolDownDuration = 0.0;
+	
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Ability Info")
+	float Cost;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Ability Info")
+	EAbilityCostType CostType;
+
+	FGamePlayAbilityInfo(): CoolDownDuration(0.0), Cost(0.0), CostType(EAbilityCostType::Mana)
+	{
+	}
+
+	FGamePlayAbilityInfo(float InCoolDown,float InCost, const EAbilityCostType InType)
+	{
+		CoolDownDuration = InCoolDown;
+
+		Cost = InCost;
+
+		CostType = InType;
+	}
+};
+

@@ -28,6 +28,9 @@ protected:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Target Config")
 	AbilityType AbilityCurrentType;
 	
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Target Config")
+	EAbilityCostType Resource = EAbilityCostType::Mana ;
+	
 public:
 	
 	UFUNCTION(BlueprintCallable,Category="Getter and Setters")
@@ -35,10 +38,15 @@ public:
 
 	UFUNCTION(BlueprintCallable,Category="Getter and Setters")
 	ATx_Base_AICharacterCtr* GetOwningBaseCharacterCtr();
-
-
+	
 	UFUNCTION(BlueprintCallable)
 	void ChangeOwningCharacterState(CharacterState NewState);
+
+	UFUNCTION(BlueprintCallable)
+	FGamePlayAbilityInfo GetAbilityInfo() const ;
+
+	UFUNCTION(BlueprintCallable)
+	bool CanCastAbility() const;
 
 	FORCEINLINE bool IsAbilityOfType(const AbilityType NewType) const {return AbilityCurrentType == NewType; }
 

@@ -74,7 +74,7 @@ float UTx_HpCalculation::CalculateBaseMagnitude_Implementation(const FGameplayEf
 	//(Strength Growth × (Current Level - 1) ➜ rounded down) + Base Strength + Bonus Strength
 	//																	× 18 = HP from Strength + 200 Base HP = Total HP
 	
-	const float FinalHealth = FMath::Floor(StrgGainTemp*(LevelTemp + 1)) + (BaseStrgTemp +
-																	(BonusStrgTemp * MultiTemp)) + BaseHealthTemp;
+	const float FinalHealth = FMath::Floor(StrgGainTemp*(LevelTemp + 1)) + ((BaseStrgTemp +
+																	BonusStrgTemp) * MultiTemp) + BaseHealthTemp;
 	return FinalHealth;
 }
