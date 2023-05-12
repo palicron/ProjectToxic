@@ -58,6 +58,8 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_SendEvent(FVector vector);
 
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	bool bUsingToggleAbility =false;
 	
 protected:
 	
