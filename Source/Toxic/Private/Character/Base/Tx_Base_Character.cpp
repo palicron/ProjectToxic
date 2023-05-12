@@ -6,6 +6,9 @@
 #include "Abilitys/GameplayAbility_Base.h"
 #include "Abilitys/Stats/BaseAttributeSetBase.h"
 #include "Character/Tx_Base_AICharacterCtr.h"
+#include "Character/Tx_OverHeadBar.h"
+#include "Components/CapsuleComponent.h"
+#include "Components/WidgetComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PawnMovementComponent.h"
 #include "Kismet/KismetMaterialLibrary.h"
@@ -25,6 +28,14 @@ ATx_Base_Character::ATx_Base_Character()
 
 	CurrentCharacterState = CharacterState::Cs_Idle;
 
+	UnderCircleMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Under Circle"));
+	
+	UnderCircleMesh->SetupAttachment(RootComponent);
+
+	OverHeadBarWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("OverHead LifeBar"));
+	
+	OverHeadBarWidget->SetupAttachment(RootComponent);
+	
 	AbilitySystemComp = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystem Comp"));
 
 	AttributeSerBaseComp = CreateDefaultSubobject<UBaseAttributeSetBase>(TEXT("Attribute Base"));
@@ -74,6 +85,15 @@ void ATx_Base_Character::BeginPlay()
 
 	BP_SpeedChange();
 	BP_OnHealthChange(1.0f);
+	
+	OverHeadLifeBarRef = Cast<UTx_OverHeadBar>(OverHeadBarWidget->GetWidget());
+	
+	if(IsValid(OverHeadLifeBarRef))
+	{
+		OverHeadLifeBarRef->SetHealthPercentage(1.f);
+	}
+
+	GetWorld()->GetTimerManager().SetTimer(InitialDelayHandle,this,&ATx_Base_Character::InitStartingGamePlayEffects,0.2,false);
 	
 }
 
@@ -292,7 +312,11 @@ void ATx_Base_Character::OnHealthChange(const FOnAttributeChangeData& Data)
 	{
 		OwningPlayerRef->UpdateLifeUI(Data.NewValue,CurrentMaxHealth);
 	}
-	
+
+	if(IsValid(OverHeadLifeBarRef))
+	{
+		OverHeadLifeBarRef->SetHealthPercentage(Data.NewValue/CurrentMaxHealth);
+	}
 	BP_OnHealthChange(Data.NewValue/CurrentMaxHealth);
 	
 }
@@ -343,6 +367,61 @@ TSubclassOf<UGameplayAbility> ATx_Base_Character::GetAbilitiyInSlot(int32 SlotIn
 	}
 	return nullptr;
 }
+
+void ATx_Base_Character::SetUnderCircleMaterialColor(FColor NewColor) 
+{
+	if(IsValid(CircleMaterialIntance))
+	{
+		CircleMaterialIntance->SetVectorParameterValue("Color",NewColor);
+	}
+	else
+	{
+		
+		if(IsValid(UnderCircleMesh))
+		{
+			CircleMaterialIntance = UnderCircleMesh->CreateDynamicMaterialInstance(0,UnderCircleMesh->GetMaterial(0));
+
+			UnderCircleMesh->SetMaterial(0,CircleMaterialIntance);
+			
+			CircleMaterialIntance->SetVectorParameterValue("Color",NewColor);
+		}
+	}
+
+		
+}
+
+void ATx_Base_Character::InitStartingGamePlayEffects() const
+{
+	if(IsValid(AbilitySystemComp))
+	{
+		for (const auto& NewGameEffect : EffectToApplyOnBegin)
+		{
+			FGameplayEffectContextHandle newHandeler;
+			AbilitySystemComp->BP_ApplyGameplayEffectToSelf(NewGameEffect,0.0f,newHandeler);
+		}
+		
+	}
+}
+
+void ATx_Base_Character::SetCharacterCollision(ECollisionEnabled::Type NewType)
+{
+	
+	if(NewType != GetCapsuleComponent()->GetCollisionEnabled() && HasAuthority())
+	{
+		GetCapsuleComponent()->SetCollisionEnabled(NewType);
+		SetCharacterCollisionClient(NewType);
+	}
+
+}
+
+void ATx_Base_Character::SetCharacterCollisionClient_Implementation(ECollisionEnabled::Type NewType)
+{
+	if(NewType != GetCapsuleComponent()->GetCollisionEnabled())
+	{
+		GetCapsuleComponent()->SetCollisionEnabled(NewType);
+	}
+}
+
 
 
 

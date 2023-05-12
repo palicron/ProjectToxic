@@ -12,6 +12,7 @@
 #include "Tx_Base_Character.generated.h"
 
 
+class UWidgetComponent;
 class UGameplayAbility_Base;
 class UBaseAttributeSetBase;
 class ATx_Base_AICharacterCtr;
@@ -152,26 +153,51 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	float GetDistanceToTargetCharacter() const ;
-
 	
-
-
 	////Targeting funtions////
-
 	UFUNCTION(BlueprintCallable)
 	void OnTargetLocationConfirm(FVector& TargetLocation);
-
-
+	
 	/////UI Changes////
-	
-	
-
 	UFUNCTION(BlueprintCallable)
 	TSubclassOf<UGameplayAbility> GetAbilitiyInSlot(int32 SlotIndex) const;
 
-	
 
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	UMaterialInstanceDynamic* CircleMaterialIntance;
+	
+	UFUNCTION(BlueprintCallable)
+	void SetUnderCircleMaterialColor(FColor NewColor);
+	
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	UStaticMeshComponent* UnderCircleMesh;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	UWidgetComponent* OverHeadBarWidget;
+
+	UPROPERTY()
+	class UTx_OverHeadBar* OverHeadLifeBarRef;
+
+
+	UPROPERTY(BlueprintReadWrite)
+	FTimerHandle InitialDelayHandle;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	TArray<TSubclassOf<class UGameplayEffect>>  EffectToApplyOnBegin;
+
+	UFUNCTION(BlueprintCallable)
+	void InitStartingGamePlayEffects()const;
+	
 	/////// Setter And Getters///////////
+	///
+	///
+
+
+	UFUNCTION(BlueprintCallable)
+	void SetCharacterCollision(ECollisionEnabled::Type NewType );
+
+	UFUNCTION(Client,Reliable)
+	void SetCharacterCollisionClient(ECollisionEnabled::Type NewType );
 	
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void SetAiController( ATx_Base_AICharacterCtr* NewCtr) {AIControllerReference = NewCtr; }
