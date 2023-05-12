@@ -102,9 +102,8 @@ void ATx_Base_Character::CheckDistanceToAttack()
 	const UWorld* WorldRef =  GetWorld();
 	if(WorldRef && HasAuthority())
 	{
-		
 		WorldRef->GetTimerManager().SetTimer(MeleeAttackHandle,this ,
-				&ATx_Base_Character::TryToAttackTarget,.01f,true);	
+				&ATx_Base_Character::TryToAttackTarget,.5f,true);	
 	}
 	
 }
@@ -153,7 +152,7 @@ void ATx_Base_Character::TryToAttackTarget()
 		
 		const float DistanceToTarget = FVector::Dist(GetActorLocation(),CurrentTargetCharacter->GetActorLocation());
 		
-		if( DistanceToTarget <= 200.f )
+		if( DistanceToTarget <= 350.f )
 		{
 			
 			if(AbilitySystemComp->TryActivateAbilityByClass(AbilityAttackRef))
@@ -298,7 +297,6 @@ void ATx_Base_Character::AcquireAbility(TSubclassOf<UGameplayAbility> AbilityToA
 
 void ATx_Base_Character::OnRep_CurrentTargetCharacter(ATx_Base_Character* LastTarget)
 {
-
 	if(IsValid(CurrentTargetCharacter))
 	{
 		CheckDistanceToAttack();

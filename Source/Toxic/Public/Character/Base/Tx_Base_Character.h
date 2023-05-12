@@ -135,6 +135,9 @@ protected:
 	void BP_OnMaxHealthChange(float NewValue,float OldValue);
 
 public:
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Animations")
+	UAnimMontage* AttackMontage;
 	
 	UFUNCTION(BlueprintCallable)
 	void SetOwningPlayerBaseRef(ATx_PlayerCamera* BaseCharacterOwner);
