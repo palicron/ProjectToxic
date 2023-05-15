@@ -68,6 +68,8 @@ void UBaseAttributeSetBase::OnRep_BaseStrength(const FGameplayAttributeData& Old
 	
 }
 
+
+
 void UBaseAttributeSetBase::OnRep_BonusStrength(const FGameplayAttributeData& OldBonusStrength)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSetBase, BonusStrength, OldBonusStrength);
@@ -87,8 +89,25 @@ void UBaseAttributeSetBase::OnRep_StrengthMultiplier(const FGameplayAttributeDat
 	
 }
 
+void UBaseAttributeSetBase::OnRep_BaseIntelligence(const FGameplayAttributeData& OldBaseIntelligence)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSetBase, StrengthMultiplier, OldBaseIntelligence);
+}
 
+void UBaseAttributeSetBase::OnRep_BonusIntelligence(const FGameplayAttributeData& OldBonusIntelligence)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSetBase, StrengthMultiplier, OldBonusIntelligence);
+}
 
+void UBaseAttributeSetBase::OnRep_IntelligenceGain(const FGameplayAttributeData& OldIntelligenceGain)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSetBase, StrengthMultiplier, OldIntelligenceGain);
+}
+
+void UBaseAttributeSetBase::OnRep_IntelligenceMultiplier(const FGameplayAttributeData& OldIntelligenceMultiplier)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSetBase, StrengthMultiplier, OldIntelligenceMultiplier);
+}
 
 void UBaseAttributeSetBase::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
 {

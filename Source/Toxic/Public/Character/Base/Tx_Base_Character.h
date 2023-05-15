@@ -123,6 +123,12 @@ protected:
 	
 	virtual void OnMaxHealthChange(const FOnAttributeChangeData & Data);
 
+	
+	virtual void OnManaChange(const FOnAttributeChangeData &  Data);
+
+	
+	virtual void OnMaxManahChange(const FOnAttributeChangeData & Data);
+
 
 	virtual void OnMovementSpeedChange(const FOnAttributeChangeData & Data);
 

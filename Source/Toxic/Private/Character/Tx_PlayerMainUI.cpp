@@ -28,3 +28,20 @@ void UTx_PlayerMainUI::SetMaxNewHealth(float MaxHealth)
 		MaxHealthText->SetText(FText::FromString(FString::SanitizeFloat(MaxHealth,0)));
 	}
 }
+
+void UTx_PlayerMainUI::SetManaHealth(float NewMana, float MaxMana)
+{
+	if(IsValid(ManaBar) && IsValid(CurrentManaText))
+	{
+		CurrentManaText->SetText(FText::FromString(FString::SanitizeFloat(NewMana,0))  );
+		ManaBar->SetPercent(NewMana/MaxMana);
+	}
+}
+
+void UTx_PlayerMainUI::SetMaxNewMana(float MaxMana)
+{
+	if(IsValid(MaxManaText))
+	{
+		MaxManaText->SetText(FText::FromString(FString::SanitizeFloat(MaxMana,0)));
+	}
+}

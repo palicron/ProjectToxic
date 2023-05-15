@@ -112,6 +112,9 @@ public:
 	UFUNCTION(Client,BlueprintCallable,Reliable)
 	void UpdateLifeUI(float NewLife,float MaxLife);
 
+	UFUNCTION(Client,BlueprintCallable,Reliable)
+	void UpdateManaUI(float NewMana,float MaxMana);
+
 
 	//UFUNCTION()
 	//void ClientUpdateLifeUI(float NewLife,float MaxLife);

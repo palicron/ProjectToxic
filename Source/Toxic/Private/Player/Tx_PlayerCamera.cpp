@@ -150,6 +150,14 @@ void ATx_PlayerCamera::UpdateLifeUI_Implementation(float NewLife, float MaxLife)
 		PlayerUIRef->SetMaxNewHealth(MaxLife);
 	}
 }
+void ATx_PlayerCamera::UpdateManaUI_Implementation(float NewMana, float MaxMana)
+{
+	if(IsValid(PlayerUIRef) && IsLocallyControlled())
+	{
+		PlayerUIRef->SetManaHealth(NewMana,MaxMana);
+		PlayerUIRef->SetMaxNewMana(MaxMana);
+	}
+}
 
 void ATx_PlayerCamera::MoveOwnedCharacterToLocation(const FVector NewLocation)
 {
@@ -188,6 +196,8 @@ void ATx_PlayerCamera::SetOwningCharacterAbilityConfirm() const
 		OwningCharacterRef->StopAllActionByPlayer();
 	}
 }
+
+
 
 void ATx_PlayerCamera::SetPlayerUI(UTx_PlayerMainUI* NewPlayerUI)
 {

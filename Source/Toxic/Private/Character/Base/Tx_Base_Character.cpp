@@ -141,6 +141,9 @@ void ATx_Base_Character::OnRep_OwningPlayerRef()
 	{
 		OwningPlayerRef->UpdateLifeUI(AbilitySystemComp->GetNumericAttribute(AttributeSerBaseComp->GetHealthAttribute()),
 		AbilitySystemComp->GetNumericAttribute(AttributeSerBaseComp->GetMaxHealthAttribute()));
+
+		OwningPlayerRef->UpdateManaUI(AbilitySystemComp->GetNumericAttribute(AttributeSerBaseComp->GetManaAttribute()),
+	AbilitySystemComp->GetNumericAttribute(AttributeSerBaseComp->GetMaxManaAttribute()));
 	}
 }
 
@@ -322,6 +325,19 @@ void ATx_Base_Character::OnHealthChange(const FOnAttributeChangeData& Data)
 void ATx_Base_Character::OnMaxHealthChange(const FOnAttributeChangeData& Data)
 {
 	BP_OnMaxHealthChange(Data.NewValue,Data.OldValue);
+}
+
+void ATx_Base_Character::OnManaChange(const FOnAttributeChangeData& Data)
+{
+	const float CurrentMaxMana = AbilitySystemComp->GetNumericAttribute(UBaseAttributeSetBase::GetMaxManaAttribute());
+	if(IsValid(OwningPlayerRef) && HasAuthority())
+	{
+		OwningPlayerRef->UpdateManaUI(Data.NewValue,CurrentMaxMana);
+	}
+}
+
+void ATx_Base_Character::OnMaxManahChange(const FOnAttributeChangeData& Data)
+{
 }
 
 void ATx_Base_Character::OnMovementSpeedChange(const FOnAttributeChangeData& Data)

@@ -39,6 +39,12 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* MaxHealthText;
 
+	UPROPERTY(meta = (BindWidget))
+	UTextBlock* CurrentManaText;
+
+	UPROPERTY(meta = (BindWidget))
+	UTextBlock* MaxManaText;
+
 public:
 
 	UFUNCTION(BlueprintCallable)
@@ -46,5 +52,11 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetMaxNewHealth(float MaxHealth);
+
+	UFUNCTION(BlueprintCallable)
+	void SetManaHealth(float NewMana,float MaxMana);
+
+	UFUNCTION(BlueprintCallable)
+	void SetMaxNewMana(float MaxMana);
 	
 };

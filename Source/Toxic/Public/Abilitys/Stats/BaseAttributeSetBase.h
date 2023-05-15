@@ -108,12 +108,34 @@ public:
 	FGameplayAttributeData StrengthMultiplier;
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSetBase,StrengthMultiplier)
 
-
-	/**Intillegence Relatet Attributes */
-
-	
 	UFUNCTION()
 	virtual void OnRep_StrengthMultiplier(const FGameplayAttributeData& OldStrengthMultiplier);
+	/**Intillegence Relatet Attributes */
+
+	UPROPERTY(ReplicatedUsing = OnRep_BaseIntelligence,EditAnywhere,BlueprintReadWrite,Category="Attribute Intelligence ")
+	FGameplayAttributeData BaseIntelligence;
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSetBase,BaseIntelligence)
+	UFUNCTION()
+	virtual void OnRep_BaseIntelligence(const FGameplayAttributeData& OldBaseIntelligence);
+
+	UPROPERTY(ReplicatedUsing = OnRep_BonusStrength,EditAnywhere,BlueprintReadWrite,Category="Attribute Intelligence ")
+	FGameplayAttributeData BonusIntelligence;
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSetBase,BonusIntelligence)
+	UFUNCTION()
+	virtual void OnRep_BonusIntelligence(const FGameplayAttributeData& OldBonusIntelligence);
+	
+	UPROPERTY(ReplicatedUsing = OnRep_StrengthGain,EditAnywhere,BlueprintReadWrite,Category="Attribute Intelligence ")
+	FGameplayAttributeData IntelligenceGain;
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSetBase,IntelligenceGain)
+	UFUNCTION()
+	virtual void OnRep_IntelligenceGain(const FGameplayAttributeData& OldIntelligenceGain);
+	
+	UPROPERTY(ReplicatedUsing = OnRep_IntelligenceMultiplier,EditAnywhere,BlueprintReadWrite,Category="Attribute Intelligence")
+	FGameplayAttributeData IntelligenceMultiplier;
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSetBase,IntelligenceMultiplier)
+	UFUNCTION()
+	virtual void OnRep_IntelligenceMultiplier(const FGameplayAttributeData& OldIntelligenceMultiplier);
+
 	
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
