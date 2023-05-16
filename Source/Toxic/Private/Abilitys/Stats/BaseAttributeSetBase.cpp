@@ -91,22 +91,42 @@ void UBaseAttributeSetBase::OnRep_StrengthMultiplier(const FGameplayAttributeDat
 
 void UBaseAttributeSetBase::OnRep_BaseIntelligence(const FGameplayAttributeData& OldBaseIntelligence)
 {
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSetBase, StrengthMultiplier, OldBaseIntelligence);
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSetBase, BaseIntelligence, OldBaseIntelligence);
 }
 
 void UBaseAttributeSetBase::OnRep_BonusIntelligence(const FGameplayAttributeData& OldBonusIntelligence)
 {
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSetBase, StrengthMultiplier, OldBonusIntelligence);
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSetBase, BonusIntelligence, OldBonusIntelligence);
 }
 
 void UBaseAttributeSetBase::OnRep_IntelligenceGain(const FGameplayAttributeData& OldIntelligenceGain)
 {
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSetBase, StrengthMultiplier, OldIntelligenceGain);
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSetBase, IntelligenceGain, OldIntelligenceGain);
 }
 
 void UBaseAttributeSetBase::OnRep_IntelligenceMultiplier(const FGameplayAttributeData& OldIntelligenceMultiplier)
 {
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSetBase, StrengthMultiplier, OldIntelligenceMultiplier);
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSetBase, IntelligenceMultiplier, OldIntelligenceMultiplier);
+}
+
+void UBaseAttributeSetBase::OnRep_HealthRegen(const FGameplayAttributeData& OldHealthRegen)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSetBase, HealthRegen, OldHealthRegen);
+}
+
+void UBaseAttributeSetBase::OnRep_BaseHealthRegen(const FGameplayAttributeData& OldBaseHealthRegen)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSetBase, BaseHealthRegen, OldBaseHealthRegen);
+}
+
+void UBaseAttributeSetBase::OnRep_BonusHealthRegen(const FGameplayAttributeData& OldBonusHealthRegen)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSetBase, BonusHealthRegen, OldBonusHealthRegen);
+}
+
+void UBaseAttributeSetBase::OnRep_RegainPerStrg(const FGameplayAttributeData& OldRegainPerStrg)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSetBase, RegainPerStrg, OldRegainPerStrg);
 }
 
 void UBaseAttributeSetBase::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)

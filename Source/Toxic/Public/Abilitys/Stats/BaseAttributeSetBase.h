@@ -136,6 +136,34 @@ public:
 	UFUNCTION()
 	virtual void OnRep_IntelligenceMultiplier(const FGameplayAttributeData& OldIntelligenceMultiplier);
 
+
+
+	////Regen///
+
+	UPROPERTY(ReplicatedUsing = OnRep_HealthRegen,EditAnywhere,BlueprintReadWrite,Category="Health Regen ")
+	FGameplayAttributeData HealthRegen;
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSetBase,HealthRegen)
+	UFUNCTION()
+	virtual void OnRep_HealthRegen(const FGameplayAttributeData& OldHealthRegen);
+
+	UPROPERTY(ReplicatedUsing = OnRep_BaseHealthRegen,EditAnywhere,BlueprintReadWrite,Category="Health Regen ")
+	FGameplayAttributeData BaseHealthRegen;
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSetBase,BaseHealthRegen)
+	UFUNCTION()
+	virtual void OnRep_BaseHealthRegen(const FGameplayAttributeData& OldBaseHealthRegen);
+
+	UPROPERTY(ReplicatedUsing = OnRep_BonusHealthRegen,EditAnywhere,BlueprintReadWrite,Category="Health Regen ")
+	FGameplayAttributeData BonusHealthRegen;
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSetBase,BonusHealthRegen)
+	UFUNCTION()
+	virtual void OnRep_BonusHealthRegen(const FGameplayAttributeData& OldBonusHealthRegen);
+	
+	UPROPERTY(ReplicatedUsing = OnRep_RegainPerStrg,EditAnywhere,BlueprintReadWrite,Category="Health Regen ")
+	FGameplayAttributeData RegainPerStrg;
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSetBase,RegainPerStrg)
+	UFUNCTION()
+	virtual void OnRep_RegainPerStrg(const FGameplayAttributeData& OldRegainPerStrg);
+	
 	
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 

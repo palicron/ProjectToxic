@@ -4,24 +4,23 @@
 
 #include "CoreMinimal.h"
 #include "GameplayModMagnitudeCalculation.h"
-#include "Tx_HpCalculation.generated.h"
+#include "Tx_HpRegen_Calculation.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class TOXIC_API UTx_HpCalculation : public UGameplayModMagnitudeCalculation
+class TOXIC_API UTx_HpRegen_Calculation : public UGameplayModMagnitudeCalculation
 {
 	GENERATED_BODY()
 
-protected:
+private:
 
+	UTx_HpRegen_Calculation();
 
-	UTx_HpCalculation();
-	
 	virtual float CalculateBaseMagnitude_Implementation(const FGameplayEffectSpec& Spec) const override;
+public:
 	
-
 	FGameplayEffectAttributeCaptureDefinition StrgGain;
 
 	FGameplayEffectAttributeCaptureDefinition Level;
@@ -30,7 +29,9 @@ protected:
 
 	FGameplayEffectAttributeCaptureDefinition BonusStrg;
 
-	FGameplayEffectAttributeCaptureDefinition BaseHealth;
+	FGameplayEffectAttributeCaptureDefinition BaseHealthRegen; 
 
-	FGameplayEffectAttributeCaptureDefinition StrgMulti;
+	FGameplayEffectAttributeCaptureDefinition BonusHealthRegen;
+
+	FGameplayEffectAttributeCaptureDefinition RegainPerStrg;
 };

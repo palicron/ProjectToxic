@@ -15,10 +15,7 @@ UTx_HpCalculation::UTx_HpCalculation()
 	Level.AttributeSource = EGameplayEffectAttributeCaptureSource::Source;
 	Level.bSnapshot = false;
 
-	Level.AttributeToCapture = UBaseAttributeSetBase::GetCurrentLevelAttribute();
-	Level.AttributeSource = EGameplayEffectAttributeCaptureSource::Source;
-	Level.bSnapshot = false;
-
+	
 	BaseStrg.AttributeToCapture = UBaseAttributeSetBase::GetBaseStrengthAttribute();
 	BaseStrg.AttributeSource = EGameplayEffectAttributeCaptureSource::Source;
 	BaseStrg.bSnapshot = false;

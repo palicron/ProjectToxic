@@ -79,6 +79,8 @@ void ATx_Base_Character::BeginPlay()
 	{
 		AbilitySystemComp->GetGameplayAttributeValueChangeDelegate(AttributeSerBaseComp->GetHealthAttribute()).AddUObject(this,&ATx_Base_Character::OnHealthChange);
 		AbilitySystemComp->GetGameplayAttributeValueChangeDelegate(AttributeSerBaseComp->GetMaxHealthAttribute()).AddUObject(this,&ATx_Base_Character::OnMaxHealthChange);
+		AbilitySystemComp->GetGameplayAttributeValueChangeDelegate(AttributeSerBaseComp->GetManaAttribute()).AddUObject(this,&ATx_Base_Character::OnManaChange);
+		AbilitySystemComp->GetGameplayAttributeValueChangeDelegate(AttributeSerBaseComp->GetMaxManaAttribute()).AddUObject(this,&ATx_Base_Character::OnMaxManahChange);
 		AbilitySystemComp->GetGameplayAttributeValueChangeDelegate(AttributeSerBaseComp->GetMovementSpeedAttribute()).AddUObject(this,&ATx_Base_Character::OnMovementSpeedChange);
 		
 	}
