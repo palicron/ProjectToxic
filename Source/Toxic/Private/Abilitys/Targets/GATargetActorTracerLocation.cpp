@@ -30,7 +30,6 @@ void AGATargetActorTracerLocation::StartTargeting(UGameplayAbility* Ability)
 		CurrentActor->OnTargetConfirmLocationDelegate.AddDynamic(this,&AGATargetActorTracerLocation::AGATargetActorTracerLocation::ConfirmTargetLocation);
 		
 		PrimaryPC = Cast<APlayerController>(CurrentActor->OwningPlayerRef->PlayerCtr);
-
 	}
 	
 }
@@ -60,10 +59,6 @@ void AGATargetActorTracerLocation::CancelTargeting()
 void AGATargetActorTracerLocation::ConfirmTargetLocation(FVector& NewTargetLocation)
 {
 	TargetLocation = NewTargetLocation;
-
-	if(GEngine)
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Cyan,
-			FString::Printf(TEXT("Target DAta %s"), *TargetLocation.ToString()));
 	
 	if(IsValid(CurrentActor))
 	{
@@ -71,7 +66,6 @@ void AGATargetActorTracerLocation::ConfirmTargetLocation(FVector& NewTargetLocat
 	}
 	
 	ConfirmTargetingAndContinue();
-	
 }
 
 

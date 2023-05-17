@@ -42,7 +42,8 @@ void ATx_HookActor::BeginPlay()
 		Forward.Z = 0;
 		if(GetInstigator())
 		{
-		HookSpawnLocation = GetActorLocation() + (GetInstigator()->GetActorForwardVector() * 20.f);
+		HookSpawnLocation = GetActorLocation() + (GetInstigator()->GetActorForwardVector() *
+			(GetInstigator()->GetComponentsBoundingBox().GetExtent() +20.f));
 		}
 
 	HookSpeed = MovementComponent->InitialSpeed;

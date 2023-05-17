@@ -135,7 +135,6 @@ void ATx_PlayerCamera::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 void ATx_PlayerCamera::ActiveSlotAbility(const int32 SlotIndex) const
 {
-
 	if(IsValid(OwningCharacterRef))
 	{
 		OwningCharacterRef->TryUsingAbility(SlotIndex);

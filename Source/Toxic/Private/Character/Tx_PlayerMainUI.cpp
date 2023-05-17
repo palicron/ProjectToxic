@@ -16,7 +16,7 @@ void UTx_PlayerMainUI::SetNewHealth(float NewHealth, float MaxHealth)
 {
 	if(IsValid(HealthBar) && IsValid(CurrentHealthText))
 	{
-		CurrentHealthText->SetText(FText::FromString(FString::SanitizeFloat(NewHealth,0))  );
+		CurrentHealthText->SetText(FText::FromString(FString::FromInt(FMath::Floor(NewHealth))));
 		HealthBar->SetPercent(NewHealth/MaxHealth);
 	}
 }
@@ -33,8 +33,9 @@ void UTx_PlayerMainUI::SetManaHealth(float NewMana, float MaxMana)
 {
 	if(IsValid(ManaBar) && IsValid(CurrentManaText))
 	{
-		CurrentManaText->SetText(FText::FromString(FString::SanitizeFloat(NewMana,0))  );
-		ManaBar->SetPercent(NewMana/MaxMana);
+		
+		CurrentManaText->SetText(FText::FromString(FString::FromInt(FMath::Floor(NewMana))));
+		ManaBar->SetPercent( NewMana/MaxMana);
 	}
 }
 
