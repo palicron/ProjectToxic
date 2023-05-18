@@ -41,7 +41,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ConfirmTargetAbility();
 	
-	UPROPERTY(ReplicatedUsing = OnRep_OwningPlayerRef  , VisibleAnywhere)
+	UPROPERTY(ReplicatedUsing = OnRep_OwningPlayerRef  , VisibleAnywhere,BlueprintReadWrite)
 	ATx_PlayerCamera* OwningPlayerRef;
 
 	UFUNCTION()
@@ -129,6 +129,17 @@ protected:
 	
 	virtual void OnMaxManahChange(const FOnAttributeChangeData & Data);
 
+	virtual void OnStrChange(const FOnAttributeChangeData & Data);
+
+	virtual void OnAgiChange(const FOnAttributeChangeData & Data);
+
+	virtual void OnIntChange(const FOnAttributeChangeData & Data);
+
+	virtual void OnBonusStrChange(const FOnAttributeChangeData & Data);
+
+	virtual void OnBonusAgiChange(const FOnAttributeChangeData & Data);
+
+	virtual void OnBonusIntChange(const FOnAttributeChangeData & Data);
 
 	virtual void OnMovementSpeedChange(const FOnAttributeChangeData & Data);
 

@@ -19,6 +19,6 @@ void ATx_PlayerStateBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& 
 
 void ATx_PlayerStateBase::ServerLastClickTarget_Implementation(FVector_NetQuantize NewClickTarget)
 {
-	LastClickTarget =NewClickTarget;
+	LastClickTarget = NewClickTarget;
 	
 }

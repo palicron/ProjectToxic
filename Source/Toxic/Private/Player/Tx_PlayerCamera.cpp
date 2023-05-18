@@ -141,12 +141,13 @@ void ATx_PlayerCamera::ActiveSlotAbility(const int32 SlotIndex) const
 	}
 }
 
-void ATx_PlayerCamera::UpdateLifeUI_Implementation(float NewLife, float MaxLife)
+void ATx_PlayerCamera::UpdateLifeUI_Implementation(float NewLife, float MaxLife,float Regen )
 {
 	if(IsValid(PlayerUIRef) && IsLocallyControlled())
 	{
 		PlayerUIRef->SetNewHealth(NewLife,MaxLife);
 		PlayerUIRef->SetMaxNewHealth(MaxLife);
+		PlayerUIRef->SetHealthRegen(Regen);
 	}
 }
 void ATx_PlayerCamera::UpdateManaUI_Implementation(float NewMana, float MaxMana)
@@ -157,6 +158,16 @@ void ATx_PlayerCamera::UpdateManaUI_Implementation(float NewMana, float MaxMana)
 		PlayerUIRef->SetMaxNewMana(MaxMana);
 	}
 }
+
+void ATx_PlayerCamera::UpdateStats_Implementation(StatusType NewType, float NewValue)
+{
+	if(IsValid(PlayerUIRef) && IsLocallyControlled())
+	{
+		PlayerUIRef->UpdateStatsUI(NewType,NewValue);
+	
+	}
+}
+
 
 void ATx_PlayerCamera::MoveOwnedCharacterToLocation(const FVector NewLocation)
 {

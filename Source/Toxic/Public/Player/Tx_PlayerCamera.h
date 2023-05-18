@@ -104,18 +104,18 @@ public:
 	
 	UFUNCTION(Server,Reliable)
 	void ServerSetTargetConfirmLocation(FVector NewTarget);
-
-
+	
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_SpawnUI();
 	
 	UFUNCTION(Client,BlueprintCallable,Reliable)
-	void UpdateLifeUI(float NewLife,float MaxLife);
+	void UpdateLifeUI(float NewLife,float MaxLife,float Regen = 0.0);
 
 	UFUNCTION(Client,BlueprintCallable,Reliable)
 	void UpdateManaUI(float NewMana,float MaxMana);
 
-
+	UFUNCTION( Client ,BlueprintCallable,Reliable)
+	void UpdateStats(StatusType NewType,float NewValue);
 	//UFUNCTION()
 	//void ClientUpdateLifeUI(float NewLife,float MaxLife);
 	UFUNCTION(Server,Reliable)
@@ -137,6 +137,7 @@ public:
 	
 	FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 
+	UFUNCTION(BlueprintCallable)
 	FORCEINLINE ATx_Base_Character* GetOwningCharacter() const { return OwningCharacterRef; }
 
 	

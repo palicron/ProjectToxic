@@ -77,3 +77,15 @@ struct FGamePlayAbilityInfo
 	}
 };
 
+UENUM(BlueprintType)
+enum class  StatusType: uint8
+{
+	ST_BaseStrength UMETA(DisplayName = "Base strength"),
+	ST_BonusStrength UMETA(DisplayName = "Bonus strength"),
+	ST_BaseAgility UMETA(DisplayName = "Base agility"),
+	ST_BonusAgility UMETA(DisplayName = "bonus Agility"),
+	ST_BaseIntelligence UMETA(DisplayName = "Base Intelligence"),
+	ST_BonusIntelligence UMETA(DisplayName = "bonus Intelligence")
+
+	
+};

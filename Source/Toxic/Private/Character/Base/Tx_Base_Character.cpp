@@ -7,6 +7,7 @@
 #include "Abilitys/Stats/BaseAttributeSetBase.h"
 #include "Character/Tx_Base_AICharacterCtr.h"
 #include "Character/Tx_OverHeadBar.h"
+#include "Character/Tx_PlayerMainUI.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/WidgetComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -82,7 +83,10 @@ void ATx_Base_Character::BeginPlay()
 		AbilitySystemComp->GetGameplayAttributeValueChangeDelegate(AttributeSerBaseComp->GetManaAttribute()).AddUObject(this,&ATx_Base_Character::OnManaChange);
 		AbilitySystemComp->GetGameplayAttributeValueChangeDelegate(AttributeSerBaseComp->GetMaxManaAttribute()).AddUObject(this,&ATx_Base_Character::OnMaxManahChange);
 		AbilitySystemComp->GetGameplayAttributeValueChangeDelegate(AttributeSerBaseComp->GetMovementSpeedAttribute()).AddUObject(this,&ATx_Base_Character::OnMovementSpeedChange);
-		
+		AbilitySystemComp->GetGameplayAttributeValueChangeDelegate(AttributeSerBaseComp->GetBaseStrengthAttribute()).AddUObject(this,&ATx_Base_Character::OnStrChange);
+		AbilitySystemComp->GetGameplayAttributeValueChangeDelegate(AttributeSerBaseComp->GetBonusStrengthAttribute()).AddUObject(this,&ATx_Base_Character::OnBonusStrChange);
+		AbilitySystemComp->GetGameplayAttributeValueChangeDelegate(AttributeSerBaseComp->GetBaseIntelligenceAttribute()).AddUObject(this,&ATx_Base_Character::OnIntChange);
+		AbilitySystemComp->GetGameplayAttributeValueChangeDelegate(AttributeSerBaseComp->GetBonusIntelligenceAttribute()).AddUObject(this,&ATx_Base_Character::OnBonusIntChange);
 	}
 
 	BP_SpeedChange();
@@ -141,11 +145,14 @@ void ATx_Base_Character::OnRep_OwningPlayerRef()
 {
 	if(IsValid(OwningPlayerRef) && !HasAuthority())
 	{
-		OwningPlayerRef->UpdateLifeUI(AbilitySystemComp->GetNumericAttribute(AttributeSerBaseComp->GetHealthAttribute()),
-		AbilitySystemComp->GetNumericAttribute(AttributeSerBaseComp->GetMaxHealthAttribute()));
+	//	OwningPlayerRef->UpdateLifeUI(AbilitySystemComp->GetNumericAttribute(AttributeSerBaseComp->GetHealthAttribute()),
+	//	AbilitySystemComp->GetNumericAttribute(AttributeSerBaseComp->GetMaxHealthAttribute()));
 
-		OwningPlayerRef->UpdateManaUI(AbilitySystemComp->GetNumericAttribute(AttributeSerBaseComp->GetManaAttribute()),
-	AbilitySystemComp->GetNumericAttribute(AttributeSerBaseComp->GetMaxManaAttribute()));
+	//	OwningPlayerRef->UpdateManaUI(AbilitySystemComp->GetNumericAttribute(AttributeSerBaseComp->GetManaAttribute()),
+	//AbilitySystemComp->GetNumericAttribute(AttributeSerBaseComp->GetMaxManaAttribute()));
+
+
+	//	OwningPlayerRef->UpdateStats(StatusType::ST_BaseStrength , AbilitySystemComp->GetNumericAttribute(AttributeSerBaseComp->GetBaseStrengthAttribute()));
 	}
 }
 
@@ -311,9 +318,10 @@ void ATx_Base_Character::OnRep_CurrentTargetCharacter(ATx_Base_Character* LastTa
 void ATx_Base_Character::OnHealthChange(const FOnAttributeChangeData& Data)
 {
 	const float CurrentMaxHealth = AbilitySystemComp->GetNumericAttribute(UBaseAttributeSetBase::GetMaxHealthAttribute());
+	const float CurrentRegent = AbilitySystemComp->GetNumericAttribute(UBaseAttributeSetBase::GetHealthRegenAttribute());
 	if(IsValid(OwningPlayerRef) && HasAuthority())
 	{
-		OwningPlayerRef->UpdateLifeUI(Data.NewValue,CurrentMaxHealth);
+		OwningPlayerRef->UpdateLifeUI(Data.NewValue,CurrentMaxHealth,CurrentRegent);
 	}
 
 	if(IsValid(OverHeadLifeBarRef))
@@ -341,6 +349,56 @@ void ATx_Base_Character::OnManaChange(const FOnAttributeChangeData& Data)
 void ATx_Base_Character::OnMaxManahChange(const FOnAttributeChangeData& Data)
 {
 }
+
+void ATx_Base_Character::OnStrChange(const FOnAttributeChangeData& Data)
+{
+	if(IsValid(OwningPlayerRef) && HasAuthority())
+	{
+		OwningPlayerRef->UpdateStats(StatusType::ST_BaseStrength ,Data.NewValue);
+		//OwningPlayerRef->GetPlayerUI()->UpdateStatsUI(StatusType::ST_BaseStrength ,Data.NewValue);
+	}
+}
+
+void ATx_Base_Character::OnAgiChange(const FOnAttributeChangeData& Data)
+{
+	if(IsValid(OwningPlayerRef) && IsValid(OwningPlayerRef->GetPlayerUI()))
+	{
+		OwningPlayerRef->GetPlayerUI()->UpdateStatsUI(StatusType::ST_BaseAgility ,Data.NewValue);
+	}
+}
+
+void ATx_Base_Character::OnIntChange(const FOnAttributeChangeData& Data)
+{
+	if(IsValid(OwningPlayerRef) && IsValid(OwningPlayerRef->GetPlayerUI()))
+	{
+		OwningPlayerRef->GetPlayerUI()->UpdateStatsUI(StatusType::ST_BaseIntelligence ,Data.NewValue);
+	}
+}
+
+void ATx_Base_Character::OnBonusStrChange(const FOnAttributeChangeData& Data)
+{
+	if(IsValid(OwningPlayerRef) && IsValid(OwningPlayerRef->GetPlayerUI()))
+	{
+		OwningPlayerRef->GetPlayerUI()->UpdateStatsUI(StatusType::ST_BonusStrength ,Data.NewValue);
+	}
+}
+
+void ATx_Base_Character::OnBonusAgiChange(const FOnAttributeChangeData& Data)
+{
+	if(IsValid(OwningPlayerRef) && IsValid(OwningPlayerRef->GetPlayerUI()))
+	{
+		OwningPlayerRef->GetPlayerUI()->UpdateStatsUI(StatusType::ST_BonusAgility ,Data.NewValue);
+	}
+}
+
+void ATx_Base_Character::OnBonusIntChange(const FOnAttributeChangeData& Data)
+{
+	if(IsValid(OwningPlayerRef) && IsValid(OwningPlayerRef->GetPlayerUI()))
+	{
+		OwningPlayerRef->GetPlayerUI()->UpdateStatsUI(StatusType::ST_BonusIntelligence ,Data.NewValue);
+	}
+}
+
 
 void ATx_Base_Character::OnMovementSpeedChange(const FOnAttributeChangeData& Data)
 {
