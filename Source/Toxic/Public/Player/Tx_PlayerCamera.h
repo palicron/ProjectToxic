@@ -112,12 +112,12 @@ public:
 	void UpdateLifeUI(float NewLife,float MaxLife,float Regen = 0.0);
 
 	UFUNCTION(Client,BlueprintCallable,Reliable)
-	void UpdateManaUI(float NewMana,float MaxMana);
+	void UpdateManaUI(float NewMana,float MaxMana,float Regen = 0.0);
 
 	UFUNCTION( Client ,BlueprintCallable,Reliable)
 	void UpdateStats(StatusType NewType,float NewValue);
-	//UFUNCTION()
-	//void ClientUpdateLifeUI(float NewLife,float MaxLife);
+
+	
 	UFUNCTION(Server,Reliable)
 	void ServerLastClickTarget(FVector_NetQuantize newLocation);
 	

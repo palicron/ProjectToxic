@@ -340,9 +340,10 @@ void ATx_Base_Character::OnMaxHealthChange(const FOnAttributeChangeData& Data)
 void ATx_Base_Character::OnManaChange(const FOnAttributeChangeData& Data)
 {
 	const float CurrentMaxMana = AbilitySystemComp->GetNumericAttribute(UBaseAttributeSetBase::GetMaxManaAttribute());
+	const float CurrentRegent = AbilitySystemComp->GetNumericAttribute(UBaseAttributeSetBase::GetManaRegenAttribute());	
 	if(IsValid(OwningPlayerRef) && HasAuthority())
 	{
-		OwningPlayerRef->UpdateManaUI(Data.NewValue,CurrentMaxMana);
+		OwningPlayerRef->UpdateManaUI(Data.NewValue,CurrentMaxMana,CurrentRegent);
 	}
 }
 

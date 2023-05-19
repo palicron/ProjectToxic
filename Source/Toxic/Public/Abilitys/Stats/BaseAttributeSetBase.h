@@ -163,6 +163,34 @@ public:
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSetBase,RegainPerStrg)
 	UFUNCTION()
 	virtual void OnRep_RegainPerStrg(const FGameplayAttributeData& OldRegainPerStrg);
+
+	
+	UPROPERTY(ReplicatedUsing = OnRep_ManaRegen,EditAnywhere,BlueprintReadWrite,Category="Mana Regen ")
+	FGameplayAttributeData ManaRegen;
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSetBase,ManaRegen)
+	UFUNCTION()
+	virtual void OnRep_ManaRegen(const FGameplayAttributeData& OldManaRegen);
+
+	UPROPERTY(ReplicatedUsing = OnRep_BaseManaRegen,EditAnywhere,BlueprintReadWrite,Category="Mana Regen ")
+	FGameplayAttributeData BaseManaRegen;
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSetBase,BaseManaRegen)
+	UFUNCTION()
+	virtual void OnRep_BaseManaRegen(const FGameplayAttributeData& OldBaseManaRegen);
+
+	UPROPERTY(ReplicatedUsing = OnRep_BonusManaRegen,EditAnywhere,BlueprintReadWrite,Category="Mana Regen ")
+	FGameplayAttributeData BonusManaRegen;
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSetBase,BonusManaRegen)
+	UFUNCTION()
+	virtual void OnRep_BonusManaRegen(const FGameplayAttributeData& OldBonusManaRegen);
+
+	UPROPERTY(ReplicatedUsing = OnRep_RegainPerInt,EditAnywhere,BlueprintReadWrite,Category="Mana Regen ")
+	FGameplayAttributeData RegainPerInt;
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSetBase,RegainPerInt)
+	UFUNCTION()
+	virtual void OnRep_RegainPerInt(const FGameplayAttributeData& OldRegainPerInt);
+
+	
+
 	
 	
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;

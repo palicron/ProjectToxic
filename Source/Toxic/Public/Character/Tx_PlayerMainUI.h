@@ -45,6 +45,9 @@ protected:
 	UTextBlock* LifeRegen;
 
 	UPROPERTY(meta = (BindWidget))
+	UTextBlock* ManaRegen;
+	
+	UPROPERTY(meta = (BindWidget))
 	UTextBlock* MaxHealthText;
 
 	UPROPERTY(meta = (BindWidget))
@@ -74,6 +77,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetMaxNewMana(float MaxMana);
+
+	UFUNCTION(BlueprintCallable)
+	void SetManaRegen(float Regen);
 
 	UFUNCTION(BlueprintCallable)
 	void UpdateStatsUI(StatusType NewStats,float NewValue) const;

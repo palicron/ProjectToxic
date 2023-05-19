@@ -150,11 +150,12 @@ void ATx_PlayerCamera::UpdateLifeUI_Implementation(float NewLife, float MaxLife,
 		PlayerUIRef->SetHealthRegen(Regen);
 	}
 }
-void ATx_PlayerCamera::UpdateManaUI_Implementation(float NewMana, float MaxMana)
+void ATx_PlayerCamera::UpdateManaUI_Implementation(float NewMana, float MaxMana,float Regen)
 {
 	if(IsValid(PlayerUIRef) && IsLocallyControlled())
 	{
 		PlayerUIRef->SetManaHealth(NewMana,MaxMana);
+		PlayerUIRef->SetManaRegen(Regen);
 		PlayerUIRef->SetMaxNewMana(MaxMana);
 	}
 }

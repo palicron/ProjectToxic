@@ -58,6 +58,16 @@ void UTx_PlayerMainUI::SetMaxNewMana(float MaxMana)
 	}
 }
 
+void UTx_PlayerMainUI::SetManaRegen(float Regen)
+{
+	if(IsValid(ManaRegen))
+	{
+		FString RegenString = FString::SanitizeFloat(Regen,1);
+		RegenString = "+"+RegenString;
+		ManaRegen->SetText(FText::FromString(RegenString));
+	}
+}
+
 void UTx_PlayerMainUI::UpdateStatsUI(StatusType NewStats,float NewValue) const
 {
 

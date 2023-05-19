@@ -129,6 +129,26 @@ void UBaseAttributeSetBase::OnRep_RegainPerStrg(const FGameplayAttributeData& Ol
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSetBase, RegainPerStrg, OldRegainPerStrg);
 }
 
+void UBaseAttributeSetBase::OnRep_ManaRegen(const FGameplayAttributeData& OldManaRegen)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSetBase, ManaRegen, OldManaRegen);
+}
+
+void UBaseAttributeSetBase::OnRep_BaseManaRegen(const FGameplayAttributeData& OldBaseManaRegen)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSetBase, BaseManaRegen, OldBaseManaRegen);
+}
+
+void UBaseAttributeSetBase::OnRep_BonusManaRegen(const FGameplayAttributeData& OldBonusManaRegen)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSetBase, BonusManaRegen, OldBonusManaRegen);
+}
+
+void UBaseAttributeSetBase::OnRep_RegainPerInt(const FGameplayAttributeData& OldRegainPerInt)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSetBase, RegainPerInt, OldRegainPerInt);
+}
+
 void UBaseAttributeSetBase::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
 {
 	Super::PostGameplayEffectExecute(Data);
