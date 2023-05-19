@@ -33,7 +33,7 @@ void UTx_PlayerPortrait_Stats::SetBonusStrText(float CurrentBonusStr)
 {
 	if(IsValid(BonusStrText))
 	{
-		BonusStrText->SetText(FText::FromString(FString::FromInt(FMath::Floor(CurrentBonusStr))));
+		BonusStrText->SetText(FText::FromString(FString::SanitizeFloat(CurrentBonusStr,1)));
 	}
 }
 
@@ -41,7 +41,7 @@ void UTx_PlayerPortrait_Stats::SetBonusAgiText(float CurrentBonusAgi)
 {
 	if(IsValid(BonusAgyText))
 	{
-		BonusAgyText->SetText(FText::FromString(FString::FromInt(FMath::Floor(CurrentBonusAgi))));
+		BonusAgyText->SetText(FText::FromString(FString::SanitizeFloat(CurrentBonusAgi,1)));
 	}
 }
 
@@ -49,6 +49,6 @@ void UTx_PlayerPortrait_Stats::SetBonusIntText(float CurrentBonusINt)
 {
 	if(IsValid(BonusIntText))
 	{
-		BonusIntText->SetText(FText::FromString(FString::FromInt(FMath::Floor(CurrentBonusINt))));
+		BonusIntText->SetText(FText::FromString(FString::SanitizeFloat(CurrentBonusINt,1)));
 	}
 }

@@ -46,6 +46,12 @@ public:
 	UFUNCTION()
 	virtual void OnRep_CurrentLevel(const FGameplayAttributeData& OldCurrentLevel);
 
+	UPROPERTY(ReplicatedUsing = OnRep_CurrentArmor, EditAnywhere,BlueprintReadWrite,Category="Attribute Armor")
+	FGameplayAttributeData CurrentArmor;
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSetBase,CurrentArmor)
+	UFUNCTION()
+	virtual void OnRep_CurrentArmor(const FGameplayAttributeData& OldCurrentArmor);
+
 	UPROPERTY(ReplicatedUsing = OnRep_BaseHealth, EditAnywhere,BlueprintReadWrite,Category="Attribute Health")
 	FGameplayAttributeData BaseHealth;
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSetBase,BaseHealth)
@@ -189,7 +195,32 @@ public:
 	UFUNCTION()
 	virtual void OnRep_RegainPerInt(const FGameplayAttributeData& OldRegainPerInt);
 
+	//////Agility
+	///
 	
+	UPROPERTY(ReplicatedUsing = OnRep_BaseAgility,EditAnywhere,BlueprintReadWrite,Category="Attribute Agility ")
+	FGameplayAttributeData BaseAgility;
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSetBase,BaseAgility)
+	UFUNCTION()
+	virtual void OnRep_BaseAgility(const FGameplayAttributeData& OldBaseAgility);
+
+	UPROPERTY(ReplicatedUsing = OnRep_BonusAgility,EditAnywhere,BlueprintReadWrite,Category="Attribute Agility ")
+	FGameplayAttributeData BonusAgility;
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSetBase,BonusAgility)
+	UFUNCTION()
+	virtual void OnRep_BonusAgility(const FGameplayAttributeData& OldBonusAgility);
+	
+	UPROPERTY(ReplicatedUsing = OnRep_AgilityGain,EditAnywhere,BlueprintReadWrite,Category="Attribute Agility ")
+	FGameplayAttributeData AgilityGain;
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSetBase,AgilityGain)
+	UFUNCTION()
+	virtual void OnRep_AgilityGain(const FGameplayAttributeData& OldAgilityGain);
+	
+	UPROPERTY(ReplicatedUsing = OnRep_AgilityMultiplier,EditAnywhere,BlueprintReadWrite,Category="Attribute Agility")
+	FGameplayAttributeData AgilityMultiplier;
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSetBase,AgilityMultiplier)
+	UFUNCTION()
+	virtual void OnRep_AgilityMultiplier(const FGameplayAttributeData& OldAgilityGain);
 
 	
 	

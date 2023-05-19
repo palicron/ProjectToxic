@@ -30,6 +30,11 @@ void UBaseAttributeSetBase::OnRep_CurrentLevel(const FGameplayAttributeData& Old
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSetBase, CurrentLevel, OldCurrentLevel);
 }
 
+void UBaseAttributeSetBase::OnRep_CurrentArmor(const FGameplayAttributeData& OldCurrentArmor)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSetBase, CurrentArmor, OldCurrentArmor);
+}
+
 void UBaseAttributeSetBase::OnRep_BaseHealth(const FGameplayAttributeData& OldBaseHealth)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSetBase, BaseHealth, OldBaseHealth);
@@ -149,6 +154,26 @@ void UBaseAttributeSetBase::OnRep_RegainPerInt(const FGameplayAttributeData& Old
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSetBase, RegainPerInt, OldRegainPerInt);
 }
 
+void UBaseAttributeSetBase::OnRep_BaseAgility(const FGameplayAttributeData& OldBaseAgility)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSetBase, BaseAgility, OldBaseAgility);
+}
+
+void UBaseAttributeSetBase::OnRep_BonusAgility(const FGameplayAttributeData& OldBonusAgility)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSetBase, BonusAgility, OldBonusAgility);
+}
+
+void UBaseAttributeSetBase::OnRep_AgilityGain(const FGameplayAttributeData& OldAgilityGain)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSetBase, AgilityGain, OldAgilityGain);
+}
+
+void UBaseAttributeSetBase::OnRep_AgilityMultiplier(const FGameplayAttributeData& OldAgilityGain)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBaseAttributeSetBase, AgilityMultiplier, OldAgilityGain);
+}
+
 void UBaseAttributeSetBase::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
 {
 	Super::PostGameplayEffectExecute(Data);
@@ -156,11 +181,8 @@ void UBaseAttributeSetBase::PostGameplayEffectExecute(const FGameplayEffectModCa
 	if(Data.EvaluatedData.Attribute.GetUProperty() ==
 		FindFieldChecked<FProperty>(UBaseAttributeSetBase::StaticClass(),GET_MEMBER_NAME_CHECKED(UBaseAttributeSetBase,Health)))
 	{
-		UE_LOG(LogTemp,Warning,TEXT("healt %f"),MaxHealth.GetCurrentValue());
 		Health.SetCurrentValue(FMath::Clamp(Health.GetCurrentValue(),0.f,MaxHealth.GetCurrentValue()));
 		Health.SetBaseValue(FMath::Clamp(Health.GetBaseValue(),0.f,MaxHealth.GetCurrentValue()));
-		UE_LOG(LogTemp,Warning,TEXT("DAmage take healt %f"),Health.GetCurrentValue());
-		
 	}
 }
 
